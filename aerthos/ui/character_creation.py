@@ -4,7 +4,7 @@ Character creation system - AD&D 1e style
 
 import random
 from typing import Dict, List
-from ..entities.player import PlayerCharacter, Weapon, Armor, Item, LightSource, Spell, SpellSlot
+from ..entities.player import PlayerCharacter, Weapon, Armor, Item, LightSource, Spell, SpellSlot, XP_TABLES
 from ..engine.combat import DiceRoller
 
 
@@ -172,6 +172,9 @@ class CharacterCreator:
         saves = class_data['saves']
         thac0 = class_data['thac0_base']
 
+        # Get XP needed for level 2
+        xp_to_level_2 = XP_TABLES.get(char_class, [0, 2000])[1]
+
         # Create character
         player = PlayerCharacter(
             name=name,
@@ -195,7 +198,7 @@ class CharacterCreator:
             save_breath=saves['breath'],
             save_spell=saves['spell'],
             xp=0,
-            xp_to_next_level=2000
+            xp_to_next_level=xp_to_level_2
         )
 
         # Add starting equipment

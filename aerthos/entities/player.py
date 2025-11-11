@@ -2,9 +2,17 @@
 PlayerCharacter class - extends Character with inventory, spells, and XP
 """
 
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Tuple
 from dataclasses import dataclass, field
 from .character import Character
+
+# AD&D 1e Experience Point Tables
+XP_TABLES = {
+    'Fighter': [0, 2000, 4000, 8000, 16000, 32000, 64000, 125000, 250000, 500000, 750000],
+    'Cleric': [0, 1500, 3000, 6000, 13000, 27500, 55000, 110000, 225000, 450000, 675000],
+    'Magic-User': [0, 2500, 5000, 10000, 22500, 40000, 60000, 90000, 135000, 250000, 375000],
+    'Thief': [0, 1250, 2500, 5000, 10000, 20000, 40000, 70000, 110000, 160000, 220000]
+}
 
 
 @dataclass
@@ -261,10 +269,116 @@ class PlayerCharacter(Character):
         for slot in self.spells_memorized:
             slot.is_used = False
 
-    def gain_xp(self, amount: int):
-        """Gain experience points"""
+    def gain_xp(self, amount: int) -> Optional[str]:
+        """
+        Gain experience points and check for level up
+
+        Returns:
+            Level up message if leveled up, None otherwise
+        """
         self.xp += amount
-        # Level up logic would go here
+
+        # Check if we can level up
+        if self.char_class in XP_TABLES:
+            xp_table = XP_TABLES[self.char_class]
+
+            # Find next level in table
+            if self.level < len(xp_table) - 1:
+                xp_needed = xp_table[self.level]
+
+                if self.xp >= xp_needed:
+                    return self._level_up()
+
+        return None
+
+    def _level_up(self) -> str:
+        """
+        Level up the character
+
+        Returns:
+            Level up message
+        """
+        from ..engine.combat import DiceRoller
+
+        old_level = self.level
+        self.level += 1
+
+        messages = []
+        messages.append(f"\n✨ LEVEL UP! You are now level {self.level}! ✨")
+
+        # Roll HP increase based on class hit die
+        hit_dice_map = {
+            'Fighter': 'd10',
+            'Cleric': 'd8',
+            'Magic-User': 'd4',
+            'Thief': 'd6'
+        }
+
+        hit_die = hit_dice_map.get(self.char_class, 'd6')
+        hp_gain = DiceRoller.roll(hit_die)
+
+        # Add CON bonus
+        con_bonus = self.get_hp_bonus()
+        if con_bonus > 0:
+            hp_gain += con_bonus
+        elif con_bonus < 0:
+            hp_gain = max(1, hp_gain + con_bonus)  # Minimum 1 HP per level
+
+        self.hp_max += hp_gain
+        self.hp_current += hp_gain
+        messages.append(f"   HP: +{hp_gain} (now {self.hp_max})")
+
+        # Improve THAC0
+        thac0_progression = {
+            'Fighter': -1,      # Every level
+            'Cleric': -0.67,    # Every 1.5 levels (2 per 3 levels)
+            'Magic-User': -0.33, # Every 3 levels
+            'Thief': -0.5       # Every 2 levels
+        }
+
+        progression = thac0_progression.get(self.char_class, -0.5)
+
+        # Calculate how many THAC0 points to improve
+        # We track cumulative progression
+        if not hasattr(self, '_thac0_progress'):
+            self._thac0_progress = 0.0
+
+        self._thac0_progress += abs(progression)
+
+        if self._thac0_progress >= 1.0:
+            thac0_improvement = int(self._thac0_progress)
+            self.thac0 -= thac0_improvement
+            self._thac0_progress -= thac0_improvement
+            messages.append(f"   THAC0: improved to {self.thac0}")
+
+        # Improve thief skills
+        if self.char_class == 'Thief':
+            skill_gains = {
+                'pick_pockets': 5,
+                'open_locks': 5,
+                'find_traps': 5,
+                'move_silently': 5,
+                'hide_in_shadows': 5,
+                'hear_noise': 5,
+                'climb_walls': 1,
+                'read_languages': 5
+            }
+
+            messages.append("   Thief Skills Improved:")
+            for skill, gain in skill_gains.items():
+                if skill in self.thief_skills:
+                    self.thief_skills[skill] += gain
+                    messages.append(f"      {skill.replace('_', ' ').title()}: +{gain}% (now {self.thief_skills[skill]}%)")
+
+        # Update XP needed for next level
+        if self.char_class in XP_TABLES:
+            xp_table = XP_TABLES[self.char_class]
+            if self.level < len(xp_table) - 1:
+                self.xp_to_next_level = xp_table[self.level]
+            else:
+                self.xp_to_next_level = 999999999  # Max level reached
+
+        return '\n'.join(messages)
 
     def can_use_thief_skill(self, skill_name: str) -> bool:
         """Check if character has a thief skill"""

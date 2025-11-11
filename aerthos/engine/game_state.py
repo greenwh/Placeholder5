@@ -189,8 +189,12 @@ class GameState:
         # Check if target died
         if result['defender_died']:
             self.active_monsters.remove(target)
-            self.player.gain_xp(target.xp_value)
+            level_up_msg = self.player.gain_xp(target.xp_value)
             messages.append(f"You gain {target.xp_value} XP!")
+
+            # Check for level up
+            if level_up_msg:
+                messages.append(level_up_msg)
 
             # Check if combat over
             if not any(m.is_alive for m in self.active_monsters):
