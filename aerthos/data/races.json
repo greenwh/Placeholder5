@@ -1,0 +1,62 @@
+{
+  "Human": {
+    "ability_modifiers": {
+      "strength": 0,
+      "dexterity": 0,
+      "constitution": 0,
+      "intelligence": 0,
+      "wisdom": 0,
+      "charisma": 0
+    },
+    "class_restrictions": [],
+    "size": "M",
+    "movement": 12,
+    "special_abilities": [],
+    "description": "Versatile and ambitious, humans are the most common race"
+  },
+  "Elf": {
+    "ability_modifiers": {
+      "strength": 0,
+      "dexterity": 1,
+      "constitution": -1,
+      "intelligence": 0,
+      "wisdom": 0,
+      "charisma": 0
+    },
+    "class_restrictions": ["Cleric"],
+    "size": "M",
+    "movement": 12,
+    "special_abilities": ["infravision_60", "resist_sleep_charm", "detect_secret_doors"],
+    "description": "Graceful and long-lived, elves are skilled with magic and bow"
+  },
+  "Dwarf": {
+    "ability_modifiers": {
+      "strength": 0,
+      "dexterity": 0,
+      "constitution": 1,
+      "intelligence": 0,
+      "wisdom": 0,
+      "charisma": -1
+    },
+    "class_restrictions": ["Magic-User"],
+    "size": "M",
+    "movement": 9,
+    "special_abilities": ["infravision_60", "resist_poison", "resist_magic", "detect_stone_traps"],
+    "description": "Stout and sturdy, dwarves are master craftsmen and warriors"
+  },
+  "Halfling": {
+    "ability_modifiers": {
+      "strength": -1,
+      "dexterity": 1,
+      "constitution": 0,
+      "intelligence": 0,
+      "wisdom": 0,
+      "charisma": 0
+    },
+    "class_restrictions": ["Magic-User", "Cleric"],
+    "size": "S",
+    "movement": 9,
+    "special_abilities": ["resist_magic", "bonus_missile_attack", "hard_to_spot"],
+    "description": "Small and nimble, halflings are peaceful folk who avoid danger"
+  }
+}

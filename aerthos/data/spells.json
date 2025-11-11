@@ -1,0 +1,93 @@
+{
+  "sleep": {
+    "name": "Sleep",
+    "level": 1,
+    "school": "enchantment",
+    "casting_time": "1 segment",
+    "range": "30 feet",
+    "duration": "5 rounds/level",
+    "area": "20-foot radius",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Puts 2d4 HD of creatures to sleep. Affects lowest HD creatures first.",
+    "class_availability": ["Magic-User"]
+  },
+  "magic_missile": {
+    "name": "Magic Missile",
+    "level": 1,
+    "school": "evocation",
+    "casting_time": "1 segment",
+    "range": "60 feet",
+    "duration": "Instantaneous",
+    "area": "1-5 targets",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Fires 1 missile (+1 per 2 levels after 1st). Each missile does 1d4+1 damage. Never misses.",
+    "class_availability": ["Magic-User"]
+  },
+  "cure_light_wounds": {
+    "name": "Cure Light Wounds",
+    "level": 1,
+    "school": "necromancy",
+    "casting_time": "5 segments",
+    "range": "Touch",
+    "duration": "Permanent",
+    "area": "1 creature",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Heals 1d8 points of damage.",
+    "class_availability": ["Cleric"]
+  },
+  "protection_from_evil": {
+    "name": "Protection from Evil",
+    "level": 1,
+    "school": "abjuration",
+    "casting_time": "1 segment",
+    "range": "Touch",
+    "duration": "12 rounds",
+    "area": "1 creature",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Grants +2 to AC and saves against evil creatures. Prevents possession.",
+    "class_availability": ["Cleric", "Magic-User"]
+  },
+  "detect_magic": {
+    "name": "Detect Magic",
+    "level": 1,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "60 feet",
+    "duration": "2 rounds/level",
+    "area": "10-foot path",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Detects magical auras on objects and creatures.",
+    "class_availability": ["Magic-User", "Cleric"]
+  },
+  "burning_hands": {
+    "name": "Burning Hands",
+    "level": 1,
+    "school": "evocation",
+    "casting_time": "1 segment",
+    "range": "0",
+    "duration": "Instantaneous",
+    "area": "Cone, 3-foot arc",
+    "saving_throw": "Half damage",
+    "components": "standard",
+    "description": "A cone of flame erupts from the caster's hands, dealing 1d3+1 damage per level of the caster.",
+    "class_availability": ["Magic-User"]
+  },
+  "charm_person": {
+    "name": "Charm Person",
+    "level": 1,
+    "school": "enchantment",
+    "casting_time": "1 segment",
+    "range": "120 feet",
+    "duration": "Special",
+    "area": "1 person",
+    "saving_throw": "Negates",
+    "components": "standard",
+    "description": "Makes one person regard the caster as a trusted friend. Only works on humanoids.",
+    "class_availability": ["Magic-User"]
+  }
+}

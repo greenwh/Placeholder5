@@ -1,0 +1,124 @@
+{
+  "longsword": {
+    "name": "Longsword",
+    "type": "weapon",
+    "weight": 4,
+    "damage_sm": "1d8",
+    "damage_l": "1d12",
+    "speed_factor": 5,
+    "cost_gp": 15,
+    "description": "A well-balanced blade of steel."
+  },
+  "shortsword": {
+    "name": "Shortsword",
+    "type": "weapon",
+    "weight": 3,
+    "damage_sm": "1d6",
+    "damage_l": "1d8",
+    "speed_factor": 3,
+    "cost_gp": 10,
+    "description": "A short blade, easy to wield."
+  },
+  "dagger": {
+    "name": "Dagger",
+    "type": "weapon",
+    "weight": 1,
+    "damage_sm": "1d4",
+    "damage_l": "1d3",
+    "speed_factor": 2,
+    "cost_gp": 2,
+    "description": "A short blade, easily concealed."
+  },
+  "mace": {
+    "name": "Mace",
+    "type": "weapon",
+    "weight": 8,
+    "damage_sm": "1d6",
+    "damage_l": "1d6",
+    "speed_factor": 7,
+    "cost_gp": 8,
+    "description": "A heavy bludgeon with a flanged head."
+  },
+  "staff": {
+    "name": "Staff",
+    "type": "weapon",
+    "weight": 4,
+    "damage_sm": "1d6",
+    "damage_l": "1d6",
+    "speed_factor": 4,
+    "cost_gp": 1,
+    "description": "A wooden quarterstaff."
+  },
+  "torch": {
+    "name": "Torch",
+    "type": "light_source",
+    "weight": 1,
+    "burn_time_turns": 6,
+    "light_radius": 30,
+    "cost_gp": 0.01,
+    "description": "A wooden stick wrapped in oil-soaked cloth. Burns for 1 hour."
+  },
+  "lantern": {
+    "name": "Lantern",
+    "type": "light_source",
+    "weight": 3,
+    "burn_time_turns": 24,
+    "light_radius": 30,
+    "cost_gp": 10,
+    "description": "An oil-burning lantern. Burns for 4 hours per flask of oil."
+  },
+  "rations": {
+    "name": "Rations (1 day)",
+    "type": "consumable",
+    "weight": 1,
+    "cost_gp": 0.5,
+    "description": "Preserved food for one day."
+  },
+  "rope_50ft": {
+    "name": "Rope (50 ft)",
+    "type": "equipment",
+    "weight": 5,
+    "cost_gp": 1,
+    "description": "Hemp rope, 50 feet long."
+  },
+  "leather_armor": {
+    "name": "Leather Armor",
+    "type": "armor",
+    "weight": 15,
+    "ac_bonus": 2,
+    "cost_gp": 5,
+    "description": "Soft leather armor. AC 8."
+  },
+  "chain_mail": {
+    "name": "Chain Mail",
+    "type": "armor",
+    "weight": 30,
+    "ac_bonus": 5,
+    "cost_gp": 75,
+    "description": "Interlocking metal rings. AC 5."
+  },
+  "plate_mail": {
+    "name": "Plate Mail",
+    "type": "armor",
+    "weight": 45,
+    "ac_bonus": 7,
+    "cost_gp": 400,
+    "description": "Full plate armor. AC 3."
+  },
+  "shield": {
+    "name": "Shield",
+    "type": "armor",
+    "weight": 10,
+    "ac_bonus": 1,
+    "cost_gp": 10,
+    "description": "Wooden shield with metal boss. -1 AC."
+  },
+  "potion_healing": {
+    "name": "Potion of Healing",
+    "type": "consumable",
+    "weight": 0.5,
+    "healing": "2d4+2",
+    "cost_gp": 200,
+    "description": "A red liquid that heals 2d4+2 hit points when drunk."
+  }
+}

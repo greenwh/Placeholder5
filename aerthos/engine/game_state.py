@@ -1,0 +1,505 @@
+"""
+Central game state manager - coordinates all game systems
+"""
+
+import json
+import random
+from typing import Dict, List, Optional
+from pathlib import Path
+
+from ..entities.player import PlayerCharacter, Item, Weapon, Armor, LightSource, Spell
+from ..entities.monster import Monster
+from ..world.dungeon import Dungeon
+from ..world.room import Room
+from ..world.encounter import EncounterManager, CombatEncounter, TrapEncounter, PuzzleEncounter
+from ..engine.combat import CombatResolver, DiceRoller
+from ..engine.time_tracker import TimeTracker, RestSystem
+from ..systems.magic import MagicSystem
+from ..systems.skills import SkillResolver
+from ..systems.saving_throws import SavingThrowResolver
+from ..engine.parser import Command
+
+
+class GameData:
+    """Holds all loaded game data"""
+
+    def __init__(self):
+        self.classes = {}
+        self.races = {}
+        self.monsters = {}
+        self.items = {}
+        self.spells = {}
+
+    @classmethod
+    def load_all(cls, data_dir: str = "aerthos/data") -> 'GameData':
+        """Load all JSON game data"""
+
+        data = cls()
+
+        # Load JSON files
+        with open(f"{data_dir}/classes.json") as f:
+            data.classes = json.load(f)
+
+        with open(f"{data_dir}/races.json") as f:
+            data.races = json.load(f)
+
+        with open(f"{data_dir}/monsters.json") as f:
+            data.monsters = json.load(f)
+
+        with open(f"{data_dir}/items.json") as f:
+            data.items = json.load(f)
+
+        with open(f"{data_dir}/spells.json") as f:
+            data.spells = json.load(f)
+
+        return data
+
+
+class GameState:
+    """Central game state manager"""
+
+    def __init__(self, player: PlayerCharacter, dungeon: Dungeon):
+        self.player = player
+        self.dungeon = dungeon
+        self.current_room = dungeon.get_start_room()
+        self.is_active = True
+
+        # Game systems
+        self.combat_resolver = CombatResolver()
+        self.time_tracker = TimeTracker()
+        self.rest_system = RestSystem()
+        self.magic_system = MagicSystem()
+        self.skill_resolver = SkillResolver()
+        self.save_resolver = SavingThrowResolver()
+        self.encounter_manager = EncounterManager()
+
+        # Combat state
+        self.active_monsters: List[Monster] = []
+        self.in_combat = False
+
+        # Game data
+        self.game_data: Optional[GameData] = None
+
+    def load_game_data(self, data_dir: str = "aerthos/data"):
+        """Load all game data"""
+        self.game_data = GameData.load_all(data_dir)
+
+    def execute_command(self, command: Command) -> Dict:
+        """
+        Execute a parsed command
+
+        Args:
+            command: Parsed command
+
+        Returns:
+            Dict with results and narrative
+        """
+
+        # Route to appropriate handler
+        handlers = {
+            'move': self._handle_move,
+            'attack': self._handle_attack,
+            'take': self._handle_take,
+            'drop': self._handle_drop,
+            'use': self._handle_use,
+            'equip': self._handle_equip,
+            'cast': self._handle_cast,
+            'search': self._handle_search,
+            'rest': self._handle_rest,
+            'inventory': self._handle_inventory,
+            'status': self._handle_status,
+            'map': self._handle_map,
+            'help': self._handle_help,
+            'save': self._handle_save,
+            'load': self._handle_load,
+            'quit': self._handle_quit
+        }
+
+        handler = handlers.get(command.action)
+        if handler:
+            return handler(command)
+        else:
+            return {'success': False, 'message': "I don't understand that command. Type 'help' for options."}
+
+    def _handle_move(self, command: Command) -> Dict:
+        """Handle movement"""
+
+        if self.in_combat:
+            return {'success': False, 'message': "You can't flee while in combat!"}
+
+        direction = command.target
+        if not direction:
+            return {'success': False, 'message': "Move where? (north, south, east, west, up, down)"}
+
+        new_room = self.dungeon.move(self.current_room.id, direction)
+
+        if not new_room:
+            return {'success': False, 'message': f"You can't go {direction} from here."}
+
+        # Move successful
+        self.current_room = new_room
+
+        # Advance time
+        time_messages = self.time_tracker.advance_turn(self.player)
+
+        # Get room description
+        room_desc = self.current_room.on_enter(self.player.has_light())
+
+        # Check for encounters
+        encounter_msg = self._check_encounters('on_enter')
+
+        messages = [room_desc]
+        if encounter_msg:
+            messages.append(encounter_msg)
+        messages.extend(time_messages)
+
+        return {'success': True, 'message': '\n\n'.join(messages)}
+
+    def _handle_attack(self, command: Command) -> Dict:
+        """Handle combat"""
+
+        if not self.active_monsters:
+            return {'success': False, 'message': "There's nothing to attack here."}
+
+        # Find target
+        target_name = command.target if command.target else None
+
+        target = None
+        if target_name:
+            for monster in self.active_monsters:
+                if target_name.lower() in monster.name.lower():
+                    target = monster
+                    break
+        else:
+            # Attack first living monster
+            target = next((m for m in self.active_monsters if m.is_alive), None)
+
+        if not target or not target.is_alive:
+            return {'success': False, 'message': f"There's no {target_name} to attack!"}
+
+        # Player attacks
+        weapon = self.player.equipment.weapon
+        result = self.combat_resolver.attack_roll(self.player, target, weapon)
+
+        messages = [result['narrative']]
+
+        # Check if target died
+        if result['defender_died']:
+            self.active_monsters.remove(target)
+            self.player.gain_xp(target.xp_value)
+            messages.append(f"You gain {target.xp_value} XP!")
+
+            # Check if combat over
+            if not any(m.is_alive for m in self.active_monsters):
+                self.in_combat = False
+                messages.append("\n═══ VICTORY ═══")
+                return {'success': True, 'message': '\n'.join(messages)}
+
+        # Monsters counter-attack
+        for monster in self.active_monsters:
+            if monster.is_alive:
+                monster_result = self.combat_resolver.attack_roll(monster, self.player)
+                messages.append(monster_result['narrative'])
+
+                if monster_result['defender_died']:
+                    messages.append("\n═══ YOU HAVE DIED ═══")
+                    self.is_active = False
+                    return {'success': False, 'message': '\n'.join(messages)}
+
+        return {'success': True, 'message': '\n'.join(messages)}
+
+    def _handle_take(self, command: Command) -> Dict:
+        """Handle taking items"""
+
+        if not command.target:
+            return {'success': False, 'message': "Take what?"}
+
+        item_name = command.target
+
+        # Check if item is in room
+        if not self.current_room.has_item(item_name):
+            return {'success': False, 'message': f"There's no {item_name} here."}
+
+        # Create item from game data
+        item = self._create_item_from_name(item_name)
+
+        if not item:
+            return {'success': False, 'message': f"Can't find {item_name} in item database."}
+
+        # Add to inventory
+        self.player.inventory.add_item(item)
+        self.current_room.remove_item(item_name)
+
+        return {'success': True, 'message': f"You take the {item.name}."}
+
+    def _handle_drop(self, command: Command) -> Dict:
+        """Handle dropping items"""
+
+        if not command.target:
+            return {'success': False, 'message': "Drop what?"}
+
+        item = self.player.inventory.remove_item(command.target)
+
+        if not item:
+            return {'success': False, 'message': f"You don't have {command.target}."}
+
+        self.current_room.add_item(item.name)
+        return {'success': True, 'message': f"You drop the {item.name}."}
+
+    def _handle_use(self, command: Command) -> Dict:
+        """Handle using items"""
+
+        if not command.target:
+            return {'success': False, 'message': "Use what?"}
+
+        item = self.player.inventory.get_item(command.target)
+
+        if not item:
+            return {'success': False, 'message': f"You don't have {command.target}."}
+
+        # Handle consumables
+        if item.item_type == 'consumable':
+            if 'healing' in item.properties:
+                healing = DiceRoller.roll(item.properties['healing'])
+                self.player.heal(healing)
+                self.player.inventory.remove_item(item.name)
+                return {'success': True, 'message': f"You drink the potion and heal {healing} HP!"}
+
+        return {'success': False, 'message': f"You can't use the {item.name} like that."}
+
+    def _handle_equip(self, command: Command) -> Dict:
+        """Handle equipping items"""
+
+        if not command.target:
+            return {'success': False, 'message': "Equip what?"}
+
+        item = self.player.inventory.get_item(command.target)
+
+        if not item:
+            return {'success': False, 'message': f"You don't have {command.target}."}
+
+        if isinstance(item, Weapon):
+            self.player.equip_weapon(item)
+            return {'success': True, 'message': f"You equip the {item.name}."}
+        elif isinstance(item, Armor):
+            self.player.equip_armor(item)
+            return {'success': True, 'message': f"You equip the {item.name}."}
+        elif isinstance(item, LightSource):
+            self.player.equip_light(item)
+            return {'success': True, 'message': f"You light the {item.name}."}
+        else:
+            return {'success': False, 'message': f"You can't equip the {item.name}."}
+
+    def _handle_cast(self, command: Command) -> Dict:
+        """Handle casting spells"""
+
+        if not command.target:
+            return {'success': False, 'message': "Cast what spell?"}
+
+        result = self.magic_system.cast_spell(self.player, command.target, self.active_monsters)
+        return {'success': result['success'], 'message': result['narrative']}
+
+    def _handle_search(self, command: Command) -> Dict:
+        """Handle searching"""
+
+        messages = []
+
+        # Check for traps
+        encounter_msg = self._check_encounters('on_search')
+        if encounter_msg:
+            messages.append(encounter_msg)
+
+        # List items in room
+        if self.current_room.items:
+            items_list = ', '.join(self.current_room.items)
+            messages.append(f"You find: {items_list}")
+        else:
+            messages.append("You don't find anything interesting.")
+
+        return {'success': True, 'message': '\n'.join(messages)}
+
+    def _handle_rest(self, command: Command) -> Dict:
+        """Handle resting"""
+
+        result = self.rest_system.attempt_rest(self.player, self.current_room.is_safe_for_rest)
+        return {'success': result['success'], 'message': result['narrative']}
+
+    def _handle_inventory(self, command: Command) -> Dict:
+        """Show inventory"""
+
+        if not self.player.inventory.items:
+            return {'success': True, 'message': "Your inventory is empty."}
+
+        items = '\n'.join(f"  - {item.name} ({item.weight} lbs)" for item in self.player.inventory.items)
+        weight = self.player.inventory.current_weight
+        max_weight = self.player.inventory.max_weight
+
+        msg = f"═══ INVENTORY ═══\n{items}\n\nTotal Weight: {weight}/{max_weight} lbs"
+
+        if self.player.inventory.is_encumbered:
+            msg += "\n⚠️  You are ENCUMBERED!"
+
+        return {'success': True, 'message': msg}
+
+    def _handle_status(self, command: Command) -> Dict:
+        """Show character status"""
+
+        from ..ui.character_sheet import CharacterSheet
+        sheet = CharacterSheet.format_character(self.player)
+        return {'success': True, 'message': sheet}
+
+    def _handle_map(self, command: Command) -> Dict:
+        """Show auto-map"""
+
+        from ..world.automap import AutoMap
+        automap = AutoMap()
+        map_str = automap.generate_map(self.current_room.id, self.dungeon)
+        return {'success': True, 'message': map_str}
+
+    def _handle_help(self, command: Command) -> Dict:
+        """Show help"""
+
+        from ..engine.parser import CommandParser
+        parser = CommandParser()
+        return {'success': True, 'message': parser.get_help_text()}
+
+    def _handle_save(self, command: Command) -> Dict:
+        """Save game"""
+
+        from ..ui.save_system import SaveSystem
+        save_system = SaveSystem()
+        save_system.save_game(self)
+        return {'success': True, 'message': "Game saved successfully!"}
+
+    def _handle_load(self, command: Command) -> Dict:
+        """Load game"""
+
+        return {'success': False, 'message': "Load not yet implemented. Please restart and load from main menu."}
+
+    def _handle_quit(self, command: Command) -> Dict:
+        """Quit game"""
+
+        self.is_active = False
+        return {'success': True, 'message': "Thanks for playing Aerthos!"}
+
+    def _check_encounters(self, trigger_type: str) -> Optional[str]:
+        """Check for and trigger encounters"""
+
+        # Load encounters from room
+        encounters = self.encounter_manager.load_room_encounters(
+            {'id': self.current_room.id, 'encounters': []}
+        )
+
+        # Get triggered encounters
+        triggered = self.encounter_manager.get_triggered_encounters(encounters, trigger_type)
+
+        for encounter in triggered:
+            if isinstance(encounter, CombatEncounter):
+                return self._start_combat(encounter)
+
+        return None
+
+    def _start_combat(self, encounter: CombatEncounter) -> str:
+        """Start a combat encounter"""
+
+        # Create monsters
+        self.active_monsters = []
+        for monster_id in encounter.monster_ids:
+            monster = self._create_monster_from_id(monster_id)
+            if monster:
+                self.active_monsters.append(monster)
+
+        self.in_combat = True
+
+        monster_names = ', '.join(m.name for m in self.active_monsters)
+        return f"\n═══ COMBAT ═══\nYou encounter: {monster_names}!\n"
+
+    def _create_monster_from_id(self, monster_id: str) -> Optional[Monster]:
+        """Create a monster instance from monster ID"""
+
+        if not self.game_data or monster_id not in self.game_data.monsters:
+            return None
+
+        data = self.game_data.monsters[monster_id]
+
+        # Roll HP
+        hp = DiceRoller.roll(data['hit_dice'])
+
+        monster = Monster(
+            name=data['name'],
+            race=monster_id,
+            char_class='Monster',
+            level=1,
+            hp_current=hp,
+            hp_max=hp,
+            ac=data['ac'],
+            thac0=data['thac0'],
+            size=data['size'],
+            hit_dice=data['hit_dice'],
+            damage=data['damage'],
+            treasure_type=data.get('treasure_type', 'None'),
+            xp_value=data['xp_value'],
+            movement=data['movement'],
+            morale=data['morale'],
+            special_abilities=data.get('special_abilities', []),
+            ai_behavior=data.get('ai_behavior', 'aggressive'),
+            description=data['description']
+        )
+
+        return monster
+
+    def _create_item_from_name(self, item_name: str) -> Optional[Item]:
+        """Create an item instance from name"""
+
+        if not self.game_data:
+            return None
+
+        # Find item in database
+        item_data = None
+        item_key = None
+
+        for key, data in self.game_data.items.items():
+            if data['name'].lower() == item_name.lower():
+                item_data = data
+                item_key = key
+                break
+
+        if not item_data:
+            return None
+
+        # Create appropriate item type
+        if item_data['type'] == 'weapon':
+            return Weapon(
+                name=item_data['name'],
+                weight=item_data['weight'],
+                damage_sm=item_data['damage_sm'],
+                damage_l=item_data['damage_l'],
+                speed_factor=item_data['speed_factor'],
+                properties={'cost_gp': item_data.get('cost_gp', 0)},
+                description=item_data.get('description', '')
+            )
+        elif item_data['type'] == 'armor':
+            return Armor(
+                name=item_data['name'],
+                weight=item_data['weight'],
+                ac_bonus=item_data['ac_bonus'],
+                properties={'cost_gp': item_data.get('cost_gp', 0)},
+                description=item_data.get('description', '')
+            )
+        elif item_data['type'] == 'light_source':
+            return LightSource(
+                name=item_data['name'],
+                weight=item_data['weight'],
+                burn_time_turns=item_data['burn_time_turns'],
+                light_radius=item_data['light_radius'],
+                properties={'cost_gp': item_data.get('cost_gp', 0)},
+                description=item_data.get('description', '')
+            )
+        else:
+            return Item(
+                name=item_data['name'],
+                item_type=item_data['type'],
+                weight=item_data['weight'],
+                properties=item_data,
+                description=item_data.get('description', '')
+            )

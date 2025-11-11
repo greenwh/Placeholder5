@@ -1,0 +1,88 @@
+{
+  "Fighter": {
+    "hit_die": "d10",
+    "thac0_base": 20,
+    "thac0_progression": -1,
+    "saves": {
+      "poison": 14,
+      "rod_staff_wand": 16,
+      "petrify_paralyze": 15,
+      "breath": 17,
+      "spell": 17
+    },
+    "prime_requisite": "STR",
+    "weapons": "all",
+    "armor": "all",
+    "description": "A warrior skilled in combat and the use of arms"
+  },
+  "Cleric": {
+    "hit_die": "d8",
+    "thac0_base": 20,
+    "thac0_progression": -0.67,
+    "saves": {
+      "poison": 10,
+      "rod_staff_wand": 14,
+      "petrify_paralyze": 13,
+      "breath": 16,
+      "spell": 15
+    },
+    "prime_requisite": "WIS",
+    "spell_slots_level_1": [1, 2, 2, 3, 3, 3, 4, 4, 4, 5],
+    "weapons": "blunt_only",
+    "armor": "all",
+    "description": "A holy warrior who channels divine power"
+  },
+  "Magic-User": {
+    "hit_die": "d4",
+    "thac0_base": 20,
+    "thac0_progression": -0.33,
+    "saves": {
+      "poison": 14,
+      "rod_staff_wand": 11,
+      "petrify_paralyze": 13,
+      "breath": 15,
+      "spell": 12
+    },
+    "prime_requisite": "INT",
+    "spell_slots_level_1": [1, 2, 2, 3, 4, 4, 4, 5, 5, 6],
+    "weapons": "dagger_staff_only",
+    "armor": "none",
+    "description": "A scholar of arcane magic"
+  },
+  "Thief": {
+    "hit_die": "d6",
+    "thac0_base": 20,
+    "thac0_progression": -0.5,
+    "saves": {
+      "poison": 13,
+      "rod_staff_wand": 14,
+      "petrify_paralyze": 12,
+      "breath": 16,
+      "spell": 15
+    },
+    "prime_requisite": "DEX",
+    "skills": {
+      "pick_pockets": 30,
+      "open_locks": 25,
+      "find_traps": 20,
+      "move_silently": 15,
+      "hide_in_shadows": 10,
+      "hear_noise": 10,
+      "climb_walls": 80,
+      "read_languages": 0
+    },
+    "skill_progression_per_level": {
+      "pick_pockets": 5,
+      "open_locks": 5,
+      "find_traps": 5,
+      "move_silently": 5,
+      "hide_in_shadows": 5,
+      "hear_noise": 5,
+      "climb_walls": 1,
+      "read_languages": 5
+    },
+    "weapons": "limited",
+    "armor": "leather_only",
+    "description": "A cunning rogue skilled in stealth and deception"
+  }
+}

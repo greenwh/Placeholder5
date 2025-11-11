@@ -1,0 +1,185 @@
+{
+  "name": "The Abandoned Mine",
+  "start_room": "room_001",
+  "rooms": {
+    "room_001": {
+      "id": "room_001",
+      "title": "Mine Entrance",
+      "description": "The entrance to an abandoned mine. Broken timbers frame the opening, and a musty smell wafts from within. Two passages lead deeper into the darkness: one heading north, another east.",
+      "light_level": "dim",
+      "exits": {
+        "north": "room_002",
+        "east": "room_003"
+      },
+      "encounters": [],
+      "items": ["torch"],
+      "safe_rest": false
+    },
+    "room_002": {
+      "id": "room_002",
+      "title": "Guard Post",
+      "description": "A small chamber with arrow slits in the walls. Old weapon racks line the walls, now empty. The smell of kobold dung is overpowering. Three kobolds guard this post, chattering nervously in their high-pitched voices.",
+      "light_level": "dark",
+      "exits": {
+        "south": "room_001",
+        "north": "room_004"
+      },
+      "encounters": [
+        {
+          "type": "combat",
+          "monsters": ["kobold", "kobold", "kobold"],
+          "trigger": "on_enter"
+        }
+      ],
+      "items": ["rope_50ft"],
+      "safe_rest": false
+    },
+    "room_003": {
+      "id": "room_003",
+      "title": "Collapsed Tunnel",
+      "description": "Rubble blocks the eastern passage. Giant rats have made nests in the debris, their eyes glinting red in the darkness. The only exit is back west.",
+      "light_level": "dark",
+      "exits": {
+        "west": "room_001"
+      },
+      "encounters": [
+        {
+          "type": "combat",
+          "monsters": ["giant_rat", "giant_rat"],
+          "trigger": "on_enter"
+        }
+      ],
+      "items": ["rations"],
+      "safe_rest": false
+    },
+    "room_004": {
+      "id": "room_004",
+      "title": "Storage Chamber",
+      "description": "Old crates and barrels line the walls. Most are empty or rotted, but some still contain supplies. Dust covers everything. A passage continues north, and you can faintly hear sounds from that direction.",
+      "light_level": "dark",
+      "exits": {
+        "south": "room_002",
+        "north": "room_005"
+      },
+      "encounters": [
+        {
+          "type": "trap",
+          "trap_type": "pit",
+          "damage": "1d6",
+          "detect_difficulty": 20,
+          "trigger": "on_search"
+        }
+      ],
+      "items": ["rations", "torch", "dagger"],
+      "safe_rest": true
+    },
+    "room_005": {
+      "id": "room_005",
+      "title": "Crossroads",
+      "description": "Three passages meet here. The walls are covered in crude goblin graffiti - crude drawings of violence and chaos. You hear guttural voices and laughter from the east.",
+      "light_level": "dark",
+      "exits": {
+        "south": "room_004",
+        "east": "room_006",
+        "north": "room_007"
+      },
+      "encounters": [],
+      "items": [],
+      "safe_rest": false
+    },
+    "room_006": {
+      "id": "room_006",
+      "title": "Goblin Den",
+      "description": "A reeking chamber filled with filth, bones, and refuse. Four goblins are gathered around a small fire, roasting something unidentifiable. They notice you immediately and grab their weapons with malicious grins!",
+      "light_level": "dim",
+      "exits": {
+        "west": "room_005"
+      },
+      "encounters": [
+        {
+          "type": "combat",
+          "monsters": ["goblin", "goblin", "goblin", "goblin"],
+          "trigger": "on_enter"
+        }
+      ],
+      "items": ["longsword", "shield"],
+      "safe_rest": false
+    },
+    "room_007": {
+      "id": "room_007",
+      "title": "Old Shrine",
+      "description": "A forgotten shrine to some mining deity. The altar is cracked but still intact, with faded carvings of picks and hammers. The air feels strangely peaceful here, as if the divine presence still lingers.",
+      "light_level": "dark",
+      "exits": {
+        "south": "room_005",
+        "north": "room_008"
+      },
+      "encounters": [],
+      "items": [],
+      "safe_rest": true
+    },
+    "room_008": {
+      "id": "room_008",
+      "title": "Burial Chamber",
+      "description": "Ancient miners were laid to rest here, their bodies placed in alcoves carved into the walls. Now their bones have risen as skeletons, animated by dark magic. They turn their empty eye sockets toward you and advance, weapons raised!",
+      "light_level": "dark",
+      "exits": {
+        "south": "room_007",
+        "east": "room_009"
+      },
+      "encounters": [
+        {
+          "type": "combat",
+          "monsters": ["skeleton", "skeleton"],
+          "trigger": "on_enter"
+        }
+      ],
+      "items": ["mace"],
+      "safe_rest": false
+    },
+    "room_009": {
+      "id": "room_009",
+      "title": "Mine Foreman's Office",
+      "description": "A small office with a desk and chairs. Papers are scattered about, illegible after years of decay. A locked iron chest sits in the corner, promising treasure to those with the skill to open it.",
+      "light_level": "dark",
+      "exits": {
+        "west": "room_008",
+        "north": "room_010"
+      },
+      "encounters": [
+        {
+          "type": "puzzle",
+          "puzzle_type": "locked_chest",
+          "difficulty": 30,
+          "reward": "treasure_chest_1"
+        }
+      ],
+      "items": ["lantern"],
+      "safe_rest": true
+    },
+    "room_010": {
+      "id": "room_010",
+      "title": "The Deep Shaft",
+      "description": "A massive vertical shaft plunges into darkness below. At the edge, an enormous OGRE guards a pile of glittering treasure! The beast is nine feet tall, with muscles like iron. This is the master of the mine, and it does not look pleased to see you!",
+      "light_level": "dim",
+      "exits": {
+        "south": "room_009"
+      },
+      "encounters": [
+        {
+          "type": "combat",
+          "monsters": ["ogre"],
+          "trigger": "on_enter",
+          "boss": true
+        }
+      ],
+      "items": [],
+      "safe_rest": false,
+      "treasure": {
+        "gold": 250,
+        "gems": 3,
+        "magic_items": ["potion_healing"]
+      }
+    }
+  }
+}
