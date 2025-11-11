@@ -50,7 +50,7 @@ class TimeTracker:
 
     def _consume_light(self, player: PlayerCharacter) -> Optional[str]:
         """
-        Decrease active light source duration
+        Decrease active light source duration and auto-equip new light sources
 
         Args:
             player: The player character
@@ -65,14 +65,36 @@ class TimeTracker:
             light_source.turns_remaining -= 1
 
             if light_source.turns_remaining <= 0:
-                # Light goes out
+                # Light goes out - try to auto-equip a new one
                 player.equipment.light_source = None
-                return "⚠️  Your light source sputters and dies! You are in darkness."
+
+                # Look for another light source in inventory
+                new_light = self._find_light_source(player)
+                if new_light:
+                    player.equip_light(new_light)
+                    return f"⚠️  Your {light_source.name} burns out! Automatically lighting a new {new_light.name}."
+                else:
+                    return "⚠️  Your light source sputters and dies! You are in darkness. (No spare light sources!)"
             elif light_source.turns_remaining == 1:
                 return "⚠️  Your light source is almost exhausted!"
             elif light_source.turns_remaining == 3:
                 return "⚠️  Your light source is burning low."
 
+        return None
+
+    def _find_light_source(self, player: PlayerCharacter) -> Optional[LightSource]:
+        """
+        Find an available light source in inventory
+
+        Args:
+            player: The player character
+
+        Returns:
+            LightSource if found, None otherwise
+        """
+        for item in player.inventory.items:
+            if isinstance(item, LightSource) and item != player.equipment.light_source:
+                return item
         return None
 
     def _check_hunger(self, player: PlayerCharacter) -> Optional[str]:
@@ -160,9 +182,10 @@ class RestSystem:
         if 'exhausted' in player.conditions:
             player.remove_condition('exhausted')
 
-        narrative = f"You rest for 8 hours.\n"
+        narrative = f"You rest for 8 hours and eat your rations.\n"
         narrative += f"HP restored: {hp_recovered}\n"
-        narrative += f"Spells memorized and ready.\n"
+        if player.spells_memorized:
+            narrative += f"Spells memorized and ready.\n"
         narrative += f"You feel refreshed and ready to continue."
 
         return {

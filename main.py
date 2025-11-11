@@ -74,7 +74,7 @@ def main():
     print("═" * 70)
     print()
 
-    room_desc = game_state.current_room.on_enter(player.has_light())
+    room_desc = game_state.current_room.on_enter(player.has_light(), player)
     display.show_message(room_desc)
 
     print("Type 'help' for a list of commands.")

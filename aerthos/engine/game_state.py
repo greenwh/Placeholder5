@@ -143,7 +143,7 @@ class GameState:
         time_messages = self.time_tracker.advance_turn(self.player)
 
         # Get room description
-        room_desc = self.current_room.on_enter(self.player.has_light())
+        room_desc = self.current_room.on_enter(self.player.has_light(), self.player)
 
         # Check for encounters
         encounter_msg = self._check_encounters('on_enter')
@@ -340,16 +340,38 @@ class GameState:
         return {'success': result['success'], 'message': result['narrative']}
 
     def _handle_inventory(self, command: Command) -> Dict:
-        """Show inventory"""
+        """Show inventory with equipped items marked"""
 
         if not self.player.inventory.items:
             return {'success': True, 'message': "Your inventory is empty."}
 
-        items = '\n'.join(f"  - {item.name} ({item.weight} lbs)" for item in self.player.inventory.items)
+        # Get equipped items for comparison
+        equipped_weapon = self.player.equipment.weapon
+        equipped_armor = self.player.equipment.armor
+        equipped_shield = self.player.equipment.shield
+        equipped_light = self.player.equipment.light_source
+
+        # Build item list with equipped markers
+        item_lines = []
+        for item in self.player.inventory.items:
+            marker = ""
+            if equipped_weapon and item.name == equipped_weapon.name and id(item) == id(equipped_weapon):
+                marker = " [EQUIPPED - WEAPON]"
+            elif equipped_armor and item.name == equipped_armor.name and id(item) == id(equipped_armor):
+                marker = " [EQUIPPED - ARMOR]"
+            elif equipped_shield and item.name == equipped_shield.name and id(item) == id(equipped_shield):
+                marker = " [EQUIPPED - SHIELD]"
+            elif equipped_light and item.name == equipped_light.name and id(item) == id(equipped_light):
+                turns_left = equipped_light.turns_remaining
+                marker = f" [EQUIPPED - LIGHT: {turns_left} turns left]"
+
+            item_lines.append(f"  - {item.name} ({item.weight} lbs){marker}")
+
+        items_text = '\n'.join(item_lines)
         weight = self.player.inventory.current_weight
         max_weight = self.player.inventory.max_weight
 
-        msg = f"═══ INVENTORY ═══\n{items}\n\nTotal Weight: {weight}/{max_weight} lbs"
+        msg = f"═══ INVENTORY ═══\n{items_text}\n\nTotal Weight: {weight}/{max_weight} lbs"
 
         if self.player.inventory.is_encumbered:
             msg += "\n⚠️  You are ENCUMBERED!"

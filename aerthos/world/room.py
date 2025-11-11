@@ -22,12 +22,13 @@ class Room:
     # Encounter tracking
     encounters_completed: List[str] = field(default_factory=list)
 
-    def on_enter(self, has_light: bool) -> str:
+    def on_enter(self, has_light: bool, player=None) -> str:
         """
         Called when player enters room
 
         Args:
             has_light: Whether player has a light source
+            player: Optional player reference for checking inventory
 
         Returns:
             Description text
@@ -37,14 +38,23 @@ class Room:
 
         # Check if player needs light
         if self.light_level == 'dark' and not has_light:
-            return self._describe_darkness()
+            return self._describe_darkness(player)
 
         return self._get_full_description()
 
-    def _describe_darkness(self) -> str:
+    def _describe_darkness(self, player=None) -> str:
         """Return description for dark room without light"""
 
-        return f"**{self.title}**\n\nIt is pitch black. You cannot see anything. You need a light source!"
+        msg = f"**{self.title}**\n\nIt is pitch black. You cannot see anything. You need a light source!"
+
+        # Check if player has unlit torches/lanterns
+        if player:
+            from ..entities.player import LightSource
+            has_light_items = any(isinstance(item, LightSource) for item in player.inventory.items)
+            if has_light_items:
+                msg += "\n\n💡 Hint: Type 'equip torch' to light a torch from your inventory."
+
+        return msg
 
     def _get_full_description(self) -> str:
         """Get the full room description"""
