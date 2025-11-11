@@ -84,8 +84,32 @@ class Room:
         return False
 
     def has_item(self, item_name: str) -> bool:
-        """Check if room contains an item"""
+        """Check if room contains an item (exact match)"""
         return any(item.lower() == item_name.lower() for item in self.items)
+
+    def find_item(self, search_term: str) -> Optional[str]:
+        """
+        Find an item by partial match
+
+        Args:
+            search_term: Partial item name to search for
+
+        Returns:
+            Full item name if found, None otherwise
+        """
+        search_lower = search_term.lower()
+
+        # First try exact match
+        for item in self.items:
+            if item.lower() == search_lower:
+                return item
+
+        # Then try partial match (search term is in item name)
+        for item in self.items:
+            if search_lower in item.lower().replace('_', ' '):
+                return item
+
+        return None
 
     def mark_encounter_completed(self, encounter_id: str):
         """Mark an encounter as completed"""

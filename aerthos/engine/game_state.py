@@ -214,11 +214,13 @@ class GameState:
         if not command.target:
             return {'success': False, 'message': "Take what?"}
 
-        item_name = command.target
+        search_term = command.target
 
-        # Check if item is in room
-        if not self.current_room.has_item(item_name):
-            return {'success': False, 'message': f"There's no {item_name} here."}
+        # Find item in room using flexible matching
+        item_name = self.current_room.find_item(search_term)
+
+        if not item_name:
+            return {'success': False, 'message': f"There's no {search_term} here."}
 
         # Create item from game data
         item = self._create_item_from_name(item_name)
@@ -458,11 +460,25 @@ class GameState:
         item_data = None
         item_key = None
 
-        for key, data in self.game_data.items.items():
-            if data['name'].lower() == item_name.lower():
-                item_data = data
-                item_key = key
-                break
+        search_lower = item_name.lower().replace('_', ' ')
+
+        # Try exact match on key first
+        if item_name in self.game_data.items:
+            item_data = self.game_data.items[item_name]
+            item_key = item_name
+        else:
+            # Try matching on display name or key with flexible matching
+            for key, data in self.game_data.items.items():
+                key_normalized = key.lower().replace('_', ' ')
+                name_normalized = data['name'].lower()
+
+                if (key_normalized == search_lower or
+                    name_normalized == search_lower or
+                    search_lower in key_normalized or
+                    search_lower in name_normalized):
+                    item_data = data
+                    item_key = key
+                    break
 
         if not item_data:
             return None
