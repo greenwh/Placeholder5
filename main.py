@@ -77,7 +77,7 @@ def load_saved_game(game_data: GameData) -> tuple:
         input("Press Enter to return to main menu...")
         return None, None
 
-    print("\n═" * 70)
+    print("\n" + "═" * 70)
     print("SAVED GAMES")
     print("═" * 70)
     print()
