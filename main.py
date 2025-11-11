@@ -84,6 +84,8 @@ def load_saved_game(game_data: GameData) -> tuple:
 
     for save in saves:
         print(f"Slot {save['slot']}: {save['character_name']} - Level {save['level']} {save['class']}")
+        if save.get('description'):
+            print(f"  Description: {save['description']}")
         print(f"  Saved: {save['timestamp']}")
         print()
 
