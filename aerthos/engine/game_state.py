@@ -76,6 +76,7 @@ class GameState:
         # Combat state
         self.active_monsters: List[Monster] = []
         self.in_combat = False
+        self.current_encounter: Optional[CombatEncounter] = None
 
         # Game data
         self.game_data: Optional[GameData] = None
@@ -195,6 +196,14 @@ class GameState:
             if not any(m.is_alive for m in self.active_monsters):
                 self.in_combat = False
                 messages.append("\n═══ VICTORY ═══")
+
+                # Award boss treasure if this was a boss encounter
+                if self.current_encounter and self.current_encounter.is_boss:
+                    treasure_msg = self._award_boss_treasure()
+                    if treasure_msg:
+                        messages.append(treasure_msg)
+
+                self.current_encounter = None  # Clear current encounter
                 return {'success': True, 'message': '\n'.join(messages)}
 
         # Monsters counter-attack
@@ -513,6 +522,8 @@ class GameState:
             print("Existing saves:")
             for save in saves:
                 print(f"  Slot {save['slot']}: {save['character_name']} - Level {save['level']} {save['class']}")
+                if save.get('description'):
+                    print(f"    Description: {save['description']}")
                 print(f"    Saved: {save['timestamp']}")
             print()
 
@@ -537,7 +548,11 @@ class GameState:
                         if confirm not in ['y', 'yes']:
                             continue
 
-                    save_system.save_game(self, slot)
+                    # Prompt for optional description
+                    print()
+                    description = input("Save description (optional, press Enter to skip): ").strip()
+
+                    save_system.save_game(self, slot, description)
                     return {'success': True, 'message': f"Game saved to slot {slot}!"}
                 else:
                     print("Invalid slot. Please choose 1, 2, or 3.")
@@ -594,9 +609,49 @@ class GameState:
                 self.active_monsters.append(monster)
 
         self.in_combat = True
+        self.current_encounter = encounter  # Track current encounter
 
         monster_names = ', '.join(m.name for m in self.active_monsters)
         return f"\n═══ COMBAT ═══\nYou encounter: {monster_names}!\n"
+
+    def _award_boss_treasure(self) -> Optional[str]:
+        """Award treasure for defeating a boss"""
+
+        # Get treasure data from current room
+        if not self.dungeon.room_data or self.current_room.id not in self.dungeon.room_data:
+            return None
+
+        room_data = self.dungeon.room_data[self.current_room.id]
+        treasure = room_data.get('treasure')
+
+        if not treasure:
+            return None
+
+        messages = []
+        messages.append("\n💰 The boss's treasure hoard is yours!")
+
+        # Award gold
+        gold = treasure.get('gold', 0)
+        if gold > 0:
+            self.player.gold += gold
+            messages.append(f"   Gold: {gold} gp")
+
+        # Award gems (convert to gold value, 10gp each on average)
+        gems = treasure.get('gems', 0)
+        if gems > 0:
+            gem_value = gems * DiceRoller.roll('2d10')  # Random gem value
+            self.player.gold += gem_value
+            messages.append(f"   Gems: {gems} gems worth {gem_value} gp")
+
+        # Award magic items (add to room items so player can pick them up)
+        magic_items = treasure.get('magic_items', [])
+        if magic_items:
+            messages.append(f"   Magic Items: {', '.join(magic_items)}")
+            for item_id in magic_items:
+                # Add to room items
+                self.current_room.add_item(item_id)
+
+        return '\n'.join(messages)
 
     def _create_monster_from_id(self, monster_id: str) -> Optional[Monster]:
         """Create a monster instance from monster ID"""

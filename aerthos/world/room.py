@@ -59,7 +59,10 @@ class Room:
     def _get_full_description(self) -> str:
         """Get the full room description"""
 
-        desc = f"**{self.title}**\n\n{self.description}"
+        # Modify description if combat encounters are completed
+        description = self._get_modified_description()
+
+        desc = f"**{self.title}**\n\n{description}"
 
         # Add exits
         if self.exits:
@@ -72,6 +75,49 @@ class Room:
             desc += f"\n\nYou see: {item_list}"
 
         return desc
+
+    def _get_modified_description(self) -> str:
+        """Get room description modified for completed encounters"""
+
+        # If there are completed encounters, modify description to reflect defeated monsters
+        if not self.encounters_completed:
+            return self.description
+
+        # Check if any completed encounters look like combat encounters
+        has_completed_combat = any('encounter' in enc_id for enc_id in self.encounters_completed)
+
+        if not has_completed_combat:
+            return self.description
+
+        # Modify description to show defeated monsters instead of threatening ones
+        modified = self.description
+
+        # Common replacements for defeated monsters
+        replacements = {
+            # Monster activity -> defeated state
+            'guards a pile': 'once guarded a pile',
+            'guards the': 'once guarded the',
+            'turn their empty eye sockets toward you and advance': 'lie scattered about, their bones still',
+            'weapons raised': 'weapons scattered nearby',
+            'does not look pleased to see you': 'lies dead on the ground',
+            'advance': 'lie defeated',
+            'charges': 'lies dead',
+            'attacks': 'lies dead',
+
+            # Specific boss/monster descriptions
+            'an enormous OGRE guards': 'the corpse of a massive OGRE lies beside',
+            'The beast is nine feet tall, with muscles like iron. This is the master of the mine, and it does not look pleased to see you!': 'The defeated beast lies in a pool of its own blood.',
+
+            # Skeleton descriptions
+            'They turn their empty eye sockets toward you and advance, weapons raised!': 'The shattered remains of skeletons lie scattered across the floor, their dark magic broken.',
+        }
+
+        # Apply replacements
+        for old, new in replacements.items():
+            if old in modified:
+                modified = modified.replace(old, new)
+
+        return modified
 
     def has_exit(self, direction: str) -> bool:
         """Check if room has an exit in the given direction"""
