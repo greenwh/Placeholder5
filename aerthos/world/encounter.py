@@ -93,6 +93,7 @@ class EncounterManager:
             if enc_type == 'combat':
                 encounter = CombatEncounter(
                     encounter_id=encounter_id,
+                    encounter_type='combat',  # Required by parent class
                     monster_ids=enc_data.get('monsters', []),
                     is_boss=enc_data.get('boss', False),
                     trigger=enc_data.get('trigger', 'on_enter')
@@ -100,6 +101,7 @@ class EncounterManager:
             elif enc_type == 'trap':
                 encounter = TrapEncounter(
                     encounter_id=encounter_id,
+                    encounter_type='trap',  # Required by parent class
                     trap_type=enc_data.get('trap_type', 'pit'),
                     damage=enc_data.get('damage', '1d6'),
                     detect_difficulty=enc_data.get('detect_difficulty', 20),
@@ -108,6 +110,7 @@ class EncounterManager:
             elif enc_type == 'puzzle':
                 encounter = PuzzleEncounter(
                     encounter_id=encounter_id,
+                    encounter_type='puzzle',  # Required by parent class
                     puzzle_type=enc_data.get('puzzle_type', 'locked_chest'),
                     difficulty=enc_data.get('difficulty', 30),
                     reward=enc_data.get('reward'),
