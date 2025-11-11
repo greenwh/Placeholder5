@@ -318,7 +318,7 @@ class PlayerCharacter(Character):
         hp_gain = DiceRoller.roll(hit_die)
 
         # Add CON bonus
-        con_bonus = self.get_hp_bonus()
+        con_bonus = self.get_hp_bonus_per_level()
         if con_bonus > 0:
             hp_gain += con_bonus
         elif con_bonus < 0:
