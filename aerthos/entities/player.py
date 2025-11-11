@@ -265,22 +265,45 @@ class PlayerCharacter(Character):
         return False
 
     def has_spell_memorized(self, spell_name: str) -> bool:
-        """Check if a spell is memorized and available"""
+        """Check if a spell is memorized and available (supports partial matching)"""
+        search_lower = spell_name.lower()
+
+        # First try exact match
         for slot in self.spells_memorized:
             if (slot.spell and
-                slot.spell.name.lower() == spell_name.lower() and
+                slot.spell.name.lower() == search_lower and
                 not slot.is_used):
                 return True
+
+        # Then try partial match (search term is in spell name)
+        for slot in self.spells_memorized:
+            if (slot.spell and
+                search_lower in slot.spell.name.lower() and
+                not slot.is_used):
+                return True
+
         return False
 
     def use_spell_slot(self, spell_name: str) -> Optional[Spell]:
-        """Use a spell slot, returns the spell if successful"""
+        """Use a spell slot, returns the spell if successful (supports partial matching)"""
+        search_lower = spell_name.lower()
+
+        # First try exact match
         for slot in self.spells_memorized:
             if (slot.spell and
-                slot.spell.name.lower() == spell_name.lower() and
+                slot.spell.name.lower() == search_lower and
                 not slot.is_used):
                 slot.is_used = True
                 return slot.spell
+
+        # Then try partial match (search term is in spell name)
+        for slot in self.spells_memorized:
+            if (slot.spell and
+                search_lower in slot.spell.name.lower() and
+                not slot.is_used):
+                slot.is_used = True
+                return slot.spell
+
         return None
 
     def restore_spells(self):
