@@ -20,17 +20,19 @@ class SaveSystem:
         # Create save directory if it doesn't exist
         self.save_dir.mkdir(parents=True, exist_ok=True)
 
-    def save_game(self, game_state, slot: int = 1):
+    def save_game(self, game_state, slot: int = 1, description: str = ""):
         """
         Save game to a slot
 
         Args:
             game_state: GameState instance
             slot: Save slot number (1-3)
+            description: Optional description for this save
         """
 
         save_data = {
             'timestamp': datetime.now().isoformat(),
+            'description': description,
             'player': self._serialize_player(game_state.player),
             'current_room_id': game_state.current_room.id,
             'dungeon_name': game_state.dungeon.name,
@@ -85,7 +87,8 @@ class SaveSystem:
                     'character_name': data['player']['name'],
                     'level': data['player']['level'],
                     'class': data['player']['char_class'],
-                    'timestamp': data['timestamp']
+                    'timestamp': data['timestamp'],
+                    'description': data.get('description', '')
                 })
 
         return saves
