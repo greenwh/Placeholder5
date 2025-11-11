@@ -500,8 +500,51 @@ class GameState:
 
         from ..ui.save_system import SaveSystem
         save_system = SaveSystem()
-        save_system.save_game(self)
-        return {'success': True, 'message': "Game saved successfully!"}
+
+        # Show existing saves
+        saves = save_system.list_saves()
+
+        print("\n" + "═" * 70)
+        print("SAVE GAME")
+        print("═" * 70)
+        print()
+
+        if saves:
+            print("Existing saves:")
+            for save in saves:
+                print(f"  Slot {save['slot']}: {save['character_name']} - Level {save['level']} {save['class']}")
+                print(f"    Saved: {save['timestamp']}")
+            print()
+
+        print("Available slots: 1, 2, 3")
+        print("0. Cancel")
+        print()
+
+        while True:
+            try:
+                choice = input("Choose save slot (0-3): ").strip()
+
+                if choice == '0':
+                    return {'success': False, 'message': "Save cancelled."}
+
+                slot = int(choice)
+                if 1 <= slot <= 3:
+                    # Check if slot has existing save
+                    slot_occupied = any(s['slot'] == slot for s in saves)
+
+                    if slot_occupied:
+                        confirm = input(f"Slot {slot} already has a save. Overwrite? (y/n): ").strip().lower()
+                        if confirm not in ['y', 'yes']:
+                            continue
+
+                    save_system.save_game(self, slot)
+                    return {'success': True, 'message': f"Game saved to slot {slot}!"}
+                else:
+                    print("Invalid slot. Please choose 1, 2, or 3.")
+            except ValueError:
+                print("Please enter a valid number.")
+            except KeyboardInterrupt:
+                return {'success': False, 'message': "\nSave cancelled."}
 
     def _handle_load(self, command: Command) -> Dict:
         """Load game"""
