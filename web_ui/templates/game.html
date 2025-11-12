@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AERTHOS - AD&D Text Adventure</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #000;
+            color: #0f0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-container {
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            grid-template-rows: 60px 1fr 100px;
+            height: 100vh;
+            gap: 2px;
+            background-color: #333;
+        }
+
+        /* Header */
+        .header {
+            grid-column: 1 / -1;
+            background-color: #001a00;
+            padding: 10px 20px;
+            border: 2px solid #0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0f0;
+        }
+
+        .time-display {
+            font-size: 14px;
+        }
+
+        /* Left Panel - Party */
+        .party-panel {
+            background-color: #001a00;
+            border: 2px solid #0f0;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        .party-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+            border-bottom: 1px solid #0f0;
+            padding-bottom: 5px;
+        }
+
+        .party-member {
+            margin-bottom: 15px;
+            padding: 8px;
+            border: 1px solid #0a0;
+            background-color: #002200;
+        }
+
+        .party-member.dead {
+            color: #f00;
+            border-color: #f00;
+        }
+
+        .member-name {
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .member-stats {
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .hp-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #333;
+            margin: 5px 0;
+            border: 1px solid #0f0;
+        }
+
+        .hp-fill {
+            height: 100%;
+            background-color: #0f0;
+            transition: width 0.3s;
+        }
+
+        .hp-fill.low {
+            background-color: #ff0;
+        }
+
+        .hp-fill.critical {
+            background-color: #f00;
+        }
+
+        /* Center Panel - Main Display */
+        .main-display {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .map-view {
+            background-color: #001a00;
+            border: 2px solid #0f0;
+            padding: 10px;
+            height: 250px;
+            overflow: auto;
+        }
+
+        .map-canvas {
+            font-size: 12px;
+            line-height: 1.2;
+            white-space: pre;
+        }
+
+        .text-output {
+            background-color: #001a00;
+            border: 2px solid #0f0;
+            padding: 15px;
+            flex: 1;
+            overflow-y: auto;
+            line-height: 1.6;
+        }
+
+        .room-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ff0;
+            margin-bottom: 10px;
+        }
+
+        .room-description {
+            margin-bottom: 15px;
+        }
+
+        .game-message {
+            margin-top: 10px;
+            padding: 5px 0;
+            border-top: 1px solid #0a0;
+        }
+
+        /* Right Panel - Stats & Inventory */
+        .stats-panel {
+            background-color: #001a00;
+            border: 2px solid #0f0;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        .panel-section {
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            border-bottom: 1px solid #0f0;
+            padding-bottom: 3px;
+        }
+
+        .section-content {
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .exit {
+            color: #ff0;
+        }
+
+        /* Command Input */
+        .command-input {
+            grid-column: 1 / -1;
+            background-color: #001a00;
+            border: 2px solid #0f0;
+            padding: 15px;
+        }
+
+        .input-label {
+            margin-bottom: 5px;
+        }
+
+        .command-box {
+            width: 100%;
+            background-color: #000;
+            color: #0f0;
+            border: 1px solid #0f0;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        .command-box:focus {
+            outline: none;
+            border-color: #ff0;
+        }
+
+        .button {
+            background-color: #0a0;
+            color: #000;
+            border: 2px solid #0f0;
+            padding: 8px 20px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .button:hover {
+            background-color: #0f0;
+        }
+
+        .button:active {
+            background-color: #050;
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #001a00;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #0a0;
+            border: 1px solid #0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="title">AERTHOS - AD&D 1e Adventure</div>
+            <div class="time-display">
+                <span id="time-info">Turn: 0 | Time: 0:00</span>
+            </div>
+        </div>
+
+        <!-- Left: Party Panel -->
+        <div class="party-panel">
+            <div class="party-title">PARTY ROSTER</div>
+            <div id="party-roster">
+                <div class="party-member">
+                    <div class="member-name">Starting new game...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Center: Map + Text Output -->
+        <div class="main-display">
+            <div class="map-view">
+                <div class="section-title">MAP</div>
+                <div class="map-canvas" id="map-canvas">
+                    [Map will appear here]
+                </div>
+            </div>
+            <div class="text-output" id="text-output">
+                <div class="room-title">Welcome to AERTHOS</div>
+                <div class="room-description">
+                    A faithful recreation of AD&D 1st Edition in web form.
+                    <br><br>
+                    Click "New Game" to begin your adventure!
+                    <br><br>
+                    <strong>Commands:</strong><br>
+                    - Movement: north, south, east, west (or n, s, e, w)<br>
+                    - Combat: attack [monster]<br>
+                    - Actions: take [item], search, rest<br>
+                    - Info: status, inventory, map, help
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Stats & Info Panel -->
+        <div class="stats-panel">
+            <div class="panel-section">
+                <div class="section-title">CURRENT ROOM</div>
+                <div class="section-content" id="room-info">
+                    <div>No active game</div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">EXITS</div>
+                <div class="section-content" id="exits-info">
+                    <div>---</div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">STATUS</div>
+                <div class="section-content" id="status-info">
+                    <div>Ready to start</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Command Input -->
+        <div class="command-input">
+            <div class="input-label">&gt; Enter Command:</div>
+            <div style="display: flex;">
+                <input type="text" id="command-box" class="command-box" placeholder="Type command here..." onkeypress="handleKeyPress(event)">
+                <button class="button" onclick="newGame()">New Game</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let sessionId = 'session_' + Date.now();
+        let gameActive = false;
+
+        function newGame() {
+            fetch('/api/new_game', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({session_id: sessionId})
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    gameActive = true;
+                    updateDisplay(data.state, data.message);
+                } else {
+                    alert('Error starting game: ' + data.error);
+                }
+            });
+        }
+
+        function sendCommand(command) {
+            if (!gameActive) {
+                appendMessage("Start a new game first!");
+                return;
+            }
+
+            fetch('/api/command', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({session_id: sessionId, command: command})
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    updateDisplay(data.state, data.message);
+                } else {
+                    appendMessage('Error: ' + data.error);
+                }
+            });
+        }
+
+        function updateDisplay(state, message) {
+            // Update room info
+            document.getElementById('text-output').innerHTML = `
+                <div class="room-title">${state.room.title}</div>
+                <div class="room-description">${state.room.description}</div>
+                ${message ? '<div class="game-message">' + message.replace(/\n/g, '<br>') + '</div>' : ''}
+            `;
+
+            // Update party roster
+            let partyHTML = '';
+            state.party.forEach(member => {
+                let hpPercent = (member.hp / member.hp_max) * 100;
+                let hpClass = hpPercent > 50 ? '' : (hpPercent > 25 ? 'low' : 'critical');
+                let deadClass = member.is_alive ? '' : 'dead';
+
+                partyHTML += `
+                    <div class="party-member ${deadClass}">
+                        <div class="member-name">${member.name} [${member.formation.toUpperCase()}]</div>
+                        <div class="member-stats">
+                            ${member.race} ${member.class} (Lvl ${member.level})<br>
+                            HP: ${member.hp}/${member.hp_max}<br>
+                            AC: ${member.ac} | THAC0: ${member.thac0}<br>
+                            Gold: ${member.gold} gp
+                        </div>
+                        <div class="hp-bar"><div class="hp-fill ${hpClass}" style="width: ${hpPercent}%"></div></div>
+                    </div>
+                `;
+            });
+            document.getElementById('party-roster').innerHTML = partyHTML;
+
+            // Update room info panel
+            document.getElementById('room-info').innerHTML = `
+                <div>${state.room.title}</div>
+                <div style="font-size: 11px; margin-top: 3px;">${state.room.id}</div>
+            `;
+
+            // Update exits
+            let exitsHTML = '';
+            for (let dir in state.room.exits) {
+                exitsHTML += `<div class="exit">${dir}: ${state.room.exits[dir]}</div>`;
+            }
+            document.getElementById('exits-info').innerHTML = exitsHTML || '<div>No exits</div>';
+
+            // Update status
+            let statusHTML = state.in_combat ? '<div style="color: #f00;">IN COMBAT!</div>' : '<div>Exploring</div>';
+            document.getElementById('status-info').innerHTML = statusHTML;
+
+            // Update time
+            document.getElementById('time-info').innerHTML = `Turn: ${state.time.turns} | Time: ${state.time.hours}:00`;
+
+            // Update map (simple text representation)
+            let mapHTML = '';
+            state.map.explored_rooms.forEach(room => {
+                let marker = room.is_current ? '[@]' : '[ ]';
+                mapHTML += `${marker} ${room.id}: ${room.title}\n`;
+            });
+            document.getElementById('map-canvas').textContent = mapHTML || '[No map data]';
+        }
+
+        function appendMessage(msg) {
+            document.getElementById('text-output').innerHTML += '<div class="game-message">' + msg + '</div>';
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                let input = document.getElementById('command-box');
+                let command = input.value.trim();
+                if (command) {
+                    sendCommand(command);
+                    input.value = '';
+                }
+            }
+        }
+
+        // Focus input on load
+        window.onload = function() {
+            document.getElementById('command-box').focus();
+        };
+    </script>
+</body>
+</html>

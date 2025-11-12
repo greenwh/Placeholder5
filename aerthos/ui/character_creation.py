@@ -371,3 +371,107 @@ class CharacterCreator:
                     )
                     player.spells_known.append(spell)
                     print(f"  - {spell.name}")
+
+    def quick_create(self, name: str, race: str, char_class: str) -> PlayerCharacter:
+        """
+        Quick character creation for demos/testing
+
+        Args:
+            name: Character name
+            race: Race (Human, Elf, Dwarf, Halfling)
+            char_class: Class (Fighter, Cleric, Magic-User, Thief)
+
+        Returns:
+            PlayerCharacter with reasonable stats
+        """
+
+        # Generate decent stats
+        strength = random.randint(12, 16)
+        dexterity = random.randint(12, 16)
+        constitution = random.randint(12, 16)
+        intelligence = random.randint(12, 16)
+        wisdom = random.randint(12, 16)
+        charisma = random.randint(10, 14)
+
+        # Optimize for class
+        if char_class == 'Fighter':
+            strength = max(strength, 15)
+        elif char_class == 'Cleric':
+            wisdom = max(wisdom, 15)
+        elif char_class == 'Magic-User':
+            intelligence = max(intelligence, 15)
+        elif char_class == 'Thief':
+            dexterity = max(dexterity, 15)
+
+        # Check class requirements
+        if not self._check_class_requirements(char_class, strength, dexterity, constitution,
+                                              intelligence, wisdom, charisma):
+            # Adjust stats to meet requirements
+            if char_class == 'Fighter':
+                strength = max(strength, 9)
+            elif char_class == 'Cleric':
+                wisdom = max(wisdom, 9)
+            elif char_class == 'Magic-User':
+                intelligence = max(intelligence, 9)
+            elif char_class == 'Thief':
+                dexterity = max(dexterity, 9)
+
+        # Apply racial modifiers
+        race_mods = self._get_race_modifiers(race)
+        strength += race_mods.get('strength', 0)
+        dexterity += race_mods.get('dexterity', 0)
+        constitution += race_mods.get('constitution', 0)
+        intelligence += race_mods.get('intelligence', 0)
+        wisdom += race_mods.get('wisdom', 0)
+        charisma += race_mods.get('charisma', 0)
+
+        # Create character
+        player = self._create_character_instance(
+            name, race, char_class, strength, dexterity,
+            constitution, intelligence, wisdom, charisma, strength_percentile=50
+        )
+
+        # Add starting equipment
+        self._add_starting_equipment(player, char_class)
+
+        # Add starting spells
+        if char_class in ['Magic-User', 'Cleric']:
+            # Silently add spells for quick creation
+            if char_class == 'Magic-User':
+                for spell_id in ['magic_missile', 'sleep']:
+                    if spell_id in self.game_data.spells:
+                        spell_data = self.game_data.spells[spell_id]
+                        spell = Spell(
+                            name=spell_data['name'],
+                            level=spell_data['level'],
+                            school=spell_data['school'],
+                            casting_time=spell_data['casting_time'],
+                            range=spell_data['range'],
+                            duration=spell_data['duration'],
+                            area_of_effect=spell_data['area'],
+                            saving_throw=spell_data['saving_throw'],
+                            components=spell_data['components'],
+                            description=spell_data['description'],
+                            class_availability=spell_data['class_availability']
+                        )
+                        player.spells_known.append(spell)
+
+            elif char_class == 'Cleric':
+                for spell_id, spell_data in self.game_data.spells.items():
+                    if 'Cleric' in spell_data['class_availability'] and spell_data['level'] == 1:
+                        spell = Spell(
+                            name=spell_data['name'],
+                            level=spell_data['level'],
+                            school=spell_data['school'],
+                            casting_time=spell_data['casting_time'],
+                            range=spell_data['range'],
+                            duration=spell_data['duration'],
+                            area_of_effect=spell_data['area'],
+                            saving_throw=spell_data['saving_throw'],
+                            components=spell_data['components'],
+                            description=spell_data['description'],
+                            class_availability=spell_data['class_availability']
+                        )
+                        player.spells_known.append(spell)
+
+        return player
