@@ -141,6 +141,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+        }
+
+        .map-view .section-title {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            margin-bottom: 0;
         }
 
         .map-canvas {
@@ -391,6 +399,8 @@
             <div class="button-row">
                 <button class="button" onclick="quickCommand('attack')">Attack</button>
                 <button class="button" onclick="promptCast()">Cast</button>
+                <button class="button" onclick="promptMemorize()">Memorize</button>
+                <button class="button" onclick="quickCommand('search')">Search</button>
                 <button class="button" onclick="quickCommand('north')">North</button>
                 <button class="button" onclick="quickCommand('south')">South</button>
                 <button class="button" onclick="quickCommand('east')">East</button>
@@ -457,6 +467,18 @@
             }
             let input = document.getElementById('command-box');
             input.value = 'equip ';
+            input.focus();
+            // Move cursor to end
+            input.setSelectionRange(input.value.length, input.value.length);
+        }
+
+        function promptMemorize() {
+            if (!gameActive) {
+                appendMessage("Start a new game first!");
+                return;
+            }
+            let input = document.getElementById('command-box');
+            input.value = 'memorize ';
             input.focus();
             // Move cursor to end
             input.setSelectionRange(input.value.length, input.value.length);

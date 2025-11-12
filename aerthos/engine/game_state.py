@@ -328,13 +328,21 @@ class GameState:
         if not command.target:
             return {'success': False, 'message': "Cast what spell?"}
 
-        # Build targets list - include player for healing spells
-        targets = []
-        if self.active_monsters:
-            targets = self.active_monsters
-        else:
-            # If no monsters (out of combat), allow casting on self
+        # Determine if this is a beneficial spell (healing/buff) or harmful spell
+        spell_name_lower = command.target.lower()
+        beneficial_spells = ['cure', 'heal', 'bless', 'protection', 'shield', 'aid']
+        is_beneficial = any(keyword in spell_name_lower for keyword in beneficial_spells)
+
+        # Build targets list
+        if is_beneficial:
+            # Beneficial spells target the caster or party members
             targets = [self.player]
+        else:
+            # Harmful spells target monsters, or caster if no monsters (for non-combat spells)
+            if self.active_monsters:
+                targets = self.active_monsters
+            else:
+                targets = [self.player]
 
         result = self.magic_system.cast_spell(self.player, command.target, targets)
         return {'success': result['success'], 'message': result['narrative']}
