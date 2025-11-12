@@ -401,6 +401,8 @@
                 <button class="button" onclick="promptCast()">Cast</button>
                 <button class="button" onclick="promptMemorize()">Memorize</button>
                 <button class="button" onclick="quickCommand('search')">Search</button>
+                <button class="button" onclick="promptTake()">Take</button>
+                <button class="button" onclick="quickCommand('open')">Open</button>
                 <button class="button" onclick="quickCommand('north')">North</button>
                 <button class="button" onclick="quickCommand('south')">South</button>
                 <button class="button" onclick="quickCommand('east')">East</button>
@@ -479,6 +481,18 @@
             }
             let input = document.getElementById('command-box');
             input.value = 'memorize ';
+            input.focus();
+            // Move cursor to end
+            input.setSelectionRange(input.value.length, input.value.length);
+        }
+
+        function promptTake() {
+            if (!gameActive) {
+                appendMessage("Start a new game first!");
+                return;
+            }
+            let input = document.getElementById('command-box');
+            input.value = 'take ';
             input.focus();
             // Move cursor to end
             input.setSelectionRange(input.value.length, input.value.length);

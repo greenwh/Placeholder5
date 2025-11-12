@@ -110,17 +110,19 @@ class Inventory:
 
     def remove_item(self, item_name: str) -> Optional[Item]:
         """Remove and return item by name (supports partial matching)"""
-        search_lower = item_name.lower()
+        search_lower = item_name.lower().replace('_', ' ')
 
         # First try exact match
         for item in self.items:
-            if item.name.lower() == search_lower:
+            item_name_normalized = item.name.lower().replace('_', ' ')
+            if item_name_normalized == search_lower:
                 self.items.remove(item)
                 return item
 
         # Then try partial match (search term is in item name)
         for item in self.items:
-            if search_lower in item.name.lower():
+            item_name_normalized = item.name.lower().replace('_', ' ')
+            if search_lower in item_name_normalized:
                 self.items.remove(item)
                 return item
 
@@ -132,16 +134,18 @@ class Inventory:
 
     def get_item(self, item_name: str) -> Optional[Item]:
         """Get item by name without removing (supports partial matching)"""
-        search_lower = item_name.lower()
+        search_lower = item_name.lower().replace('_', ' ')
 
         # First try exact match
         for item in self.items:
-            if item.name.lower() == search_lower:
+            item_name_normalized = item.name.lower().replace('_', ' ')
+            if item_name_normalized == search_lower:
                 return item
 
         # Then try partial match (search term is in item name)
         for item in self.items:
-            if search_lower in item.name.lower():
+            item_name_normalized = item.name.lower().replace('_', ' ')
+            if search_lower in item_name_normalized:
                 return item
 
         return None
