@@ -138,6 +138,9 @@
             padding: 10px;
             height: 300px;
             overflow: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .map-canvas {
@@ -227,7 +230,22 @@
             grid-column: 1 / -1;
             background-color: #001a00;
             border: 2px solid #0f0;
-            padding: 15px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 10px;
         }
 
         .input-label {
@@ -235,7 +253,7 @@
         }
 
         .command-box {
-            width: 100%;
+            flex: 1;
             background-color: #000;
             color: #0f0;
             border: 1px solid #0f0;
@@ -253,11 +271,11 @@
             background-color: #0a0;
             color: #000;
             border: 2px solid #0f0;
-            padding: 8px 20px;
+            padding: 8px 16px;
             font-family: 'Courier New', monospace;
             font-weight: bold;
             cursor: pointer;
-            margin-left: 10px;
+            font-size: 12px;
         }
 
         .button:hover {
@@ -266,6 +284,11 @@
 
         .button:active {
             background-color: #050;
+        }
+
+        .button-new-game {
+            padding: 8px 20px;
+            font-size: 14px;
         }
 
         /* Scrollbar styling */
@@ -365,10 +388,20 @@
 
         <!-- Command Input -->
         <div class="command-input">
-            <div class="input-label">&gt; Enter Command (for selected character):</div>
-            <div style="display: flex;">
-                <input type="text" id="command-box" class="command-box" placeholder="Type command here..." onkeypress="handleKeyPress(event)">
-                <button class="button" onclick="newGame()">New Game</button>
+            <div class="button-row">
+                <button class="button" onclick="quickCommand('attack')">Attack</button>
+                <button class="button" onclick="promptCast()">Cast</button>
+                <button class="button" onclick="quickCommand('north')">North</button>
+                <button class="button" onclick="quickCommand('south')">South</button>
+                <button class="button" onclick="quickCommand('east')">East</button>
+                <button class="button" onclick="quickCommand('west')">West</button>
+                <button class="button" onclick="quickCommand('status')">Status</button>
+                <button class="button" onclick="quickCommand('spells')">Spells</button>
+                <button class="button" onclick="promptEquip()">Equip</button>
+            </div>
+            <div class="input-row">
+                <input type="text" id="command-box" class="command-box" placeholder="Type command here or use buttons above..." onkeypress="handleKeyPress(event)">
+                <button class="button button-new-game" onclick="newGame()">New Game</button>
             </div>
         </div>
     </div>
@@ -395,6 +428,38 @@
                     alert('Error starting game: ' + data.error);
                 }
             });
+        }
+
+        function quickCommand(command) {
+            if (!gameActive) {
+                appendMessage("Start a new game first!");
+                return;
+            }
+            sendCommand(command);
+        }
+
+        function promptCast() {
+            if (!gameActive) {
+                appendMessage("Start a new game first!");
+                return;
+            }
+            let input = document.getElementById('command-box');
+            input.value = 'cast ';
+            input.focus();
+            // Move cursor to end
+            input.setSelectionRange(input.value.length, input.value.length);
+        }
+
+        function promptEquip() {
+            if (!gameActive) {
+                appendMessage("Start a new game first!");
+                return;
+            }
+            let input = document.getElementById('command-box');
+            input.value = 'equip ';
+            input.focus();
+            // Move cursor to end
+            input.setSelectionRange(input.value.length, input.value.length);
         }
 
         function sendCommand(command) {
@@ -569,8 +634,8 @@
                 grid[room.y - minY][room.x - minX] = room;
             }
 
-            // Render as HTML table (centered)
-            let html = '<div style="text-align: center;"><table style="border-collapse: separate; border-spacing: 2px; margin: 0 auto;">';
+            // Render as HTML table (centered in viewport)
+            let html = '<table style="border-collapse: separate; border-spacing: 2px; margin: 0;">';
             for (let y = 0; y < grid.length; y++) {
                 html += '<tr>';
                 for (let x = 0; x < grid[y].length; x++) {
@@ -585,7 +650,7 @@
                 }
                 html += '</tr>';
             }
-            html += '</table></div>';
+            html += '</table>';
 
             document.getElementById('map-canvas').innerHTML = html;
         }
