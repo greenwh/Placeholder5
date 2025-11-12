@@ -13,6 +13,8 @@ from aerthos.ui.character_creation import CharacterCreator
 from aerthos.ui.character_sheet import CharacterSheet
 from aerthos.ui.save_system import SaveSystem
 from aerthos.entities.player import PlayerCharacter
+from aerthos.generator.dungeon_generator import DungeonGenerator
+from aerthos.generator.config import DungeonConfig, EASY_DUNGEON, STANDARD_DUNGEON, HARD_DUNGEON
 
 
 def show_main_menu(display: Display) -> str:
@@ -40,6 +42,27 @@ def show_main_menu(display: Display) -> str:
         print("Invalid choice. Please enter 1, 2, or 3.")
 
 
+def choose_dungeon_type() -> str:
+    """Ask player to choose between fixed or generated dungeon"""
+
+    print("\n" + "═" * 70)
+    print("DUNGEON SELECTION")
+    print("═" * 70)
+    print()
+    print("1. The Abandoned Mine (Fixed - 10 rooms, recommended for first game)")
+    print("2. Generate Random Dungeon (Easy - 8 rooms)")
+    print("3. Generate Random Dungeon (Standard - 12 rooms)")
+    print("4. Generate Random Dungeon (Hard - 15 rooms)")
+    print("5. Custom Generated Dungeon (Advanced)")
+    print()
+
+    while True:
+        choice = input("Choose dungeon (1-5): ").strip()
+        if choice in ['1', '2', '3', '4', '5']:
+            return choice
+        print("Invalid choice. Please enter 1-5.")
+
+
 def start_new_game(game_data: GameData) -> tuple:
     """Start a new game with character creation"""
 
@@ -49,21 +72,118 @@ def start_new_game(game_data: GameData) -> tuple:
 
     # Show character sheet
     print("\n" + CharacterSheet.format_character(player))
-    input("Press Enter to enter the dungeon...")
+    input("Press Enter to continue...")
     print()
 
-    # Load dungeon
-    print("Loading the dungeon...")
+    # Choose dungeon
+    dungeon_choice = choose_dungeon_type()
+
+    print("\nLoading the dungeon...")
+
     try:
-        dungeon = Dungeon.load_from_file('aerthos/data/dungeons/starter_dungeon.json')
-        print(f"✓ Loaded: {dungeon.name}")
+        if dungeon_choice == '1':
+            # Fixed starter dungeon
+            dungeon = Dungeon.load_from_file('aerthos/data/dungeons/starter_dungeon.json')
+            print(f"✓ Loaded: {dungeon.name}")
+
+        else:
+            # Generate dungeon
+            generator = DungeonGenerator(game_data)
+
+            if dungeon_choice == '2':
+                config = EASY_DUNGEON
+                print("✓ Generating Easy Dungeon...")
+            elif dungeon_choice == '3':
+                config = STANDARD_DUNGEON
+                print("✓ Generating Standard Dungeon...")
+            elif dungeon_choice == '4':
+                config = HARD_DUNGEON
+                print("✓ Generating Hard Dungeon...")
+            else:  # '5' - Custom
+                config = create_custom_config()
+                print("✓ Generating Custom Dungeon...")
+
+            dungeon_data = generator.generate(config)
+            dungeon = Dungeon.load_from_generator(dungeon_data)
+            print(f"✓ Generated: {dungeon.name}")
+
+            if config.seed:
+                print(f"  Seed: {config.seed} (use this seed to replay this exact dungeon)")
+
     except Exception as e:
-        print(f"✗ Error loading dungeon: {e}")
+        print(f"✗ Error loading/generating dungeon: {e}")
+        import traceback
+        traceback.print_exc()
         return None, None
 
     print()
 
     return player, dungeon
+
+
+def create_custom_config() -> DungeonConfig:
+    """Create a custom dungeon configuration"""
+
+    print("\n" + "═" * 70)
+    print("CUSTOM DUNGEON GENERATOR")
+    print("═" * 70)
+    print()
+
+    # Number of rooms
+    while True:
+        try:
+            num_rooms = int(input("Number of rooms (5-30, default 12): ") or "12")
+            if 5 <= num_rooms <= 30:
+                break
+            print("Please enter a number between 5 and 30.")
+        except ValueError:
+            print("Invalid input. Please enter a number.")
+
+    # Layout type
+    print("\nLayout style:")
+    print("1. Linear (straight path)")
+    print("2. Branching (main path with side branches)")
+    print("3. Network (complex with loops)")
+    layout_choice = input("Choose layout (1-3, default 2): ").strip() or "2"
+    layout_map = {'1': 'linear', '2': 'branching', '3': 'network'}
+    layout_type = layout_map.get(layout_choice, 'branching')
+
+    # Theme
+    print("\nDungeon theme:")
+    print("1. Mine")
+    print("2. Crypt")
+    print("3. Cave")
+    print("4. Ruins")
+    print("5. Sewer")
+    theme_choice = input("Choose theme (1-5, default 1): ").strip() or "1"
+    theme_map = {'1': 'mine', '2': 'crypt', '3': 'cave', '4': 'ruins', '5': 'sewer'}
+    theme = theme_map.get(theme_choice, 'mine')
+
+    # Seed (optional)
+    seed_input = input("\nEnter seed for fixed dungeon (leave blank for random): ").strip()
+    seed = int(seed_input) if seed_input else None
+
+    # Difficulty
+    print("\nDifficulty:")
+    print("1. Easy (lethality 0.8)")
+    print("2. Normal (lethality 1.0)")
+    print("3. Hard (lethality 1.3)")
+    diff_choice = input("Choose difficulty (1-3, default 2): ").strip() or "2"
+    diff_map = {'1': 0.8, '2': 1.0, '3': 1.3}
+    lethality = diff_map.get(diff_choice, 1.0)
+
+    return DungeonConfig(
+        seed=seed,
+        num_rooms=num_rooms,
+        layout_type=layout_type,
+        dungeon_theme=theme,
+        party_level=1,
+        lethality_factor=lethality,
+        combat_frequency=0.6,
+        trap_frequency=0.2,
+        treasure_frequency=0.4,
+        magic_item_chance=0.1
+    )
 
 
 def load_saved_game(game_data: GameData) -> tuple:

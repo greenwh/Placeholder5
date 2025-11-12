@@ -51,6 +51,36 @@ class Dungeon:
 
         return cls(name, start_room_id, rooms, data['rooms'])
 
+    @classmethod
+    def load_from_generator(cls, dungeon_data: Dict) -> 'Dungeon':
+        """
+        Load dungeon from generator output
+
+        Args:
+            dungeon_data: Dictionary from DungeonGenerator.generate()
+
+        Returns:
+            Dungeon instance
+        """
+        name = dungeon_data.get('name', 'Generated Dungeon')
+        start_room_id = dungeon_data['start_room']
+
+        # Load all rooms
+        rooms = {}
+        for room_id, room_data in dungeon_data['rooms'].items():
+            room = Room(
+                id=room_data['id'],
+                title=room_data['title'],
+                description=room_data['description'],
+                light_level=room_data.get('light_level', 'dark'),
+                exits=room_data.get('exits', {}),
+                items=room_data.get('items', []),
+                is_safe_for_rest=room_data.get('safe_rest', False)
+            )
+            rooms[room_id] = room
+
+        return cls(name, start_room_id, rooms, dungeon_data['rooms'])
+
     def get_room(self, room_id: str) -> Optional[Room]:
         """Get a room by ID"""
         return self.rooms.get(room_id)
