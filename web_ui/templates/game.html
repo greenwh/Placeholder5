@@ -149,20 +149,17 @@
 
         .map-room {
             display: inline-block;
-            width: 60px;
-            height: 40px;
-            border: 1px solid #0a0;
-            background-color: #002200;
+            width: 40px;
+            height: 30px;
             text-align: center;
             padding: 5px;
-            font-size: 10px;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            font-size: 16px;
+            line-height: 20px;
+            color: #0f0;
         }
 
         .map-room.current {
-            background-color: #004400;
-            border: 2px solid #ff0;
+            color: #ff0;
             font-weight: bold;
         }
 
@@ -518,7 +515,26 @@
             if (!currentParty || currentParty.length === 0) return;
 
             let char = currentParty[activeCharacterIndex];
-            let html = '<div style="font-size: 11px;">View full inventory: type "inventory" or "i"</div>';
+            let html = '';
+
+            // Show equipped items
+            if (char.equipped && Object.keys(char.equipped).length > 0) {
+                html += '<div style="font-weight: bold; margin-bottom: 5px;">Equipped:</div>';
+                for (let slot in char.equipped) {
+                    html += `<div style="margin-left: 10px; font-size: 11px;">• ${char.equipped[slot]}</div>`;
+                }
+            }
+
+            // Show inventory items
+            if (char.inventory && char.inventory.length > 0) {
+                html += '<div style="font-weight: bold; margin-top: 8px; margin-bottom: 5px;">Carrying:</div>';
+                char.inventory.forEach(item => {
+                    html += `<div style="margin-left: 10px; font-size: 11px;">• ${item.name}</div>`;
+                });
+            } else if (!char.equipped || Object.keys(char.equipped).length === 0) {
+                html = '<div style="font-size: 11px;">Empty inventory</div>';
+            }
+
             document.getElementById('inventory-info').innerHTML = html;
         }
 
@@ -528,46 +544,48 @@
                 return;
             }
 
-            // Find grid dimensions
-            let maxX = 0, maxY = 0;
+            // Find grid dimensions (handle negative coordinates)
+            let minX = 0, maxX = 0, minY = 0, maxY = 0;
             for (let roomId in mapData.rooms) {
                 let room = mapData.rooms[roomId];
+                minX = Math.min(minX, room.x);
                 maxX = Math.max(maxX, room.x);
+                minY = Math.min(minY, room.y);
                 maxY = Math.max(maxY, room.y);
             }
 
-            // Create grid
+            // Create grid with offset
             let grid = [];
-            for (let y = 0; y <= maxY; y++) {
-                grid[y] = [];
-                for (let x = 0; x <= maxX; x++) {
-                    grid[y][x] = null;
+            for (let y = minY; y <= maxY; y++) {
+                grid[y - minY] = [];
+                for (let x = minX; x <= maxX; x++) {
+                    grid[y - minY][x - minX] = null;
                 }
             }
 
             // Place rooms in grid
             for (let roomId in mapData.rooms) {
                 let room = mapData.rooms[roomId];
-                grid[room.y][room.x] = room;
+                grid[room.y - minY][room.x - minX] = room;
             }
 
-            // Render as HTML table
-            let html = '<table style="border-collapse: separate; border-spacing: 5px;">';
-            for (let y = 0; y <= maxY; y++) {
+            // Render as HTML table (centered)
+            let html = '<div style="text-align: center;"><table style="border-collapse: separate; border-spacing: 2px; margin: 0 auto;">';
+            for (let y = 0; y < grid.length; y++) {
                 html += '<tr>';
-                for (let x = 0; x <= maxX; x++) {
+                for (let x = 0; x < grid[y].length; x++) {
                     let room = grid[y][x];
                     if (room) {
                         let currentClass = room.is_current ? 'current' : '';
                         let marker = room.is_current ? '[@]' : '[ ]';
-                        html += `<td><div class="map-room ${currentClass}" title="${room.title}">${marker}<br>${room.id}</div></td>`;
+                        html += `<td><div class="map-room ${currentClass}" title="${room.title}">${marker}</div></td>`;
                     } else {
-                        html += '<td style="width: 60px; height: 40px;"></td>';
+                        html += '<td style="width: 40px; height: 30px;"></td>';
                     }
                 }
                 html += '</tr>';
             }
-            html += '</table>';
+            html += '</table></div>';
 
             document.getElementById('map-canvas').innerHTML = html;
         }

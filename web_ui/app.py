@@ -128,6 +128,28 @@ def get_game_state_json(game_state):
     party_data = []
     if hasattr(game_state, 'party'):
         for i, member in enumerate(game_state.party.members):
+            # Get inventory items
+            inventory_items = []
+            if hasattr(member, 'inventory') and hasattr(member.inventory, 'items'):
+                for item in member.inventory.items:
+                    inventory_items.append({
+                        'name': item.name,
+                        'type': getattr(item, 'item_type', 'unknown'),
+                        'weight': getattr(item, 'weight', 0)
+                    })
+
+            # Get equipped items
+            equipped = {}
+            if hasattr(member, 'equipment'):
+                if member.equipment.weapon:
+                    equipped['weapon'] = member.equipment.weapon.name
+                if member.equipment.armor:
+                    equipped['armor'] = member.equipment.armor.name
+                if member.equipment.shield:
+                    equipped['shield'] = member.equipment.shield.name
+                if member.equipment.light_source:
+                    equipped['light'] = member.equipment.light_source.name
+
             party_data.append({
                 'name': member.name,
                 'class': member.char_class,
@@ -140,7 +162,9 @@ def get_game_state_json(game_state):
                 'xp': member.xp,
                 'gold': member.gold,
                 'is_alive': member.is_alive,
-                'formation': game_state.party.formation[i] if i < len(game_state.party.formation) else 'front'
+                'formation': game_state.party.formation[i] if i < len(game_state.party.formation) else 'front',
+                'inventory': inventory_items,
+                'equipped': equipped
             })
 
     # Get map data
@@ -165,13 +189,14 @@ def get_game_state_json(game_state):
 
 
 def build_map_data(game_state):
-    """Build map data for 2D visualization"""
+    """Build map data for 2D visualization with persistent coordinates"""
 
-    # Build a graph of room connections and calculate positions
+    # Build a graph of room connections with absolute positions
+    # Always start from the dungeon start room for consistency
     explored = {}
     current_id = game_state.current_room.id
+    start_room_id = game_state.dungeon.start_room_id
 
-    # Start with current room at center
     room_positions = {}
     visited = set()
 
@@ -183,10 +208,7 @@ def build_map_data(game_state):
         visited.add(room_id)
         room = game_state.dungeon.rooms[room_id]
 
-        if not room.is_explored:
-            return
-
-        # Store position
+        # Store position for all rooms (explored or not)
         room_positions[room_id] = {'x': x, 'y': y, 'room': room}
 
         # Calculate neighbor positions based on cardinal directions
@@ -204,20 +226,17 @@ def build_map_data(game_state):
                 offset = direction_offsets.get(direction, (0, 0))
                 calculate_positions(next_room_id, x + offset[0], y + offset[1])
 
-    # Calculate positions starting from current room
-    calculate_positions(current_id, 0, 0)
+    # Calculate positions starting from START room (for consistency)
+    calculate_positions(start_room_id, 0, 0)
 
-    # Convert to list format with normalized positions
-    if room_positions:
-        min_x = min(pos['x'] for pos in room_positions.values())
-        min_y = min(pos['y'] for pos in room_positions.values())
-
-        for room_id, pos_data in room_positions.items():
+    # Only return explored rooms
+    for room_id, pos_data in room_positions.items():
+        if pos_data['room'].is_explored:
             explored[room_id] = {
                 'id': room_id,
                 'title': pos_data['room'].title,
-                'x': pos_data['x'] - min_x,
-                'y': pos_data['y'] - min_y,
+                'x': pos_data['x'],
+                'y': pos_data['y'],
                 'exits': pos_data['room'].exits,
                 'is_current': room_id == current_id
             }
