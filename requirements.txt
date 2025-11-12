@@ -1,0 +1,8 @@
+# Aerthos - AD&D 1e Text Adventure
+# Python 3.10+ required
+
+# Web UI dependencies (optional - only needed for web_ui/app.py)
+Flask>=2.3.0
+
+# No other dependencies required!
+# The core game (main.py) uses only Python standard library.
