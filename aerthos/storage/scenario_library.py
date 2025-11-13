@@ -196,7 +196,8 @@ class ScenarioLibrary:
         from ..world.dungeon import Dungeon
 
         dungeon_data = scenario_data['dungeon_data']
-        dungeon = Dungeon(name=scenario_data['name'])
-        dungeon.deserialize(dungeon_data)
+
+        # Use load_from_generator since we saved the generator output
+        dungeon = Dungeon.load_from_generator(dungeon_data)
 
         return dungeon
