@@ -640,14 +640,17 @@ def manage_character_roster(game_data: GameData):
             # Delete character
             name_or_id = input("\nEnter character name or ID to delete: ").strip()
 
-            # Try to find character by name or ID to get the actual ID
-            character = roster.load_character(character_name=name_or_id)
-            if not character:
-                character = roster.load_character(character_id=name_or_id)
+            # Find character in list to get the ID
+            characters = roster.list_characters()
+            char_found = None
+            for char in characters:
+                if char['name'].lower() == name_or_id.lower() or char['id'] == name_or_id:
+                    char_found = char
+                    break
 
-            if character:
-                char_name = character.name
-                char_id = character.id
+            if char_found:
+                char_name = char_found['name']
+                char_id = char_found['id']
                 confirm = input(f"Delete character '{char_name}' ({char_id})? (y/n): ").strip().lower()
                 if confirm == 'y':
                     if roster.delete_character(char_id):
