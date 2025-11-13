@@ -4,6 +4,7 @@ Dungeon Generator Configuration
 
 from dataclasses import dataclass, field
 from typing import List, Optional
+from .monster_scaling import MonsterScaler
 
 
 @dataclass
@@ -73,6 +74,73 @@ class DungeonConfig:
 
         if self.treasure_level not in ['low', 'medium', 'high']:
             raise ValueError(f"Invalid treasure_level: {self.treasure_level}")
+
+    @classmethod
+    def for_party(cls, party_level: int, party_size: int = 4, difficulty: str = 'standard', **kwargs):
+        """
+        Create a DungeonConfig automatically scaled for a party
+
+        Args:
+            party_level: Average party level
+            party_size: Number of party members
+            difficulty: 'easy', 'standard', or 'hard'
+            **kwargs: Override any config parameters
+
+        Returns:
+            DungeonConfig instance with appropriate monster pool and settings
+        """
+        scaler = MonsterScaler()
+
+        # Get appropriate monster pool
+        monster_pool = scaler.get_monster_pool_for_party(party_level, party_size)
+
+        # Get appropriate boss
+        boss_monster = scaler.get_boss_for_party(party_level, party_size)
+
+        # Set base parameters based on difficulty
+        if difficulty == 'easy':
+            base_config = {
+                'num_rooms': 8,
+                'layout_type': 'linear',
+                'combat_frequency': 0.5,
+                'trap_frequency': 0.1,
+                'lethality_factor': 0.8,
+                'treasure_level': 'low',
+                'magic_item_chance': 0.05
+            }
+        elif difficulty == 'hard':
+            base_config = {
+                'num_rooms': 15,
+                'layout_type': 'network',
+                'combat_frequency': 0.6,
+                'trap_frequency': 0.3,
+                'empty_room_frequency': 0.1,
+                'lethality_factor': 1.3,
+                'treasure_level': 'high',
+                'magic_item_chance': 0.15,
+                'loops': 2
+            }
+        else:  # standard
+            base_config = {
+                'num_rooms': 12,
+                'layout_type': 'branching',
+                'combat_frequency': 0.6,
+                'trap_frequency': 0.2,
+                'lethality_factor': 1.0,
+                'treasure_level': 'medium',
+                'magic_item_chance': 0.1
+            }
+
+        # Merge with overrides
+        config_params = {
+            **base_config,
+            'party_level': party_level,
+            'monster_pool': monster_pool,
+            'boss_monster': boss_monster,
+            **kwargs
+        }
+
+        return cls(**config_params)
 
 
 # Preset configurations

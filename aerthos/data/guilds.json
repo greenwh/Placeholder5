@@ -1,0 +1,76 @@
+{
+  "fighters_guild": {
+    "name": "The Fighters Guild",
+    "type": "fighter",
+    "description": "A guild for warriors seeking training and employment",
+    "allowed_classes": ["Fighter", "Ranger", "Paladin"],
+    "membership_fee": 100,
+    "services": [
+      {"name": "Combat Training", "price": 50, "level_req": 1, "description": "Gain bonus XP toward next level", "benefit": "xp_bonus_100"},
+      {"name": "Weapon Master Training", "price": 200, "level_req": 3, "description": "Learn specialized weapon techniques", "benefit": "weapon_specialization"},
+      {"name": "Hire Mercenary", "price": 100, "level_req": 1, "description": "Hire a fighter for one adventure"},
+      {"name": "Arena Match", "price": 10, "level_req": 1, "description": "Fight in the arena for gold and glory", "benefit": "gold_and_xp"}
+    ],
+    "quests": [
+      {"name": "Clear the Bandits", "reward": 200, "level_req": 1, "description": "Clear out bandits threatening the trade roads"},
+      {"name": "Guard Duty", "reward": 50, "level_req": 1, "description": "Guard a caravan for a week"},
+      {"name": "Monster Hunt", "reward": 500, "level_req": 5, "description": "Hunt down a dangerous monster"}
+    ]
+  },
+  "thieves_guild": {
+    "name": "The Shadow Syndicate",
+    "type": "thief",
+    "description": "A secretive guild of thieves, assassins, and rogues",
+    "allowed_classes": ["Thief", "Assassin", "Bard"],
+    "membership_fee": 150,
+    "services": [
+      {"name": "Lockpicking Training", "price": 75, "level_req": 1, "description": "+5% to lockpicking skill", "benefit": "skill_bonus_lockpick"},
+      {"name": "Stealth Training", "price": 75, "level_req": 1, "description": "+5% to stealth skills", "benefit": "skill_bonus_stealth"},
+      {"name": "Buy Thieves Tools", "price": 30, "level_req": 1, "description": "Purchase thieves' tools"},
+      {"name": "Fence Goods", "price": 0, "level_req": 1, "description": "Sell stolen goods for 50% value"},
+      {"name": "Information", "price": 50, "level_req": 1, "description": "Purchase information about dungeons or targets"}
+    ],
+    "quests": [
+      {"name": "Steal the Gem", "reward": 300, "level_req": 2, "description": "Steal a valuable gem from a merchant"},
+      {"name": "Assassination Contract", "reward": 1000, "level_req": 5, "description": "Eliminate a target"},
+      {"name": "Sabotage", "reward": 400, "level_req": 3, "description": "Sabotage a rival guild's operations"}
+    ]
+  },
+  "mages_guild": {
+    "name": "The Circle of Magi",
+    "type": "mage",
+    "description": "A guild dedicated to the study and practice of arcane magic",
+    "allowed_classes": ["Magic-User", "Illusionist", "Bard"],
+    "membership_fee": 200,
+    "services": [
+      {"name": "Spell Research", "price": 500, "level_req": 3, "description": "Research a new spell", "benefit": "learn_spell"},
+      {"name": "Arcane Library Access", "price": 100, "level_req": 1, "description": "Access to rare magical knowledge", "benefit": "xp_bonus_150"},
+      {"name": "Spell Components", "price": 50, "level_req": 1, "description": "Purchase rare spell components"},
+      {"name": "Familiar Ritual", "price": 1000, "level_req": 3, "description": "Perform ritual to gain a familiar"},
+      {"name": "Spellbook Copying", "price": 100, "level_req": 1, "description": "Copy a spell into your spellbook"}
+    ],
+    "quests": [
+      {"name": "Retrieve Ancient Tome", "reward": 500, "level_req": 3, "description": "Retrieve a lost magical tome from a dungeon"},
+      {"name": "Magical Research", "reward": 300, "level_req": 2, "description": "Assist with magical experiments"},
+      {"name": "Defeat Rogue Mage", "reward": 800, "level_req": 5, "description": "Stop a mage who has gone rogue"}
+    ]
+  },
+  "clerics_temple": {
+    "name": "The Holy Order",
+    "type": "cleric",
+    "description": "A temple for clerics, paladins, and druids",
+    "allowed_classes": ["Cleric", "Paladin", "Druid"],
+    "membership_fee": 100,
+    "services": [
+      {"name": "Divine Training", "price": 50, "level_req": 1, "description": "Spiritual training for bonus XP", "benefit": "xp_bonus_100"},
+      {"name": "Consecrate Weapon", "price": 300, "level_req": 3, "description": "Consecrate a weapon against undead"},
+      {"name": "Divine Blessing", "price": 100, "level_req": 1, "description": "+2 to all saves for one adventure"},
+      {"name": "Meditation Retreat", "price": 50, "level_req": 1, "description": "Meditate to gain insight", "benefit": "wisdom_check_bonus"}
+    ],
+    "quests": [
+      {"name": "Cleanse Unholy Ground", "reward": 400, "level_req": 3, "description": "Cleanse a desecrated temple"},
+      {"name": "Destroy Undead", "reward": 300, "level_req": 2, "description": "Clear out undead from the crypts"},
+      {"name": "Pilgrimage", "reward": 200, "level_req": 1, "description": "Complete a holy pilgrimage"}
+    ]
+  }
+}

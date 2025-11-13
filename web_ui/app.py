@@ -775,31 +775,69 @@ def create_scenario():
         num_rooms = data.get('num_rooms', 12)
         combat_frequency = data.get('combat_frequency', 0.6)
         trap_frequency = data.get('trap_frequency', 0.2)
+        dungeon_theme = data.get('dungeon_theme', 'mine')
+        seed = data.get('seed', None)
 
-        # Determine party level and treasure based on difficulty
-        if difficulty == 'easy':
-            party_level = 1
-            treasure_level = 'low'
-            magic_item_chance = 0.05
-        elif difficulty == 'hard':
-            party_level = 3
-            treasure_level = 'high'
-            magic_item_chance = 0.2
-        else:  # medium
-            party_level = 2
-            treasure_level = 'medium'
-            magic_item_chance = 0.1
+        # Check if party information is provided
+        party_id = data.get('party_id')
+        party_level = data.get('party_level')
+        party_size = data.get('party_size', 4)
 
-        # Create config with custom parameters
-        config = DungeonConfig(
-            num_rooms=num_rooms,
-            layout_type=layout_type,
-            combat_frequency=combat_frequency,
-            trap_frequency=trap_frequency,
-            party_level=party_level,
-            treasure_level=treasure_level,
-            magic_item_chance=magic_item_chance
-        )
+        # If party_id is provided, load party and calculate level
+        if party_id:
+            try:
+                party_mgr = PartyManager()
+                party_data = party_mgr.get_party(party_id)
+                if party_data:
+                    # Calculate average level from party members
+                    from aerthos.generator.monster_scaling import MonsterScaler
+                    scaler = MonsterScaler()
+                    party_level = scaler.calculate_party_level(party_data.get('members', []))
+                    party_size = len(party_data.get('members', []))
+            except Exception as e:
+                print(f"Warning: Could not load party {party_id}: {e}")
+
+        # If we have party level, use party-based scaling
+        if party_level is not None:
+            config = DungeonConfig.for_party(
+                party_level=party_level,
+                party_size=party_size,
+                difficulty=difficulty if difficulty in ['easy', 'standard', 'hard'] else 'standard',
+                num_rooms=num_rooms,
+                layout_type=layout_type,
+                dungeon_theme=dungeon_theme,
+                seed=seed,
+                combat_frequency=combat_frequency,
+                trap_frequency=trap_frequency
+            )
+        else:
+            # Fallback to old manual config
+            # Determine party level and treasure based on difficulty
+            if difficulty == 'easy':
+                party_level = 1
+                treasure_level = 'low'
+                magic_item_chance = 0.05
+            elif difficulty == 'hard':
+                party_level = 3
+                treasure_level = 'high'
+                magic_item_chance = 0.2
+            else:  # medium
+                party_level = 2
+                treasure_level = 'medium'
+                magic_item_chance = 0.1
+
+            # Create config with custom parameters
+            config = DungeonConfig(
+                num_rooms=num_rooms,
+                layout_type=layout_type,
+                combat_frequency=combat_frequency,
+                trap_frequency=trap_frequency,
+                party_level=party_level,
+                treasure_level=treasure_level,
+                magic_item_chance=magic_item_chance,
+                dungeon_theme=dungeon_theme,
+                seed=seed
+            )
 
         # Generate dungeon (returns dict)
         dungeon_data = generator.generate(config)

@@ -1,0 +1,62 @@
+{
+  "prancing_pony": {
+    "name": "The Prancing Pony",
+    "quality": "average",
+    "description": "A comfortable inn with good food and clean beds",
+    "rooms": [
+      {"type": "common_room", "price": 1, "description": "Sleep in the common room with other travelers"},
+      {"type": "private_room", "price": 5, "description": "A private room with a comfortable bed"}
+    ],
+    "food_drink": [
+      {"name": "Ale", "price": 1, "description": "A pint of decent ale"},
+      {"name": "Wine", "price": 2, "description": "A goblet of wine"},
+      {"name": "Meal", "price": 2, "description": "A hearty meal"},
+      {"name": "Fine Meal", "price": 5, "description": "An excellent feast"}
+    ],
+    "services": [
+      {"name": "Stable Horse", "price": 2, "description": "Stable your horse for the night"},
+      {"name": "Bath", "price": 1, "description": "A hot bath"},
+      {"name": "Laundry", "price": 1, "description": "Clean your clothes and equipment"}
+    ],
+    "rest_benefits": {
+      "common_room": {"hp_recovery": "half", "spell_recovery": true, "fatigue_removal": "partial"},
+      "private_room": {"hp_recovery": "full", "spell_recovery": true, "fatigue_removal": "full"}
+    }
+  },
+  "golden_dragon": {
+    "name": "The Golden Dragon",
+    "quality": "luxury",
+    "description": "An expensive inn catering to wealthy adventurers and nobles",
+    "rooms": [
+      {"type": "suite", "price": 20, "description": "A luxurious suite with fine furnishings"}
+    ],
+    "food_drink": [
+      {"name": "Fine Wine", "price": 10, "description": "Excellent vintage wine"},
+      {"name": "Banquet", "price": 20, "description": "An extravagant multi-course feast"}
+    ],
+    "services": [
+      {"name": "Personal Servant", "price": 5, "description": "A servant to attend to your needs"},
+      {"name": "Massage", "price": 10, "description": "Relaxing massage"},
+      {"name": "Entertainment", "price": 15, "description": "Private entertainment"}
+    ],
+    "rest_benefits": {
+      "suite": {"hp_recovery": "full", "spell_recovery": true, "fatigue_removal": "full", "bonus_hp": 5}
+    }
+  },
+  "broken_shield": {
+    "name": "The Broken Shield",
+    "quality": "poor",
+    "description": "A cheap, run-down inn for those low on coin",
+    "rooms": [
+      {"type": "flea_bag", "price": 0.5, "description": "A lumpy mattress in a drafty room"}
+    ],
+    "food_drink": [
+      {"name": "Cheap Ale", "price": 0.5, "description": "Watered-down ale"},
+      {"name": "Stew", "price": 0.5, "description": "Mystery stew of questionable ingredients"}
+    ],
+    "services": [],
+    "rest_benefits": {
+      "flea_bag": {"hp_recovery": "quarter", "spell_recovery": true, "fatigue_removal": "none"}
+    }
+  }
+}
