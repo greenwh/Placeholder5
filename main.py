@@ -942,7 +942,9 @@ def manage_sessions(game_data: GameData):
 
             print("\nAvailable Parties:")
             for i, party in enumerate(parties, 1):
-                members_str = ', '.join(party['members'][:3])
+                # Extract member names from dict
+                member_names = [m['name'] for m in party['members'][:3]]
+                members_str = ', '.join(member_names)
                 print(f"{i}. {party['name']} ({members_str}) [ID: {party['id']}]")
 
             party_choice = input(f"\nSelect party (1-{len(parties)}): ").strip()
