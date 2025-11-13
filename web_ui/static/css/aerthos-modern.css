@@ -579,6 +579,29 @@ h3 { font-size: 1.5rem; }
     }
 }
 
+/* ========== CHARACTER SHEET STATS ========== */
+.stat-display {
+    background: var(--parchment-medium);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 8px;
+    text-align: center;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+}
+
+.stat-value {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--text-primary);
+}
+
 @media (max-width: 768px) {
     .app-title {
         font-size: 2rem;

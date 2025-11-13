@@ -1378,6 +1378,89 @@ def save_session_state(session_id):
         return jsonify({'success': False, 'error': str(e)})
 
 
+@app.route('/api/session/<session_id>/party', methods=['GET'])
+def get_party_details(session_id):
+    """Get detailed party information including inventory and spells"""
+    try:
+        session_mgr = SessionManager()
+        party_mgr = PartyManager()
+        roster = CharacterRoster()
+
+        # Load session data
+        session_data = session_mgr.load_session(session_id)
+        if not session_data:
+            return jsonify({'success': False, 'error': 'Session not found'})
+
+        # Load party
+        party_data = party_mgr.load_party(party_id=session_data['party_id'])
+        if not party_data:
+            return jsonify({'success': False, 'error': 'Party not found'})
+
+        party = party_data['party']
+
+        # Get detailed character information
+        members_detailed = []
+        for member in party.members:
+            # Try to load from roster to get full details
+            char_id = getattr(member, 'id', None)
+
+            member_dict = {
+                'id': char_id or member.name,
+                'name': member.name,
+                'race': getattr(member, 'race', 'Human'),
+                'char_class': member.char_class,
+                'level': member.level,
+                'xp': getattr(member, 'xp', 0),
+                'hp_current': member.hp_current,
+                'hp_max': member.hp_max,
+                'ac': member.ac,
+                'thac0': member.thac0,
+                'strength': getattr(member, 'strength', 10),
+                'dexterity': getattr(member, 'dexterity', 10),
+                'constitution': getattr(member, 'constitution', 10),
+                'intelligence': getattr(member, 'intelligence', 10),
+                'wisdom': getattr(member, 'wisdom', 10),
+                'charisma': getattr(member, 'charisma', 10),
+                'gold': getattr(member, 'gold', 0),
+                'inventory': [],
+                'spells': []
+            }
+
+            # Get inventory
+            if hasattr(member, 'inventory'):
+                if hasattr(member.inventory, 'items'):
+                    for item in member.inventory.items:
+                        if isinstance(item, str):
+                            member_dict['inventory'].append({'name': item, 'type': 'item'})
+                        elif hasattr(item, 'name'):
+                            member_dict['inventory'].append({
+                                'name': item.name,
+                                'type': getattr(item, 'item_type', 'item'),
+                                'weight': getattr(item, 'weight', 0)
+                            })
+                        elif isinstance(item, dict):
+                            member_dict['inventory'].append(item)
+
+            # Get spells if character is a spellcaster
+            if hasattr(member, 'spells') and member.spells:
+                member_dict['spells'] = member.spells if isinstance(member.spells, list) else []
+
+            members_detailed.append(member_dict)
+
+        return jsonify({
+            'success': True,
+            'party': {
+                'name': party_data.get('name', 'Adventurers'),
+                'members': members_detailed
+            }
+        })
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'success': False, 'error': str(e)})
+
+
 if __name__ == '__main__':
     print("=" * 70)
     print("AERTHOS - Web Interface")

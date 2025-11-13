@@ -613,20 +613,48 @@ async function rest() {
     }
 }
 
+async function viewInventory() {
+    if (!AppState.activeSession) return;
+
+    try {
+        const response = await fetch(`/api/session/${AppState.activeSession.id}/party`);
+        const data = await response.json();
+
+        if (data.success) {
+            showInventoryModal(data.party);
+        } else {
+            showMessage(data.error || 'Failed to load inventory', 'error');
+        }
+    } catch (error) {
+        console.error('Error loading inventory:', error);
+        showMessage('Error loading inventory', 'error');
+    }
+}
+
+async function viewCharacterSheets() {
+    if (!AppState.activeSession) return;
+
+    try {
+        const response = await fetch(`/api/session/${AppState.activeSession.id}/party`);
+        const data = await response.json();
+
+        if (data.success) {
+            showCharacterSheetsModal(data.party);
+        } else {
+            showMessage(data.error || 'Failed to load character sheets', 'error');
+        }
+    } catch (error) {
+        console.error('Error loading character sheets:', error);
+        showMessage('Error loading character sheets', 'error');
+    }
+}
+
 function useItem() {
-    showMessage('Select an item from your inventory (feature coming soon)', 'info');
+    showMessage('Click View Inventory to select and use items', 'info');
 }
 
 function castSpell() {
-    showMessage('Select a spell to cast (feature coming soon)', 'info');
-}
-
-function viewInventory() {
-    showMessage('Inventory management (feature coming soon)', 'info');
-}
-
-function viewCharacterSheets() {
-    showMessage('Character sheet view (feature coming soon)', 'info');
+    showMessage('Click Character Sheets to view and cast spells', 'info');
 }
 
 async function saveGameSession() {
@@ -677,6 +705,188 @@ function showMessage(message, type = 'info') {
         setTimeout(() => messageEl.remove(), 300);
     }, 3000);
 }
+
+// ========== MODAL DIALOGS ==========
+
+function showInventoryModal(party) {
+    const modal = createModal('Party Inventory');
+
+    let content = '<div style="display: grid; gap: 20px;">';
+
+    party.members.forEach(member => {
+        content += `
+            <div class="card" style="padding: 15px;">
+                <h3 style="margin-bottom: 10px; color: var(--primary-color);">${member.name}</h3>
+                <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 10px;">
+                    ${member.char_class} • Level ${member.level} • ${member.gold} GP
+                </div>
+                <div style="margin-top: 10px;">
+                    <strong>Inventory:</strong>
+                    ${member.inventory && member.inventory.length > 0 ? `
+                        <ul style="margin-left: 20px; margin-top: 5px;">
+                            ${member.inventory.map(item => `
+                                <li>${typeof item === 'string' ? item : item.name}
+                                    ${item.type ? ` <span style="color: var(--text-secondary); font-size: 0.85rem;">(${item.type})</span>` : ''}
+                                </li>
+                            `).join('')}
+                        </ul>
+                    ` : '<div style="color: var(--text-secondary); margin-top: 5px;">No items</div>'}
+                </div>
+            </div>
+        `;
+    });
+
+    content += '</div>';
+
+    modal.body.innerHTML = content;
+    document.body.appendChild(modal.element);
+}
+
+function showCharacterSheetsModal(party) {
+    const modal = createModal('Character Sheets');
+
+    let content = '<div style="display: grid; gap: 20px;">';
+
+    party.members.forEach(member => {
+        content += `
+            <div class="card" style="padding: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
+                    <div>
+                        <h3 style="color: var(--primary-color); margin-bottom: 5px;">${member.name}</h3>
+                        <div style="color: var(--text-secondary);">${member.race} ${member.char_class}</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 1.2rem; font-weight: bold;">Level ${member.level}</div>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary);">${member.xp} XP</div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px;">
+                    <div class="stat-display">
+                        <div class="stat-label">HP</div>
+                        <div class="stat-value">${member.hp_current}/${member.hp_max}</div>
+                    </div>
+                    <div class="stat-display">
+                        <div class="stat-label">AC</div>
+                        <div class="stat-value">${member.ac}</div>
+                    </div>
+                    <div class="stat-display">
+                        <div class="stat-label">THAC0</div>
+                        <div class="stat-value">${member.thac0}</div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 15px;">
+                    <div class="stat-display">
+                        <div class="stat-label">STR</div>
+                        <div class="stat-value">${member.strength}</div>
+                    </div>
+                    <div class="stat-display">
+                        <div class="stat-label">DEX</div>
+                        <div class="stat-value">${member.dexterity}</div>
+                    </div>
+                    <div class="stat-display">
+                        <div class="stat-label">CON</div>
+                        <div class="stat-value">${member.constitution}</div>
+                    </div>
+                    <div class="stat-display">
+                        <div class="stat-label">INT</div>
+                        <div class="stat-value">${member.intelligence}</div>
+                    </div>
+                    <div class="stat-display">
+                        <div class="stat-label">WIS</div>
+                        <div class="stat-value">${member.wisdom}</div>
+                    </div>
+                    <div class="stat-display">
+                        <div class="stat-label">CHA</div>
+                        <div class="stat-value">${member.charisma}</div>
+                    </div>
+                </div>
+
+                ${member.spells && member.spells.length > 0 ? `
+                    <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border-color);">
+                        <strong style="color: var(--primary-color);">Spells Known:</strong>
+                        <ul style="margin-left: 20px; margin-top: 5px;">
+                            ${member.spells.map(spell => `<li>${spell}</li>`).join('')}
+                        </ul>
+                    </div>
+                ` : ''}
+            </div>
+        `;
+    });
+
+    content += '</div>';
+
+    modal.body.innerHTML = content;
+    document.body.appendChild(modal.element);
+}
+
+function createModal(title) {
+    const overlay = document.createElement('div');
+    overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    `;
+
+    const modalBox = document.createElement('div');
+    modalBox.style.cssText = `
+        background: var(--bg-dark);
+        border: 2px solid var(--border-color);
+        border-radius: 8px;
+        max-width: 800px;
+        max-height: 80vh;
+        width: 100%;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        display: flex;
+        flex-direction: column;
+    `;
+
+    const header = document.createElement('div');
+    header.style.cssText = `
+        padding: 20px;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    `;
+    header.innerHTML = `
+        <h2 style="margin: 0; color: var(--primary-color);">${title}</h2>
+        <button class="btn btn-small" onclick="this.closest('[style*=\\'position: fixed\\']').remove()">✕ Close</button>
+    `;
+
+    const body = document.createElement('div');
+    body.style.cssText = `
+        padding: 20px;
+        overflow-y: auto;
+        flex: 1;
+    `;
+
+    modalBox.appendChild(header);
+    modalBox.appendChild(body);
+    overlay.appendChild(modalBox);
+
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+            overlay.remove();
+        }
+    });
+
+    return {
+        element: overlay,
+        body: body,
+        header: header
+    };
+}
+
 function endSession() {
     if (confirm('Exit this session?')) {
         AppState.activeSession = null;
