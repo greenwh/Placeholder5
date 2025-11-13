@@ -725,7 +725,9 @@ def manage_parties(game_data: GameData):
                 print(f"{'Name':<25} {'Size':<6} {'Members':<30} {'ID':<10}")
                 print("─" * 70)
                 for party in parties:
-                    members_str = ', '.join(party['members'][:3])
+                    # Extract member names from dict
+                    member_names = [m['name'] for m in party['members'][:3]]
+                    members_str = ', '.join(member_names)
                     if len(party['members']) > 3:
                         members_str += '...'
                     print(f"{party['name']:<25} {party['size']:<6} {members_str:<30} {party['id']:<10}")
