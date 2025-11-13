@@ -638,13 +638,24 @@ def manage_character_roster(game_data: GameData):
 
         elif choice == '4':
             # Delete character
-            name = input("\nEnter character ID to delete: ").strip()
-            confirm = input(f"Delete character {name}? (y/n): ").strip().lower()
-            if confirm == 'y':
-                if roster.delete_character(name):
-                    print("✓ Character deleted.")
-                else:
-                    print("Character not found.")
+            name_or_id = input("\nEnter character name or ID to delete: ").strip()
+
+            # Try to find character by name or ID to get the actual ID
+            character = roster.load_character(character_name=name_or_id)
+            if not character:
+                character = roster.load_character(character_id=name_or_id)
+
+            if character:
+                char_name = character.name
+                char_id = character.id
+                confirm = input(f"Delete character '{char_name}' ({char_id})? (y/n): ").strip().lower()
+                if confirm == 'y':
+                    if roster.delete_character(char_id):
+                        print("✓ Character deleted.")
+                    else:
+                        print("Character not found.")
+            else:
+                print(f"Character '{name_or_id}' not found.")
 
         elif choice == '5':
             break
@@ -756,13 +767,24 @@ def manage_parties(game_data: GameData):
 
         elif choice == '4':
             # Delete party
-            name = input("\nEnter party ID to delete: ").strip()
-            confirm = input(f"Delete party {name}? (y/n): ").strip().lower()
-            if confirm == 'y':
-                if party_mgr.delete_party(name):
-                    print("✓ Party deleted.")
-                else:
-                    print("Party not found.")
+            name_or_id = input("\nEnter party name or ID to delete: ").strip()
+
+            # Try to find party by name or ID to get the actual ID
+            party_data = party_mgr.load_party(party_name=name_or_id)
+            if not party_data:
+                party_data = party_mgr.load_party(party_id=name_or_id)
+
+            if party_data:
+                party_name = party_data['name']
+                party_id = party_data['id']
+                confirm = input(f"Delete party '{party_name}' ({party_id})? (y/n): ").strip().lower()
+                if confirm == 'y':
+                    if party_mgr.delete_party(party_id):
+                        print("✓ Party deleted.")
+                    else:
+                        print("Party not found.")
+            else:
+                print(f"Party '{name_or_id}' not found.")
 
         elif choice == '5':
             break
@@ -862,13 +884,21 @@ def manage_scenarios(game_data: GameData):
 
         elif choice == '4':
             # Delete scenario
-            name = input("\nEnter scenario ID to delete: ").strip()
-            confirm = input(f"Delete scenario {name}? (y/n): ").strip().lower()
-            if confirm == 'y':
-                if library.delete_scenario(name):
-                    print("✓ Scenario deleted.")
-                else:
-                    print("Scenario not found.")
+            name_or_id = input("\nEnter scenario name or ID to delete: ").strip()
+
+            # Try to find scenario by name or ID to get the actual ID
+            scenario = library.load_scenario(name_or_id)
+            if scenario:
+                scenario_name = scenario.get('name', 'Unknown')
+                scenario_id = scenario.get('id', name_or_id)
+                confirm = input(f"Delete scenario '{scenario_name}' ({scenario_id})? (y/n): ").strip().lower()
+                if confirm == 'y':
+                    if library.delete_scenario(scenario_id):
+                        print("✓ Scenario deleted.")
+                    else:
+                        print("Scenario not found.")
+            else:
+                print(f"Scenario '{name_or_id}' not found.")
 
         elif choice == '5':
             break
@@ -1013,13 +1043,21 @@ def manage_sessions(game_data: GameData):
 
         elif choice == '5':
             # Delete session
-            name = input("\nEnter session ID to delete: ").strip()
-            confirm = input(f"Delete session {name}? (y/n): ").strip().lower()
-            if confirm == 'y':
-                if session_mgr.delete_session(name):
-                    print("✓ Session deleted.")
-                else:
-                    print("Session not found.")
+            name_or_id = input("\nEnter session name or ID to delete: ").strip()
+
+            # Try to find session by ID (sessions are stored by ID)
+            session_data = session_mgr.load_session(name_or_id)
+            if session_data:
+                session_name = session_data.get('name', 'Unknown')
+                session_id = name_or_id
+                confirm = input(f"Delete session '{session_name}' ({session_id})? (y/n): ").strip().lower()
+                if confirm == 'y':
+                    if session_mgr.delete_session(session_id):
+                        print("✓ Session deleted.")
+                    else:
+                        print("Session not found.")
+            else:
+                print(f"Session '{name_or_id}' not found.")
 
         elif choice == '6':
             break
