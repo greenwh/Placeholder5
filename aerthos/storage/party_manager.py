@@ -15,7 +15,7 @@ from .character_roster import CharacterRoster
 class PartyManager:
     """Manages persistent party configurations"""
 
-    def __init__(self, parties_dir: str = None):
+    def __init__(self, parties_dir: str = None, character_roster: 'CharacterRoster' = None):
         if parties_dir is None:
             self.parties_dir = Path.home() / '.aerthos' / 'parties'
         else:
@@ -24,7 +24,11 @@ class PartyManager:
         # Create directory if it doesn't exist
         self.parties_dir.mkdir(parents=True, exist_ok=True)
 
-        self.character_roster = CharacterRoster()
+        # Use provided roster or create default one
+        if character_roster is not None:
+            self.character_roster = character_roster
+        else:
+            self.character_roster = CharacterRoster()
 
     def save_party(self, party_name: str, character_ids: List[str],
                    formation: List[str], party_id: str = None) -> str:

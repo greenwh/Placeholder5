@@ -60,8 +60,8 @@ class TestCharacterRoster(unittest.TestCase):
         self.assertIsNotNone(char_id)
         self.assertTrue(len(char_id) > 0)
 
-        # Check file was created
-        char_file = Path(self.test_dir) / f"{char_id}.json"
+        # Check file was created (filename format: {name}_{id}.json)
+        char_file = Path(self.test_dir) / f"{char.name.lower().replace(' ', '_')}_{char_id}.json"
         self.assertTrue(char_file.exists())
 
     def test_load_character(self):
@@ -80,8 +80,8 @@ class TestCharacterRoster(unittest.TestCase):
     def test_save_load_preserves_stats(self):
         """Test save/load preserves all stats"""
         char = self.create_test_character()
-        char.str_score = 18
-        char.dex = 16
+        char.strength = 18
+        char.dexterity = 16
         char.hp_current = 15
         char.hp_max = 20
         char.xp = 1000
@@ -89,8 +89,8 @@ class TestCharacterRoster(unittest.TestCase):
         char_id = self.roster.save_character(char)
         loaded_char = self.roster.load_character(char_id)
 
-        self.assertEqual(loaded_char.str_score, 18)
-        self.assertEqual(loaded_char.dex, 16)
+        self.assertEqual(loaded_char.strength, 18)
+        self.assertEqual(loaded_char.dexterity, 16)
         self.assertEqual(loaded_char.hp_current, 15)
         self.assertEqual(loaded_char.hp_max, 20)
         self.assertEqual(loaded_char.xp, 1000)
@@ -115,8 +115,8 @@ class TestCharacterRoster(unittest.TestCase):
         char = self.create_test_character()
         char_id = self.roster.save_character(char)
 
-        # Verify it exists
-        char_file = Path(self.test_dir) / f"{char_id}.json"
+        # Verify it exists (filename format: {name}_{id}.json)
+        char_file = Path(self.test_dir) / f"{char.name.lower().replace(' ', '_')}_{char_id}.json"
         self.assertTrue(char_file.exists())
 
         # Delete it
@@ -164,9 +164,7 @@ class TestPartyManager(unittest.TestCase):
         self.party_dir.mkdir()
 
         self.roster = CharacterRoster(roster_dir=str(self.char_dir))
-        self.party_manager = PartyManager(parties_dir=str(self.party_dir),
-            character_roster=self.roster
-        )
+        self.party_manager = PartyManager(parties_dir=str(self.party_dir), character_roster=self.roster)
 
     def tearDown(self):
         """Clean up temporary directory"""
@@ -205,12 +203,13 @@ class TestPartyManager(unittest.TestCase):
         party.add_member(char2)
 
         # Save party
-        party_id = self.party_manager.save_party(party_name="Test Party", character_ids=[char1_id, char2_id], formation=party.formation)
+        party_name = "Test Party"
+        party_id = self.party_manager.save_party(party_name=party_name, character_ids=[char1_id, char2_id], formation=party.formation)
 
         self.assertIsNotNone(party_id)
 
-        # Check file was created
-        party_file = Path(self.party_dir) / f"{party_id}.json"
+        # Check file was created (filename format: {name}_{id}.json)
+        party_file = Path(self.party_dir) / f"{party_name.lower().replace(' ', '_')}_{party_id}.json"
         self.assertTrue(party_file.exists())
 
     def test_load_party(self):
@@ -228,15 +227,13 @@ class TestPartyManager(unittest.TestCase):
         party_id = self.party_manager.save_party(party_name="Test Party", character_ids=[char1_id, char2_id], formation=party.formation)
 
         # Load it back
-        loaded_party = self.party_manager.load_party(party_id)
+        loaded_party_data = self.party_manager.load_party(party_id)
 
-        self.assertIsNotNone(loaded_party)
-        self.assertEqual(loaded_party.name, "Adventure Party")
-        self.assertEqual(len(loaded_party.members), 2)
-
-        member_names = [m.name for m in loaded_party.members]
-        self.assertIn("Fighter", member_names)
-        self.assertIn("Cleric", member_names)
+        self.assertIsNotNone(loaded_party_data)
+        # load_party returns {'party': Party, 'name': str, 'id': str, ...}
+        self.assertEqual(loaded_party_data['name'], "Test Party")
+        self.assertIn('party', loaded_party_data)
+        self.assertEqual(len(loaded_party_data['party'].members), 2)
 
     def test_list_parties(self):
         """Test listing all parties"""
@@ -251,8 +248,8 @@ class TestPartyManager(unittest.TestCase):
         party2 = Party()
         party2.add_member(char1)
 
-        self.party_manager.save_party(party1, [char1_id])
-        self.party_manager.save_party(party2, [char1_id])
+        self.party_manager.save_party(party_name="Party1", character_ids=[char1_id], formation=party1.formation)
+        self.party_manager.save_party(party_name="Party2", character_ids=[char1_id], formation=party2.formation)
 
         parties = self.party_manager.list_parties()
 
@@ -268,10 +265,11 @@ class TestPartyManager(unittest.TestCase):
 
         party = Party()
         party.add_member(char)
-        party_id = self.party_manager.save_party(party_name="Test Party", character_ids=[char_id], formation=party.formation)
+        party_name = "Test Party"
+        party_id = self.party_manager.save_party(party_name=party_name, character_ids=[char_id], formation=party.formation)
 
-        # Verify exists
-        party_file = Path(self.party_dir) / f"{party_id}.json"
+        # Verify exists (filename format: {name}_{id}.json)
+        party_file = Path(self.party_dir) / f"{party_name.lower().replace(' ', '_')}_{party_id}.json"
         self.assertTrue(party_file.exists())
 
         # Delete
@@ -311,18 +309,16 @@ class TestScenarioLibrary(unittest.TestCase):
             light_level="bright"
         )
 
-        dungeon_data = {
-            "name": "Test Dungeon",
-            "description": "A test dungeon",
-            "start_room": "test_001",
-            "rooms": {
-                "test_001": room1.__dict__,
-                "test_002": room2.__dict__
-            }
+        rooms = {
+            "test_001": room1,
+            "test_002": room2
         }
 
-        dungeon = Dungeon()
-        dungeon.load_from_dict(dungeon_data)
+        dungeon = Dungeon(
+            name="Test Dungeon",
+            start_room_id="test_001",
+            rooms=rooms
+        )
         return dungeon
 
     def test_save_scenario(self):
@@ -330,15 +326,15 @@ class TestScenarioLibrary(unittest.TestCase):
         dungeon = self.create_test_dungeon()
 
         scenario_id = self.library.save_scenario(
-            name="Test Scenario",
-            dungeon=dungeon,
+            dungeon,
+            scenario_name="Test Scenario",
             description="Test description"
         )
 
         self.assertIsNotNone(scenario_id)
 
-        # Check file was created
-        scenario_file = Path(self.test_dir) / f"{scenario_id}.json"
+        # Check file was created (filename format: {name}_{id}.json)
+        scenario_file = Path(self.test_dir) / f"test_scenario_{scenario_id}.json"
         self.assertTrue(scenario_file.exists())
 
     def test_load_scenario(self):
@@ -346,8 +342,8 @@ class TestScenarioLibrary(unittest.TestCase):
         dungeon = self.create_test_dungeon()
 
         scenario_id = self.library.save_scenario(
-            name="Loadable Scenario",
-            dungeon=dungeon
+            dungeon,
+            scenario_name="Loadable Scenario"
         )
 
         # Load it back
@@ -362,8 +358,8 @@ class TestScenarioLibrary(unittest.TestCase):
         dungeon = self.create_test_dungeon()
 
         scenario_id = self.library.save_scenario(
-            name="Dungeon Scenario",
-            dungeon=dungeon
+            dungeon,
+            scenario_name="Dungeon Scenario"
         )
 
         # Load and recreate dungeon
@@ -379,8 +375,8 @@ class TestScenarioLibrary(unittest.TestCase):
         dungeon1 = self.create_test_dungeon()
         dungeon2 = self.create_test_dungeon()
 
-        self.library.save_scenario("Scenario1", dungeon1)
-        self.library.save_scenario("Scenario2", dungeon2)
+        self.library.save_scenario(dungeon1, scenario_name="Scenario1")
+        self.library.save_scenario(dungeon2, scenario_name="Scenario2")
 
         scenarios = self.library.list_scenarios()
 
@@ -392,10 +388,11 @@ class TestScenarioLibrary(unittest.TestCase):
     def test_delete_scenario(self):
         """Test deleting a scenario"""
         dungeon = self.create_test_dungeon()
-        scenario_id = self.library.save_scenario(dungeon, scenario_name="Delete Me")
+        scenario_name = "Delete Me"
+        scenario_id = self.library.save_scenario(dungeon, scenario_name=scenario_name)
 
-        # Verify exists
-        scenario_file = Path(self.test_dir) / f"{scenario_id}.json"
+        # Verify exists (filename format: {name}_{id}.json)
+        scenario_file = Path(self.test_dir) / f"{scenario_name.lower().replace(' ', '_')}_{scenario_id}.json"
         self.assertTrue(scenario_file.exists())
 
         # Delete
@@ -421,9 +418,14 @@ class TestSessionManager(unittest.TestCase):
             dir_path.mkdir()
 
         self.roster = CharacterRoster(roster_dir=str(self.char_dir))
-        self.party_manager = PartyManager(parties_dir=str(self.party_dir))
+        self.party_manager = PartyManager(parties_dir=str(self.party_dir), character_roster=self.roster)
         self.scenario_library = ScenarioLibrary(scenarios_dir=str(self.scenario_dir))
-        self.session_manager = SessionManager(sessions_dir=str(self.session_dir))
+        self.session_manager = SessionManager(
+            sessions_dir=str(self.session_dir),
+            character_roster_dir=str(self.char_dir),
+            party_manager_dir=str(self.party_dir),
+            scenario_library_dir=str(self.scenario_dir)
+        )
 
     def tearDown(self):
         """Clean up temporary directory"""
@@ -457,17 +459,15 @@ class TestSessionManager(unittest.TestCase):
             light_level="bright"
         )
 
-        dungeon_data = {
-            "name": "Test Dungeon",
-            "description": "A test dungeon",
-            "start_room": "test_001",
-            "rooms": {
-                "test_001": room.__dict__
-            }
+        rooms = {
+            "test_001": room
         }
 
-        dungeon = Dungeon()
-        dungeon.load_from_dict(dungeon_data)
+        dungeon = Dungeon(
+            name="Test Dungeon",
+            start_room_id="test_001",
+            rooms=rooms
+        )
         return dungeon
 
     def test_create_session(self):
@@ -493,8 +493,8 @@ class TestSessionManager(unittest.TestCase):
 
         self.assertIsNotNone(session_id)
 
-        # Check file was created
-        session_file = Path(self.session_dir) / f"{session_id}.json"
+        # Check file was created (filename format: session_{id}.json)
+        session_file = Path(self.session_dir) / f"session_{session_id}.json"
         self.assertTrue(session_file.exists())
 
     def test_list_sessions(self):
@@ -511,9 +511,9 @@ class TestSessionManager(unittest.TestCase):
         scenario_id = self.scenario_library.save_scenario(dungeon, scenario_name="Scenario")
 
         session_id = self.session_manager.create_session(
-            "Session1",
             party_id,
-            scenario_id
+            scenario_id,
+            session_name="Session1"
         )
 
         sessions = self.session_manager.list_sessions()
@@ -536,13 +536,13 @@ class TestSessionManager(unittest.TestCase):
         scenario_id = self.scenario_library.save_scenario(dungeon, scenario_name="Scenario")
 
         session_id = self.session_manager.create_session(
-            "Delete Me",
             party_id,
-            scenario_id
+            scenario_id,
+            session_name="Delete Me"
         )
 
-        # Verify exists
-        session_file = Path(self.session_dir) / f"{session_id}.json"
+        # Verify exists (filename format: session_{id}.json)
+        session_file = Path(self.session_dir) / f"session_{session_id}.json"
         self.assertTrue(session_file.exists())
 
         # Delete

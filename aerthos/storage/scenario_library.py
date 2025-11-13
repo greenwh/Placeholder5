@@ -51,7 +51,7 @@ class ScenarioLibrary:
             'description': description,
             'difficulty': difficulty,
             'created': datetime.now().isoformat(),
-            'dungeon_data': dungeon.serialize(),
+            'dungeon_data': dungeon.to_dict(),  # Use to_dict() for full structure
             'num_rooms': len(dungeon.rooms),
             'start_room': dungeon.start_room_id
         }
@@ -183,17 +183,24 @@ class ScenarioLibrary:
 
         return False
 
-    def create_dungeon_from_scenario(self, scenario_data: Dict):
+    def create_dungeon_from_scenario(self, scenario_data):
         """
         Recreate a Dungeon instance from saved scenario data
 
         Args:
-            scenario_data: Scenario data dictionary
+            scenario_data: Either scenario ID (str) or scenario data dictionary (Dict)
 
         Returns:
             Dungeon instance
         """
         from ..world.dungeon import Dungeon
+
+        # If scenario_data is a string, treat it as ID and load the scenario
+        if isinstance(scenario_data, str):
+            scenario_id = scenario_data
+            scenario_data = self.load_scenario(scenario_id=scenario_id)
+            if not scenario_data:
+                raise ValueError(f"Scenario {scenario_id} not found")
 
         dungeon_data = scenario_data['dungeon_data']
 

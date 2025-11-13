@@ -18,7 +18,8 @@ from .scenario_library import ScenarioLibrary
 class SessionManager:
     """Manages active game sessions"""
 
-    def __init__(self, sessions_dir: str = None):
+    def __init__(self, sessions_dir: str = None, character_roster_dir: str = None,
+                 party_manager_dir: str = None, scenario_library_dir: str = None):
         if sessions_dir is None:
             self.sessions_dir = Path.home() / '.aerthos' / 'sessions'
         else:
@@ -27,9 +28,10 @@ class SessionManager:
         # Create directory if it doesn't exist
         self.sessions_dir.mkdir(parents=True, exist_ok=True)
 
-        self.character_roster = CharacterRoster()
-        self.party_manager = PartyManager()
-        self.scenario_library = ScenarioLibrary()
+        # Initialize managers with specified or default directories
+        self.character_roster = CharacterRoster(roster_dir=character_roster_dir) if character_roster_dir else CharacterRoster()
+        self.party_manager = PartyManager(parties_dir=party_manager_dir, character_roster=self.character_roster) if party_manager_dir else PartyManager()
+        self.scenario_library = ScenarioLibrary(scenarios_dir=scenario_library_dir) if scenario_library_dir else ScenarioLibrary()
 
     def create_session(self, party_id: str, scenario_id: str,
                       session_name: str = None, session_id: str = None) -> str:

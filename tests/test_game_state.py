@@ -251,7 +251,7 @@ class TestGameStateCommands(unittest.TestCase):
 
     def test_status_command(self):
         """Test status command"""
-        cmd = Command(action="status""status")
+        cmd = Command(action="status")
         result = self.game_state.execute_command(cmd)
 
         self.assertIsNotNone(result)
@@ -260,7 +260,7 @@ class TestGameStateCommands(unittest.TestCase):
 
     def test_move_command_valid(self):
         """Test valid movement"""
-        cmd = Command(action="move", target="north""north")
+        cmd = Command(action="move", target="north")
         result = self.game_state.execute_command(cmd)
 
         self.assertIsNotNone(result)
@@ -270,7 +270,7 @@ class TestGameStateCommands(unittest.TestCase):
 
     def test_move_command_invalid_direction(self):
         """Test movement in invalid direction"""
-        cmd = Command(action="move", target="west""west")
+        cmd = Command(action="move", target="west")
         result = self.game_state.execute_command(cmd)
 
         self.assertIsNotNone(result)
@@ -280,7 +280,7 @@ class TestGameStateCommands(unittest.TestCase):
 
     def test_map_command(self):
         """Test map command"""
-        cmd = Command(action="map""map")
+        cmd = Command(action="map")
         result = self.game_state.execute_command(cmd)
 
         self.assertIsNotNone(result)
@@ -288,7 +288,7 @@ class TestGameStateCommands(unittest.TestCase):
 
     def test_help_command(self):
         """Test help command"""
-        cmd = Command(action="help""help")
+        cmd = Command(action="help")
         result = self.game_state.execute_command(cmd)
 
         self.assertIsNotNone(result)
@@ -296,7 +296,7 @@ class TestGameStateCommands(unittest.TestCase):
 
     def test_unknown_command(self):
         """Test unknown command handling"""
-        cmd = Command(action="unknown_action_xyz""xyz")
+        cmd = Command(action="unknown_action_xyz")
         result = self.game_state.execute_command(cmd)
 
         self.assertIsNotNone(result)
@@ -306,10 +306,10 @@ class TestGameStateCommands(unittest.TestCase):
         """Test all commands return dict with 'message' key"""
         commands = [
             Command(action="look"),
-            Command(action="inventory""i"),
-            Command(action="status""status"),
-            Command(action="help""help"),
-            Command(action="map""map")
+            Command(action="inventory"),
+            Command(action="status"),
+            Command(action="help"),
+            Command(action="map")
         ]
 
         for cmd in commands:
@@ -455,22 +455,22 @@ class TestGameStateIntegration(unittest.TestCase):
         self.assertEqual(game_state.current_room.id, "test_001")
 
         # Move north to room 2
-        cmd = Command(action="move", target="north""north")
+        cmd = Command(action="move", target="north")
         result = game_state.execute_command(cmd)
         self.assertEqual(game_state.current_room.id, "test_002")
 
         # Move back south
-        cmd = Command(action="move", target="south""south")
+        cmd = Command(action="move", target="south")
         result = game_state.execute_command(cmd)
         self.assertEqual(game_state.current_room.id, "test_001")
 
         # Move east to room 3
-        cmd = Command(action="move", target="east""east")
+        cmd = Command(action="move", target="east")
         result = game_state.execute_command(cmd)
         self.assertEqual(game_state.current_room.id, "test_003")
 
         # Move back west
-        cmd = Command(action="move", target="west""west")
+        cmd = Command(action="move", target="west")
         result = game_state.execute_command(cmd)
         self.assertEqual(game_state.current_room.id, "test_001")
 

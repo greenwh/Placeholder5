@@ -136,6 +136,31 @@ class Dungeon:
             }
         }
 
+    def to_dict(self) -> Dict:
+        """
+        Convert dungeon to full dictionary representation for scenario saving
+
+        Returns:
+            Dictionary with complete dungeon structure
+        """
+        return {
+            'name': self.name,
+            'start_room': self.start_room_id,  # Note: 'start_room' for compatibility with load_from_generator
+            'rooms': {
+                room_id: {
+                    'id': room.id,
+                    'title': room.title,
+                    'description': room.description,
+                    'light_level': room.light_level,
+                    'exits': room.exits,
+                    'items': room.items,
+                    'safe_rest': room.is_safe_for_rest,
+                    'encounters': self.room_data.get(room_id, {}).get('encounters', []) if self.room_data else []
+                }
+                for room_id, room in self.rooms.items()
+            }
+        }
+
     @classmethod
     def deserialize(cls, data: Dict, original_dungeon_file: str) -> 'Dungeon':
         """

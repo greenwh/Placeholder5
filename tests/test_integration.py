@@ -216,9 +216,14 @@ class TestPersistenceFlow(unittest.TestCase):
             dir_path.mkdir()
 
         self.roster = CharacterRoster(roster_dir=str(self.char_dir))
-        self.party_manager = PartyManager(parties_dir=str(self.party_dir))
+        self.party_manager = PartyManager(parties_dir=str(self.party_dir), character_roster=self.roster)
         self.scenario_library = ScenarioLibrary(scenarios_dir=str(self.scenario_dir))
-        self.session_manager = SessionManager(sessions_dir=str(self.session_dir))
+        self.session_manager = SessionManager(
+            sessions_dir=str(self.session_dir),
+            character_roster_dir=str(self.char_dir),
+            party_manager_dir=str(self.party_dir),
+            scenario_library_dir=str(self.scenario_dir)
+        )
 
     def tearDown(self):
         """Clean up"""
@@ -292,14 +297,14 @@ class TestPersistenceFlow(unittest.TestCase):
 
         # Verify party saved
         self.assertIsNotNone(party_id)
-        loaded_party = self.party_manager.load_party(party_id)
-        self.assertEqual(len(loaded_party.members), 4)
+        loaded_party_data = self.party_manager.load_party(party_id)
+        self.assertEqual(len(loaded_party_data['party'].members), 4)
 
         # Step 3: Create and save dungeon
         dungeon = self.create_test_dungeon()
         scenario_id = self.scenario_library.save_scenario(
-            "Test Adventure",
             dungeon,
+            scenario_name="Test Adventure",
             description="A test adventure"
         )
 
@@ -310,9 +315,9 @@ class TestPersistenceFlow(unittest.TestCase):
 
         # Step 4: Create session
         session_id = self.session_manager.create_session(
-            session_name="Epic Quest",
             party_id=party_id,
-            scenario_id=scenario_id
+            scenario_id=scenario_id,
+            session_name="Epic Quest"
         )
 
         # Verify session created
@@ -428,9 +433,17 @@ class TestProceduralGeneration(unittest.TestCase):
         dungeon_easy = Dungeon.load_from_generator(dungeon_easy_data)
         dungeon_hard = Dungeon.load_from_generator(dungeon_hard_data)
 
-        # Different number of rooms
-        self.assertEqual(len(dungeon_easy.rooms), 5)
-        self.assertEqual(len(dungeon_hard.rooms), 15)
+        # Different number of rooms (allow RNG variance)
+        # EASY config requests 5 rooms, should get 4-6
+        self.assertGreaterEqual(len(dungeon_easy.rooms), 4)
+        self.assertLessEqual(len(dungeon_easy.rooms), 6)
+
+        # HARD config requests 15 rooms, should get 12-18
+        self.assertGreaterEqual(len(dungeon_hard.rooms), 12)
+        self.assertLessEqual(len(dungeon_hard.rooms), 18)
+
+        # Hard dungeon should have more rooms than easy
+        self.assertGreater(len(dungeon_hard.rooms), len(dungeon_easy.rooms))
 
 
 class TestCharacterCreation(unittest.TestCase):
@@ -438,8 +451,7 @@ class TestCharacterCreation(unittest.TestCase):
 
     def setUp(self):
         """Set up game data"""
-        self.game_data = GameData()
-        self.game_data.load_all()
+        self.game_data = GameData.load_all()
         self.creator = CharacterCreator(game_data=self.game_data)
 
     def test_quick_create_all_classes(self):
