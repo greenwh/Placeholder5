@@ -131,6 +131,8 @@ class CharacterRoster:
                         'level': data['level'],
                         'xp': data['xp'],
                         'hp': f"{data['hp_current']}/{data['hp_max']}",
+                        'ac': data.get('ac', 10),
+                        'gold': data.get('gold', 0),
                         'created': data['created']
                     })
             except Exception as e:

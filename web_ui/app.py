@@ -333,21 +333,40 @@ def create_character():
     """Create a new character"""
     try:
         data = request.json
+
+        # Validate input
+        name = data.get('name')
+        race = data.get('race')
+        char_class = data.get('char_class')
+
+        if not name or not race or not char_class:
+            return jsonify({'success': False, 'error': 'Name, race, and class are required'})
+
+        # Validate race and class are implemented
+        valid_races = ['Human', 'Elf', 'Dwarf', 'Halfling']
+        valid_classes = ['Fighter', 'Cleric', 'Magic-User', 'Thief']
+
+        if race not in valid_races:
+            return jsonify({'success': False, 'error': f'Race "{race}" not implemented. Available: {", ".join(valid_races)}'})
+
+        if char_class not in valid_classes:
+            return jsonify({'success': False, 'error': f'Class "{char_class}" not implemented. Available: {", ".join(valid_classes)}'})
+
         game_data = GameData.load_all()
         creator = CharacterCreator(game_data)
 
         # Quick create character
-        character = creator.quick_create(
-            data.get('name'),
-            data.get('race'),
-            data.get('char_class')
-        )
+        character = creator.quick_create(name, race, char_class)
 
         # Save to roster
         roster = CharacterRoster()
         char_id = roster.save_character(character)
 
         return jsonify({'success': True, 'character_id': char_id})
+    except KeyError as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'success': False, 'error': f'Missing game data for: {str(e)}'})
     except Exception as e:
         import traceback
         traceback.print_exc()
