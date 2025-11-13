@@ -952,12 +952,17 @@ def manage_sessions(game_data: GameData):
                     print(f"{i}. {char['name']} ({char['race']} {char['char_class']} Lvl {char['level']}) [ID: {char['id']}]")
 
                 char_choice = input(f"\nSelect character (1-{len(characters)}): ").strip()
-                try:
-                    char_idx = int(char_choice) - 1
-                    if char_idx < 0 or char_idx >= len(characters):
-                        print("Invalid selection.")
-                        continue
 
+                if not char_choice.isdigit():
+                    print(f"Invalid input '{char_choice}'. Please enter a number.")
+                    continue
+
+                char_idx = int(char_choice) - 1
+                if char_idx < 0 or char_idx >= len(characters):
+                    print(f"Invalid selection. Please choose between 1 and {len(characters)}.")
+                    continue
+
+                try:
                     char_id = characters[char_idx]['id']
 
                     # Create a temporary solo party using the session manager's party manager
@@ -965,9 +970,6 @@ def manage_sessions(game_data: GameData):
                     party_id = session_mgr.party_manager.save_party([char_id], ['front'], solo_party_name)
                     print(f"\n✓ Created solo party: {solo_party_name}")
 
-                except ValueError:
-                    print("Invalid input. Please enter a number.")
-                    continue
                 except Exception as e:
                     print(f"Error creating solo party: {e}")
                     import traceback
