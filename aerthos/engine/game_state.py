@@ -191,12 +191,20 @@ class GameState:
         # Check if target died
         if result['defender_died']:
             self.active_monsters.remove(target)
-            level_up_msg = self.player.gain_xp(target.xp_value)
-            messages.append(f"You gain {target.xp_value} XP!")
 
-            # Check for level up
-            if level_up_msg:
-                messages.append(level_up_msg)
+            # Award XP to party or player
+            if hasattr(self, 'party') and self.party:
+                xp_per_member = target.xp_value // len(self.party.get_living_members())
+                for member in self.party.get_living_members():
+                    level_up_msg = member.gain_xp(xp_per_member)
+                    if level_up_msg:
+                        messages.append(f"{member.name}: {level_up_msg}")
+                messages.append(f"Party gains {target.xp_value} XP! ({xp_per_member} each)")
+            else:
+                level_up_msg = self.player.gain_xp(target.xp_value)
+                messages.append(f"You gain {target.xp_value} XP!")
+                if level_up_msg:
+                    messages.append(level_up_msg)
 
             # Check if combat over
             if not any(m.is_alive for m in self.active_monsters):
@@ -222,6 +230,10 @@ class GameState:
                     messages.append("\n═══ YOU HAVE DIED ═══")
                     self.is_active = False
                     return {'success': False, 'message': '\n'.join(messages)}
+
+        # Show monster status after combat round
+        if self.in_combat and self.active_monsters:
+            messages.append(self._format_monster_status())
 
         # Advance time (combat takes time)
         time_messages = self.time_tracker.advance_turn(self.player)
@@ -333,18 +345,21 @@ class GameState:
             return {'success': False, 'message': "Cast what spell?"}
 
         # Parse spell name and optional target from command
-        # Examples: "cast cure" or "cast cure bob" or "cast cure light wounds alice"
-        parts = command.target.split()
-        spell_name = parts[0]
-        target_name = parts[-1] if len(parts) > 1 else None
+        # Examples: "cast cure" or "cast cure thorin" or "cast cure light wounds" or "cast magic missile goblin"
+        full_command = command.target
+        spell_name = full_command
+        target_name = None
 
-        # Check if target_name is actually part of spell name or a character name
-        # If it's a spell keyword, it's part of spell name, otherwise it's a character
-        spell_keywords = ['light', 'wounds', 'missile', 'hands', 'evil', 'magic', 'from', 'person']
-        if target_name and target_name.lower() in spell_keywords:
-            # It's part of the spell name
-            spell_name = command.target
-            target_name = None
+        # Check if last word is a party member name (for beneficial spells)
+        parts = full_command.split()
+        if len(parts) > 1 and hasattr(self, 'party') and self.party:
+            potential_target = parts[-1]
+            # Check if it matches a party member
+            for member in self.party.members:
+                if potential_target.lower() in member.name.lower():
+                    target_name = potential_target
+                    spell_name = ' '.join(parts[:-1])
+                    break
 
         # Determine if this is a beneficial spell (healing/buff) or harmful spell
         spell_name_lower = spell_name.lower()
@@ -377,14 +392,50 @@ class GameState:
 
         result = self.magic_system.cast_spell(self.player, spell_name, targets)
 
+        messages = [result['narrative']]
+
+        # Check if any monsters died from the spell
+        if not is_beneficial and self.active_monsters:
+            dead_monsters = [m for m in self.active_monsters if not m.is_alive]
+            for monster in dead_monsters:
+                self.active_monsters.remove(monster)
+
+                # Award XP to party or player
+                if hasattr(self, 'party') and self.party:
+                    xp_per_member = monster.xp_value // len(self.party.get_living_members())
+                    for member in self.party.get_living_members():
+                        level_up_msg = member.gain_xp(xp_per_member)
+                        if level_up_msg:
+                            messages.append(f"{member.name}: {level_up_msg}")
+                    messages.append(f"Party gains {monster.xp_value} XP! ({xp_per_member} each)")
+                else:
+                    level_up_msg = self.player.gain_xp(monster.xp_value)
+                    messages.append(f"You gain {monster.xp_value} XP!")
+                    if level_up_msg:
+                        messages.append(level_up_msg)
+
+            # Check if combat is over
+            if not any(m.is_alive for m in self.active_monsters):
+                self.in_combat = False
+                messages.append("\n═══ VICTORY ═══")
+
+                # Award boss treasure if applicable
+                if self.current_encounter and self.current_encounter.is_boss:
+                    treasure_msg = self._award_boss_treasure()
+                    if treasure_msg:
+                        messages.append(treasure_msg)
+
+                self.current_encounter = None
+
+        # Show monster status after spell if still in combat
+        if self.in_combat and self.active_monsters:
+            messages.append(self._format_monster_status())
+
         # Advance time (spell casting takes time)
         time_messages = self.time_tracker.advance_turn(self.player)
-        if time_messages:
-            full_message = result['narrative'] + '\n' + '\n'.join(time_messages)
-        else:
-            full_message = result['narrative']
+        messages.extend(time_messages)
 
-        return {'success': result['success'], 'message': full_message}
+        return {'success': result['success'], 'message': '\n'.join(messages)}
 
     def _handle_search(self, command: Command) -> Dict:
         """Handle searching"""
@@ -752,7 +803,30 @@ class GameState:
         self.current_encounter = encounter  # Track current encounter
 
         monster_names = ', '.join(m.name for m in self.active_monsters)
-        return f"\n═══ COMBAT ═══\nYou encounter: {monster_names}!\n"
+        return f"\n═══ COMBAT ═══\nYou encounter: {monster_names}!\n{self._format_monster_status()}"
+
+    def _format_monster_status(self) -> str:
+        """Format current monster HP/status for display"""
+        if not self.active_monsters:
+            return ""
+
+        lines = ["\n--- Enemies ---"]
+        for i, monster in enumerate(self.active_monsters, 1):
+            if monster.is_alive:
+                hp_percent = (monster.hp_current / monster.hp_max) * 100
+                if hp_percent > 75:
+                    status = "Healthy"
+                elif hp_percent > 50:
+                    status = "Injured"
+                elif hp_percent > 25:
+                    status = "Badly Wounded"
+                else:
+                    status = "Near Death"
+                lines.append(f"{i}. {monster.name}: {monster.hp_current}/{monster.hp_max} HP ({status})")
+            else:
+                lines.append(f"{i}. {monster.name}: DEAD")
+
+        return '\n'.join(lines)
 
     def _award_boss_treasure(self) -> Optional[str]:
         """Award treasure for defeating a boss"""
