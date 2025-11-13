@@ -622,10 +622,11 @@ def load_session(session_id):
         if not session_data:
             return jsonify({'success': False, 'error': 'Session not found'})
 
-        # Load party
-        party = party_mgr.load_party(session_data['party_id'])
-        if not party:
+        # Load party (returns dict with 'party' key containing Party object)
+        party_data = party_mgr.load_party(party_id=session_data['party_id'])
+        if not party_data:
             return jsonify({'success': False, 'error': 'Party not found'})
+        party = party_data['party']
 
         # Load scenario
         scenario_data = library.load_scenario(session_data['scenario_id'])
