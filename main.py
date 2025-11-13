@@ -954,17 +954,24 @@ def manage_sessions(game_data: GameData):
                 char_choice = input(f"\nSelect character (1-{len(characters)}): ").strip()
                 try:
                     char_idx = int(char_choice) - 1
+                    if char_idx < 0 or char_idx >= len(characters):
+                        print("Invalid selection.")
+                        continue
+
                     char_id = characters[char_idx]['id']
 
-                    # Create a temporary solo party
-                    from aerthos.storage.party_manager import PartyManager
-                    party_mgr = PartyManager()
+                    # Create a temporary solo party using the session manager's party manager
                     solo_party_name = f"Solo: {characters[char_idx]['name']}"
-                    party_id = party_mgr.save_party([char_id], ['front'], solo_party_name)
+                    party_id = session_mgr.party_manager.save_party([char_id], ['front'], solo_party_name)
                     print(f"\n✓ Created solo party: {solo_party_name}")
 
-                except (ValueError, IndexError):
-                    print("Invalid selection.")
+                except ValueError:
+                    print("Invalid input. Please enter a number.")
+                    continue
+                except Exception as e:
+                    print(f"Error creating solo party: {e}")
+                    import traceback
+                    traceback.print_exc()
                     continue
 
             elif session_type == '2':
