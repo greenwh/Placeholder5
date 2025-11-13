@@ -421,15 +421,9 @@ class TestSessionManager(unittest.TestCase):
             dir_path.mkdir()
 
         self.roster = CharacterRoster(roster_dir=str(self.char_dir))
-        self.party_manager = PartyManager(parties_dir=str(self.party_dir),
-            character_roster=self.roster
-        )
+        self.party_manager = PartyManager(parties_dir=str(self.party_dir))
         self.scenario_library = ScenarioLibrary(scenarios_dir=str(self.scenario_dir))
-        self.session_manager = SessionManager(sessions_dir=str(self.session_dir),
-            character_roster=self.roster,
-            party_manager=self.party_manager,
-            scenario_library=self.scenario_library
-        )
+        self.session_manager = SessionManager(sessions_dir=str(self.session_dir))
 
     def tearDown(self):
         """Clean up temporary directory"""

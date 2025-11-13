@@ -24,8 +24,8 @@ class TestGameData(unittest.TestCase):
 
     def test_game_data_loads(self):
         """Test that GameData loads all JSON files"""
-        data = GameData()
-        data.load_all()
+        # load_all() is a class method that returns a loaded instance
+        data = GameData.load_all()
 
         # Check all data dictionaries are populated
         self.assertIsNotNone(data.classes)
@@ -42,8 +42,7 @@ class TestGameData(unittest.TestCase):
 
     def test_classes_data_structure(self):
         """Test classes data has expected structure"""
-        data = GameData()
-        data.load_all()
+        data = GameData.load_all()
 
         # Should have 4 classes
         self.assertGreaterEqual(len(data.classes), 4)
@@ -55,27 +54,25 @@ class TestGameData(unittest.TestCase):
 
         # Check class structure
         fighter = data.classes['Fighter']
-        self.assertIn('name', fighter)
+        # Class data doesn't have 'name' field, the key IS the name
         self.assertIn('hit_die', fighter)
         self.assertIn('thac0_progression', fighter)
 
     def test_races_data_structure(self):
         """Test races data has expected structure"""
-        data = GameData()
-        data.load_all()
+        data = GameData.load_all()
 
         # Should have 4 races
         self.assertGreaterEqual(len(data.races), 4)
 
-        # Check for expected races
-        expected_races = ['human', 'elf', 'dwarf', 'halfling']
+        # Check for expected races (capitalized in data)
+        expected_races = ['Human', 'Elf', 'Dwarf', 'Halfling']
         for race in expected_races:
             self.assertIn(race, data.races)
 
     def test_monsters_data_structure(self):
         """Test monsters data has expected structure"""
-        data = GameData()
-        data.load_all()
+        data = GameData.load_all()
 
         self.assertGreater(len(data.monsters), 0)
 
@@ -90,8 +87,7 @@ class TestGameData(unittest.TestCase):
 
     def test_spells_data_structure(self):
         """Test spells data has expected structure"""
-        data = GameData()
-        data.load_all()
+        data = GameData.load_all()
 
         # Should have 7 implemented spells
         self.assertGreaterEqual(len(data.spells), 7)
@@ -175,7 +171,7 @@ class TestGameStateInitialization(unittest.TestCase):
 
         game_state = GameState(player=player, dungeon=dungeon)
 
-        self.assertEqual(game_state.current_room.room_id, "test_001")
+        self.assertEqual(game_state.current_room.id, "test_001")
 
 
 class TestGameStateCommands(unittest.TestCase):
@@ -204,18 +200,17 @@ class TestGameStateCommands(unittest.TestCase):
             light_level="bright"
         )
 
-        dungeon_data = {
-            "name": "Test Dungeon",
-            "description": "A test dungeon",
-            "start_room": "test_001",
-            "rooms": {
-                "test_001": room1.__dict__,
-                "test_002": room2.__dict__
-            }
+        rooms = {
+            "test_001": room1,
+            "test_002": room2
         }
 
-        dungeon = Dungeon()
-        dungeon.load_from_dict(dungeon_data)
+        # Dungeon constructor takes name, start_room_id, and rooms dict
+        dungeon = Dungeon(
+            name="Test Dungeon",
+            start_room_id="test_001",
+            rooms=rooms
+        )
         return dungeon
 
     def create_test_character(self):
@@ -239,7 +234,7 @@ class TestGameStateCommands(unittest.TestCase):
 
     def test_look_command(self):
         """Test look/examine command"""
-        cmd = Command(action="look", raw_input="look")
+        cmd = Command(action="look")
         result = self.game_state.execute_command(cmd)
 
         self.assertIsNotNone(result)
@@ -248,7 +243,7 @@ class TestGameStateCommands(unittest.TestCase):
 
     def test_inventory_command(self):
         """Test inventory command"""
-        cmd = Command(action="inventory", raw_input="inventory")
+        cmd = Command(action="inventory")
         result = self.game_state.execute_command(cmd)
 
         self.assertIsNotNone(result)
@@ -256,7 +251,7 @@ class TestGameStateCommands(unittest.TestCase):
 
     def test_status_command(self):
         """Test status command"""
-        cmd = Command(action="status", raw_input="status")
+        cmd = Command(action="status""status")
         result = self.game_state.execute_command(cmd)
 
         self.assertIsNotNone(result)
@@ -265,27 +260,27 @@ class TestGameStateCommands(unittest.TestCase):
 
     def test_move_command_valid(self):
         """Test valid movement"""
-        cmd = Command(action="move", direction="north", raw_input="north")
+        cmd = Command(action="move", target="north""north")
         result = self.game_state.execute_command(cmd)
 
         self.assertIsNotNone(result)
         self.assertIn('message', result)
         # Should have moved to room 2
-        self.assertEqual(self.game_state.current_room.room_id, "test_002")
+        self.assertEqual(self.game_state.current_room.id, "test_002")
 
     def test_move_command_invalid_direction(self):
         """Test movement in invalid direction"""
-        cmd = Command(action="move", direction="west", raw_input="west")
+        cmd = Command(action="move", target="west""west")
         result = self.game_state.execute_command(cmd)
 
         self.assertIsNotNone(result)
         self.assertIn('message', result)
         # Should not have moved
-        self.assertEqual(self.game_state.current_room.room_id, "test_001")
+        self.assertEqual(self.game_state.current_room.id, "test_001")
 
     def test_map_command(self):
         """Test map command"""
-        cmd = Command(action="map", raw_input="map")
+        cmd = Command(action="map""map")
         result = self.game_state.execute_command(cmd)
 
         self.assertIsNotNone(result)
@@ -293,7 +288,7 @@ class TestGameStateCommands(unittest.TestCase):
 
     def test_help_command(self):
         """Test help command"""
-        cmd = Command(action="help", raw_input="help")
+        cmd = Command(action="help""help")
         result = self.game_state.execute_command(cmd)
 
         self.assertIsNotNone(result)
@@ -301,7 +296,7 @@ class TestGameStateCommands(unittest.TestCase):
 
     def test_unknown_command(self):
         """Test unknown command handling"""
-        cmd = Command(action="unknown_action_xyz", raw_input="xyz")
+        cmd = Command(action="unknown_action_xyz""xyz")
         result = self.game_state.execute_command(cmd)
 
         self.assertIsNotNone(result)
@@ -310,11 +305,11 @@ class TestGameStateCommands(unittest.TestCase):
     def test_command_returns_dict(self):
         """Test all commands return dict with 'message' key"""
         commands = [
-            Command(action="look", raw_input="look"),
-            Command(action="inventory", raw_input="i"),
-            Command(action="status", raw_input="status"),
-            Command(action="help", raw_input="help"),
-            Command(action="map", raw_input="map")
+            Command(action="look"),
+            Command(action="inventory""i"),
+            Command(action="status""status"),
+            Command(action="help""help"),
+            Command(action="map""map")
         ]
 
         for cmd in commands:
@@ -336,17 +331,15 @@ class TestGameStateSerialization(unittest.TestCase):
             light_level="bright"
         )
 
-        dungeon_data = {
-            "name": "Test Dungeon",
-            "description": "A test dungeon",
-            "start_room": "test_001",
-            "rooms": {
-                "test_001": room1.__dict__
-            }
+        rooms = {
+            "test_001": room1
         }
 
-        dungeon = Dungeon()
-        dungeon.load_from_dict(dungeon_data)
+        dungeon = Dungeon(
+            name="Test Dungeon",
+            start_room_id="test_001",
+            rooms=rooms
+        )
 
         char = PlayerCharacter(
             name="Test Fighter",
@@ -388,7 +381,7 @@ class TestGameStateSerialization(unittest.TestCase):
                 # Fallback to manual serialization
                 data = {
                     'player': game_state.player.__dict__ if hasattr(game_state.player, '__dict__') else {},
-                    'current_room_id': game_state.current_room.room_id if game_state.current_room else None,
+                    'current_room_id': game_state.current_room.id if game_state.current_room else None,
                     'is_active': game_state.is_active,
                     'in_combat': game_state.in_combat
                 }
@@ -429,19 +422,17 @@ class TestGameStateIntegration(unittest.TestCase):
             light_level="bright"
         )
 
-        dungeon_data = {
-            "name": "Test Dungeon",
-            "description": "A test dungeon",
-            "start_room": "test_001",
-            "rooms": {
-                "test_001": room1.__dict__,
-                "test_002": room2.__dict__,
-                "test_003": room3.__dict__
-            }
+        rooms = {
+            "test_001": room1,
+            "test_002": room2,
+            "test_003": room3
         }
 
-        dungeon = Dungeon()
-        dungeon.load_from_dict(dungeon_data)
+        dungeon = Dungeon(
+            name="Test Dungeon",
+            start_room_id="test_001",
+            rooms=rooms
+        )
 
         char = PlayerCharacter(
             name="Explorer",
@@ -461,27 +452,27 @@ class TestGameStateIntegration(unittest.TestCase):
         game_state = GameState(player=char, dungeon=dungeon)
 
         # Start in room 1
-        self.assertEqual(game_state.current_room.room_id, "test_001")
+        self.assertEqual(game_state.current_room.id, "test_001")
 
         # Move north to room 2
-        cmd = Command(action="move", direction="north", raw_input="north")
+        cmd = Command(action="move", target="north""north")
         result = game_state.execute_command(cmd)
-        self.assertEqual(game_state.current_room.room_id, "test_002")
+        self.assertEqual(game_state.current_room.id, "test_002")
 
         # Move back south
-        cmd = Command(action="move", direction="south", raw_input="south")
+        cmd = Command(action="move", target="south""south")
         result = game_state.execute_command(cmd)
-        self.assertEqual(game_state.current_room.room_id, "test_001")
+        self.assertEqual(game_state.current_room.id, "test_001")
 
         # Move east to room 3
-        cmd = Command(action="move", direction="east", raw_input="east")
+        cmd = Command(action="move", target="east""east")
         result = game_state.execute_command(cmd)
-        self.assertEqual(game_state.current_room.room_id, "test_003")
+        self.assertEqual(game_state.current_room.id, "test_003")
 
         # Move back west
-        cmd = Command(action="move", direction="west", raw_input="west")
+        cmd = Command(action="move", target="west""west")
         result = game_state.execute_command(cmd)
-        self.assertEqual(game_state.current_room.room_id, "test_001")
+        self.assertEqual(game_state.current_room.id, "test_001")
 
 
 if __name__ == '__main__':

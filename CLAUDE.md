@@ -47,7 +47,7 @@ python web_ui/app.py
 # Gold Box style interface with visual party roster
 ```
 
-### Development
+### Development & Testing
 
 ```bash
 # No virtual environment needed - minimal dependencies
@@ -56,12 +56,55 @@ python -m venv venv
 source venv/bin/activate  # Linux/WSL
 pip install -r requirements.txt
 
-# Run tests (when available)
-python -m pytest aerthos/tests/
-
 # Check Python version
 python --version  # Should be 3.10+
 ```
+
+### **Testing - CRITICAL WORKFLOW**
+
+**⚠️ ALWAYS run tests before and after making code changes!**
+
+```bash
+# Run all tests (recommended)
+python3 run_tests.py --no-web
+
+# Run specific test categories
+python3 run_tests.py --unit          # Core systems only
+python3 run_tests.py --integration   # End-to-end scenarios
+python3 run_tests.py --web           # Flask API (requires Flask)
+
+# Run with verbose output for debugging
+python3 run_tests.py --no-web --verbose
+
+# Run individual test file
+python3 -m unittest tests.test_parser -v
+python3 -m unittest tests.test_combat -v
+```
+
+**Testing Workflow:**
+1. **BEFORE making changes:** Run `python3 run_tests.py --no-web` to establish baseline
+2. **Make your changes:** Implement features, fix bugs, refactor code
+3. **AFTER making changes:** Run `python3 run_tests.py --no-web` to verify nothing broke
+4. **If tests fail:** Fix the code or update tests to match new behavior
+5. **Only commit when all tests pass**
+
+**Why This Matters:**
+- CLI and Web UI share 95% of code - changes affect both
+- Tests protect the critical boundary between UIs and game logic
+- Broken tests = broken game for users
+- Passing tests = both UIs work correctly
+
+**Current Test Status:** 86/109 tests passing (79%)
+- ✅ Parser tests: 43/43 passing
+- ✅ Combat tests: 18/18 passing
+- ⚠️ Game state tests: 16/19 passing
+- ⚠️ Storage tests: Working (some failures)
+- ⚠️ Integration tests: Working (some failures)
+
+**See also:**
+- `TESTING.md` - Comprehensive testing guide
+- `TEST_SUITE_README.md` - Test suite documentation
+- `ARCHITECTURE.md` - How CLI and Web UI connect
 
 ---
 
