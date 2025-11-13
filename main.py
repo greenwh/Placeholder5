@@ -918,7 +918,7 @@ def manage_sessions(game_data: GameData):
         print("SESSION MANAGER")
         print("═" * 70)
         print()
-        print("1. Create New Session (Party + Scenario)")
+        print("1. Create New Session (Solo Character or Party + Scenario)")
         print("2. List All Sessions")
         print("3. View Session Details")
         print("4. Load & Play Session")
@@ -930,29 +930,73 @@ def manage_sessions(game_data: GameData):
 
         if choice == '1':
             # Create new session
-            parties = session_mgr.party_manager.list_parties()
-            scenarios = session_mgr.scenario_library.list_scenarios()
+            print("\nSession Type:")
+            print("1. Solo Character")
+            print("2. Party")
 
-            if not parties:
-                print("\nNo saved parties! Create a party first.")
+            session_type = input("\nChoose session type (1-2): ").strip()
+
+            party_id = None
+
+            if session_type == '1':
+                # Solo character session
+                roster = session_mgr.party_manager.character_roster
+                characters = roster.list_characters()
+
+                if not characters:
+                    print("\nNo characters available! Create a character first.")
+                    continue
+
+                print("\nAvailable Characters:")
+                for i, char in enumerate(characters, 1):
+                    print(f"{i}. {char['name']} ({char['race']} {char['char_class']} Lvl {char['level']}) [ID: {char['id']}]")
+
+                char_choice = input(f"\nSelect character (1-{len(characters)}): ").strip()
+                try:
+                    char_idx = int(char_choice) - 1
+                    char_id = characters[char_idx]['id']
+
+                    # Create a temporary solo party
+                    from aerthos.storage.party_manager import PartyManager
+                    party_mgr = PartyManager()
+                    solo_party_name = f"Solo: {characters[char_idx]['name']}"
+                    party_id = party_mgr.save_party([char_id], ['front'], solo_party_name)
+                    print(f"\n✓ Created solo party: {solo_party_name}")
+
+                except (ValueError, IndexError):
+                    print("Invalid selection.")
+                    continue
+
+            elif session_type == '2':
+                # Party session
+                parties = session_mgr.party_manager.list_parties()
+
+                if not parties:
+                    print("\nNo saved parties! Create a party first.")
+                    continue
+
+                print("\nAvailable Parties:")
+                for i, party in enumerate(parties, 1):
+                    # Extract member names from dict
+                    member_names = [m['name'] for m in party['members'][:3]]
+                    members_str = ', '.join(member_names)
+                    print(f"{i}. {party['name']} ({members_str}) [ID: {party['id']}]")
+
+                party_choice = input(f"\nSelect party (1-{len(parties)}): ").strip()
+                try:
+                    party_idx = int(party_choice) - 1
+                    party_id = parties[party_idx]['id']
+                except (ValueError, IndexError):
+                    print("Invalid selection.")
+                    continue
+            else:
+                print("Invalid session type.")
                 continue
+
+            # Now select scenario
+            scenarios = session_mgr.scenario_library.list_scenarios()
             if not scenarios:
                 print("\nNo saved scenarios! Create a scenario first.")
-                continue
-
-            print("\nAvailable Parties:")
-            for i, party in enumerate(parties, 1):
-                # Extract member names from dict
-                member_names = [m['name'] for m in party['members'][:3]]
-                members_str = ', '.join(member_names)
-                print(f"{i}. {party['name']} ({members_str}) [ID: {party['id']}]")
-
-            party_choice = input(f"\nSelect party (1-{len(parties)}): ").strip()
-            try:
-                party_idx = int(party_choice) - 1
-                party_id = parties[party_idx]['id']
-            except (ValueError, IndexError):
-                print("Invalid selection.")
                 continue
 
             print("\nAvailable Scenarios:")
