@@ -234,6 +234,11 @@
             margin: 2px 0;
         }
 
+        .encumbered {
+            color: #fa0;
+            font-weight: bold;
+        }
+
         .exit {
             color: #ff0;
         }
@@ -589,6 +594,9 @@
                 let deadClass = member.is_alive ? '' : 'dead';
                 let activeClass = index === activeCharacterIndex ? 'active' : '';
 
+                let weightPercent = (member.weight / member.weight_max) * 100;
+                let weightClass = weightPercent > 80 ? 'encumbered' : '';
+
                 partyHTML += `
                     <div class="party-member ${deadClass} ${activeClass}" onclick="selectCharacter(${index})">
                         <div class="member-name">${index + 1}. ${member.name} [${member.formation.toUpperCase()}]</div>
@@ -596,7 +604,8 @@
                             ${member.race} ${member.class} (Lvl ${member.level})<br>
                             HP: ${member.hp}/${member.hp_max}<br>
                             AC: ${member.ac} | THAC0: ${member.thac0}<br>
-                            Gold: ${member.gold} gp
+                            Gold: ${member.gold} gp<br>
+                            <span class="${weightClass}">Weight: ${member.weight}/${member.weight_max} lbs</span>
                         </div>
                         <div class="hp-bar"><div class="hp-fill ${hpClass}" style="width: ${hpPercent}%"></div></div>
                     </div>
@@ -609,12 +618,16 @@
             if (!currentParty || currentParty.length === 0) return;
 
             let char = currentParty[activeCharacterIndex];
+            let weightPercent = (char.weight / char.weight_max) * 100;
+            let weightClass = weightPercent > 80 ? 'encumbered' : '';
+
             let html = `
                 <div class="stat-line"><strong>${char.name}</strong> the ${char.race} ${char.class}</div>
                 <div class="stat-line">Level ${char.level} | XP: ${char.xp}</div>
                 <div class="stat-line">HP: ${char.hp}/${char.hp_max}</div>
                 <div class="stat-line">AC: ${char.ac} | THAC0: ${char.thac0}</div>
                 <div class="stat-line">Gold: ${char.gold} gp</div>
+                <div class="stat-line"><span class="${weightClass}">Weight: ${char.weight}/${char.weight_max} lbs</span></div>
             `;
             document.getElementById('active-char-info').innerHTML = html;
         }

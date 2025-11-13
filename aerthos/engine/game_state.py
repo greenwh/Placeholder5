@@ -185,9 +185,32 @@ class GameState:
 
         # Player attacks
         weapon = self.player.equipment.weapon
+
+        # Check for weapon restrictions
+        weapon_penalty = 0
+        if weapon:
+            can_use, restriction_msg = self.player.can_use_weapon(weapon)
+            if not can_use:
+                weapon_penalty = -4  # Severe penalty for using improper weapon
+                messages = [f"⚠️  {restriction_msg}"]
+                messages.append(f"You struggle with the unfamiliar weapon! (-4 to hit)")
+            else:
+                messages = []
+        else:
+            messages = []
+
+        # Temporarily modify THAC0 for weapon restriction penalty
+        original_thac0 = self.player.thac0
+        if weapon_penalty:
+            self.player.thac0 -= weapon_penalty  # Lower THAC0 = worse to-hit
+
         result = self.combat_resolver.attack_roll(self.player, target, weapon)
 
-        messages = [result['narrative']]
+        # Restore original THAC0
+        if weapon_penalty:
+            self.player.thac0 = original_thac0
+
+        messages.append(result['narrative'])
 
         # Check if target died
         if result['defender_died']:
@@ -250,6 +273,41 @@ class GameState:
 
         search_term = command.target
 
+        # Handle "take all" - pick up everything in the room
+        if search_term.lower() == 'all':
+            if not self.current_room.items:
+                return {'success': False, 'message': "There's nothing here to take."}
+
+            taken_items = []
+            failed_items = []
+
+            # Try to take each item
+            for item_name in list(self.current_room.items):  # Copy list since we'll modify it
+                item = self._create_item_from_name(item_name)
+
+                if item:
+                    # Check encumbrance
+                    if self.player.inventory.current_weight + item.weight <= self.player.inventory.max_weight:
+                        self.player.inventory.add_item(item)
+                        self.current_room.remove_item(item_name)
+                        taken_items.append(item.name)
+                    else:
+                        failed_items.append(f"{item.name} (too heavy)")
+                else:
+                    failed_items.append(f"{item_name} (not found in database)")
+
+            messages = []
+            if taken_items:
+                messages.append(f"You take: {', '.join(taken_items)}")
+            if failed_items:
+                messages.append(f"Could not take: {', '.join(failed_items)}")
+
+            if not messages:
+                return {'success': False, 'message': "Failed to take any items."}
+
+            return {'success': True, 'message': '\n'.join(messages)}
+
+        # Handle single item
         # Find item in room using flexible matching
         item_name = self.current_room.find_item(search_term)
 
@@ -261,6 +319,10 @@ class GameState:
 
         if not item:
             return {'success': False, 'message': f"Can't find {item_name} in item database."}
+
+        # Check encumbrance
+        if self.player.inventory.current_weight + item.weight > self.player.inventory.max_weight:
+            return {'success': False, 'message': f"The {item.name} is too heavy! You're carrying {self.player.inventory.current_weight}/{self.player.inventory.max_weight} lbs."}
 
         # Add to inventory
         self.player.inventory.add_item(item)
@@ -320,6 +382,11 @@ class GameState:
             return {'success': False, 'message': f"You don't have {command.target}."}
 
         if isinstance(item, Weapon):
+            # Check class weapon restrictions
+            can_use, restriction_msg = self.player.can_use_weapon(item)
+            if not can_use:
+                return {'success': False, 'message': restriction_msg}
+
             self.player.equip_weapon(item)
             return {'success': True, 'message': f"You equip the {item.name}."}
         elif isinstance(item, Armor):

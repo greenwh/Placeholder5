@@ -236,6 +236,51 @@ class PlayerCharacter(Character):
         dex_bonus = self.get_ac_bonus()
         return equipment_ac + dex_bonus
 
+    def can_use_weapon(self, weapon: Weapon) -> tuple[bool, str]:
+        """
+        Check if character's class allows them to use this weapon
+
+        Returns:
+            (can_use: bool, message: str)
+        """
+        weapon_name_lower = weapon.name.lower()
+
+        # AD&D 1e weapon restrictions by class
+        if self.char_class == 'Fighter':
+            return (True, "")  # Fighters can use all weapons
+
+        elif self.char_class == 'Cleric':
+            # Clerics can only use bludgeoning weapons (no bladed)
+            allowed = ['mace', 'flail', 'hammer', 'staff', 'club', 'sling']
+            if any(w in weapon_name_lower for w in allowed):
+                return (True, "")
+            return (False, f"Clerics cannot use bladed weapons like {weapon.name}! Religious restrictions forbid shedding blood.")
+
+        elif self.char_class == 'Magic-User':
+            # Magic-Users very limited - dagger, staff, dart, sling
+            allowed = ['dagger', 'staff', 'dart', 'sling']
+            if any(w in weapon_name_lower for w in allowed):
+                return (True, "")
+            return (False, f"Magic-Users cannot use {weapon.name}! They lack martial training and can only use daggers, staves, darts, and slings.")
+
+        elif self.char_class == 'Thief':
+            # Thieves limited selection - no two-handed weapons or heavy weapons
+            # Can use: dagger, shortsword, club, hand axe, short bow, light crossbow
+            allowed = ['dagger', 'shortsword', 'short sword', 'club', 'hand axe', 'short bow', 'crossbow']
+            disallowed = ['longsword', 'long sword', 'greatsword', 'great sword', 'battle axe',
+                         'two-handed', 'polearm', 'pike', 'halberd']
+
+            if any(w in weapon_name_lower for w in disallowed):
+                return (False, f"Thieves cannot use heavy weapons like {weapon.name}! Too cumbersome for their fighting style.")
+            if any(w in weapon_name_lower for w in allowed):
+                return (True, "")
+
+            # Default for thieves - be permissive for light weapons
+            return (True, "")
+
+        # Unknown class - allow by default
+        return (True, "")
+
     def equip_weapon(self, weapon: Weapon):
         """Equip a weapon"""
         self.equipment.weapon = weapon

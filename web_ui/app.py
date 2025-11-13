@@ -162,6 +162,8 @@ def get_game_state_json(game_state):
                 'xp': member.xp,
                 'gold': member.gold,
                 'is_alive': member.is_alive,
+                'weight': member.inventory.current_weight,
+                'weight_max': member.inventory.max_weight,
                 'formation': game_state.party.formation[i] if i < len(game_state.party.formation) else 'front',
                 'inventory': inventory_items,
                 'equipped': equipped
