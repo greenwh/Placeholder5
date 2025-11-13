@@ -599,9 +599,9 @@ def create_session():
         session_mgr = SessionManager()
 
         session_id = session_mgr.create_session(
-            data.get('name'),
-            data.get('party_id'),
-            data.get('scenario_id')
+            party_id=data.get('party_id'),
+            scenario_id=data.get('scenario_id'),
+            session_name=data.get('name')
         )
 
         return jsonify({'success': True, 'session_id': session_id})
