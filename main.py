@@ -990,10 +990,20 @@ def manage_sessions(game_data: GameData):
 
         elif choice == '3':
             # View session details
-            name = input("\nEnter session ID: ").strip()
-            session_data = session_mgr.load_session(name)
+            name_or_id = input("\nEnter session name or ID: ").strip()
 
-            if session_data:
+            # Find session by name or ID
+            sessions = session_mgr.list_sessions()
+            session_found = None
+            for sess in sessions:
+                if sess['name'].lower() == name_or_id.lower() or sess['id'] == name_or_id:
+                    session_found = sess
+                    break
+
+            if session_found:
+                session_id = session_found['id']
+                session_data = session_mgr.load_session(session_id)
+
                 print(f"\n{'═' * 70}")
                 print(f"Session: {session_data['name']}")
                 print(f"ID: {session_data['id']}")
@@ -1004,15 +1014,29 @@ def manage_sessions(game_data: GameData):
                 print(f"Progress: {session_data.get('turns_elapsed', 0)} turns, {session_data.get('total_hours', 0)} hours")
                 print(f"{'═' * 70}")
             else:
-                print(f"Session '{name}' not found.")
+                print(f"Session '{name_or_id}' not found.")
 
         elif choice == '4':
             # Load and play session
-            name = input("\nEnter session ID to load: ").strip()
-            session_data = session_mgr.load_session(name)
+            name_or_id = input("\nEnter session name or ID to load: ").strip()
+
+            # Find session by name or ID
+            sessions = session_mgr.list_sessions()
+            session_found = None
+            for sess in sessions:
+                if sess['name'].lower() == name_or_id.lower() or sess['id'] == name_or_id:
+                    session_found = sess
+                    break
+
+            if not session_found:
+                print(f"Session '{name_or_id}' not found.")
+                continue
+
+            session_id = session_found['id']
+            session_data = session_mgr.load_session(session_id)
 
             if not session_data:
-                print(f"Session '{name}' not found.")
+                print(f"Session '{name_or_id}' not found.")
                 continue
 
             # Load party
@@ -1079,8 +1103,9 @@ def run_game_with_party(party: Party, dungeon: Dungeon, game_data: GameData,
         return
 
     # Create game state with party
-    game_state = GameState(player, dungeon, game_data)
+    game_state = GameState(player, dungeon)
     game_state.party = party  # Add party to game state
+    game_state.game_data = game_data  # Add game data to game state
 
     # Restore time tracking if provided
     if time_data:
