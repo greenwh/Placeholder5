@@ -450,9 +450,15 @@ class GameState:
                                 break
 
         # Determine if this is a beneficial spell (healing/buff) or harmful spell
+        # Support abbreviated spell names (e.g., "c" for "cure")
         spell_name_lower = spell_name.lower()
         beneficial_spells = ['cure', 'heal', 'bless', 'protection', 'shield', 'aid']
-        is_beneficial = any(keyword in spell_name_lower for keyword in beneficial_spells)
+
+        # Check both directions: "cure" in "cure light wounds" OR "c" in "cure"
+        is_beneficial = any(
+            keyword in spell_name_lower or spell_name_lower in keyword
+            for keyword in beneficial_spells
+        )
 
         # DEBUG: Log spell detection
         print(f"[DEBUG] Spell: '{spell_name}', Target: '{target_name}', Beneficial: {is_beneficial}")
