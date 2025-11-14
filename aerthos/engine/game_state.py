@@ -475,6 +475,7 @@ class GameState:
             else:
                 # No specific target, use caster (self.player is the active character who is casting)
                 targets = [self.player]
+                print(f"[DEBUG] Setting targets to caster: {self.player.name}")
         else:
             # Harmful spells target monsters, or fail if no monsters in combat
             if self.active_monsters:
@@ -482,7 +483,9 @@ class GameState:
             else:
                 return {'success': False, 'message': "There are no enemies to target!"}
 
+        print(f"[DEBUG] Before cast_spell - targets: {[t.name for t in targets]}")
         result = self.magic_system.cast_spell(self.player, spell_name, targets)
+        print(f"[DEBUG] After cast_spell - result narrative: {result.get('narrative', 'N/A')}")
 
         messages = [result['narrative']]
 

@@ -65,6 +65,8 @@ class MagicSystem:
         # Dispatch to spell-specific handlers
         spell_key = spell.name.lower().replace(' ', '_').replace('-', '_')
 
+        print(f"[DEBUG MAGIC] Executing spell '{spell.name}' (key: {spell_key}) with targets: {[t.name for t in targets]}")
+
         handlers = {
             'sleep': self._spell_sleep,
             'magic_missile': self._spell_magic_missile,
@@ -77,7 +79,9 @@ class MagicSystem:
 
         handler = handlers.get(spell_key)
         if handler:
-            return handler(spell, caster, targets)
+            result = handler(spell, caster, targets)
+            print(f"[DEBUG MAGIC] Handler returned narrative: {result.get('narrative', 'N/A')}")
+            return result
         else:
             return {
                 'narrative': f"{spell.name} fizzles - effect not yet implemented.",
