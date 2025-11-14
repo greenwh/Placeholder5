@@ -186,7 +186,15 @@ def get_game_state():
 
 
 def get_game_state_json(game_state):
-    """Convert game state to JSON for frontend"""
+    """
+    Convert game state to JSON for frontend
+
+    ⚠️ WARNING - WEB UI DEPENDENCY:
+    The web UI (game.html) depends on this JSON structure.
+    When adding fields: Safe - web UI will ignore unknown fields
+    When removing/renaming fields: DANGEROUS - will break web UI!
+    If you change this, update game.html JavaScript accordingly.
+    """
 
     party_data = []
     if hasattr(game_state, 'party'):
@@ -235,16 +243,53 @@ def get_game_state_json(game_state):
     # Get map data
     map_data = build_map_data(game_state)
 
+    # PRIORITY 1: Context-aware action bar data
+    # Get items in current room (for "take" actions)
+    room_items = []
+    if hasattr(game_state.current_room, 'items'):
+        room_items = game_state.current_room.items
+
+    # Get active monsters (for "attack" actions)
+    active_monsters = []
+    if game_state.in_combat and hasattr(game_state, 'active_monsters'):
+        for monster in game_state.active_monsters:
+            if monster.is_alive:
+                active_monsters.append({
+                    'name': monster.name,
+                    'hp': monster.hp_current,
+                    'hp_max': monster.hp_max,
+                    'status': 'wounded' if monster.hp_current < monster.hp_max * 0.5 else 'healthy'
+                })
+
+    # Get available spells for active character (for "cast" actions)
+    available_spells = []
+    if hasattr(game_state, 'party') and len(game_state.party.members) > 0:
+        # Use first living member as "active" for spell suggestions
+        # (In real gameplay, frontend tracks which character is active)
+        for member in game_state.party.members:
+            if member.is_alive and hasattr(member, 'spells_memorized'):
+                for slot in member.spells_memorized:
+                    if slot.spell and not slot.is_used:
+                        available_spells.append({
+                            'name': slot.spell.name,
+                            'level': slot.spell.level,
+                            'caster': member.name
+                        })
+                break  # Only get spells from first living caster
+
     return {
         'room': {
             'id': game_state.current_room.id,
             'title': game_state.current_room.title,
             'description': game_state.current_room.description,
             'exits': game_state.current_room.exits,
-            'light_level': game_state.current_room.light_level
+            'light_level': game_state.current_room.light_level,
+            'items': room_items  # NEW: Items in room for context-aware actions
         },
         'party': party_data,
         'in_combat': game_state.in_combat,
+        'active_monsters': active_monsters,  # NEW: Monsters for context-aware actions
+        'available_spells': available_spells,  # NEW: Spells for context-aware actions
         'time': {
             'turns': game_state.time_tracker.turns_elapsed,
             'hours': game_state.time_tracker.total_hours

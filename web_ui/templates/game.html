@@ -254,6 +254,72 @@
             gap: 8px;
         }
 
+        /* Dynamic Action Bar */
+        .dynamic-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding: 5px;
+            background-color: #002200;
+            border: 1px solid #0a0;
+            border-radius: 3px;
+        }
+
+        .action-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+            align-items: center;
+        }
+
+        .action-header {
+            font-size: 11px;
+            font-weight: bold;
+            color: #ff0;
+            margin-right: 5px;
+            min-width: 70px;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+            flex: 1;
+        }
+
+        .button-action {
+            padding: 5px 10px;
+            font-size: 11px;
+            background-color: #004400;
+            border: 1px solid #0a0;
+        }
+
+        .button-action:hover {
+            background-color: #006600;
+        }
+
+        .button-take {
+            background-color: #044400;
+        }
+
+        .button-attack {
+            background-color: #440000;
+            border-color: #a00;
+        }
+
+        .button-attack:hover {
+            background-color: #660000;
+        }
+
+        .button-cast {
+            background-color: #000044;
+            border-color: #00a;
+        }
+
+        .button-cast:hover {
+            background-color: #000066;
+        }
+
         .button-row {
             display: flex;
             gap: 5px;
@@ -360,10 +426,18 @@
                     Click "New Game" to begin your adventure!
                     <br><br>
                     <strong>Controls:</strong><br>
-                    - <strong>Select Character:</strong> Click on party member in left panel<br>
+                    - <strong>Select Character:</strong> Click party member OR press 1-9<br>
                     - <strong>Commands apply to selected character</strong><br>
                     <br>
-                    <strong>Commands:</strong><br>
+                    <strong>Keyboard Shortcuts:</strong><br>
+                    - <strong>Arrow Keys / WASD:</strong> Movement (↑=North, ↓=South, ←=West, →=East)<br>
+                    - <strong>1-9:</strong> Select party member<br>
+                    - <strong>L:</strong> Look | <strong>X:</strong> Search | <strong>R:</strong> Rest | <strong>Space:</strong> Wait<br>
+                    - <strong>I:</strong> Inventory | <strong>M:</strong> Map | <strong>C:</strong> Status | <strong>P:</strong> Spells<br>
+                    - <strong>K:</strong> Attack | <strong>T:</strong> Take | <strong>E:</strong> Equip | <strong>Z:</strong> Cast<br>
+                    - <strong>ESC:</strong> Focus input | <strong>?:</strong> Help<br>
+                    <br>
+                    <strong>Commands (type or use buttons):</strong><br>
                     - Movement: north, south, east, west (or n, s, e, w)<br>
                     - Combat: attack [monster]<br>
                     - Magic: cast [spell], memorize [spell]<br>
@@ -406,6 +480,12 @@
 
         <!-- Command Input -->
         <div class="command-input">
+            <!-- Dynamic Context-Aware Actions -->
+            <div id="dynamic-actions" class="dynamic-actions" style="display: none;">
+                <!-- Populated dynamically based on game state -->
+            </div>
+
+            <!-- Static Command Buttons -->
             <div class="button-row">
                 <button class="button" onclick="quickCommand('attack')">Attack</button>
                 <button class="button" onclick="promptCast()">Cast</button>
@@ -424,7 +504,10 @@
                 <button class="button" onclick="promptEquip()">Equip</button>
             </div>
             <div class="input-row">
-                <input type="text" id="command-box" class="command-box" placeholder="Type command here or use buttons above..." onkeypress="handleKeyPress(event)">
+                <input type="text" id="command-box" class="command-box" list="command-suggestions" placeholder="Type command here or use buttons above..." onkeypress="handleKeyPress(event)" oninput="updateAutocomplete()">
+                <datalist id="command-suggestions">
+                    <!-- Dynamically populated autocomplete suggestions -->
+                </datalist>
                 <button class="button button-new-game" onclick="newGame()">New Game</button>
             </div>
         </div>
@@ -613,6 +696,100 @@
 
             // Update 2D map
             render2DMap(state.map);
+
+            // PRIORITY 1: Update context-aware dynamic actions
+            updateDynamicActions(state);
+        }
+
+        // PRIORITY 1: Context-Aware Action Bar
+        function updateDynamicActions(state) {
+            const container = document.getElementById('dynamic-actions');
+            container.innerHTML = '';
+
+            let hasActions = false;
+
+            // Room Items - "Take" actions
+            if (state.room && state.room.items && state.room.items.length > 0) {
+                const section = document.createElement('div');
+                section.className = 'action-section';
+
+                const header = document.createElement('div');
+                header.className = 'action-header';
+                header.textContent = 'ITEMS:';
+                section.appendChild(header);
+
+                const buttonGroup = document.createElement('div');
+                buttonGroup.className = 'action-buttons';
+
+                state.room.items.forEach(item => {
+                    const btn = document.createElement('button');
+                    btn.className = 'button button-action button-take';
+                    btn.textContent = `Take ${item}`;
+                    btn.onclick = () => sendCommand(`take ${item}`);
+                    buttonGroup.appendChild(btn);
+                });
+
+                section.appendChild(buttonGroup);
+                container.appendChild(section);
+                hasActions = true;
+            }
+
+            // Combat - "Attack" actions
+            if (state.active_monsters && state.active_monsters.length > 0) {
+                const section = document.createElement('div');
+                section.className = 'action-section';
+
+                const header = document.createElement('div');
+                header.className = 'action-header';
+                header.textContent = 'ATTACK:';
+                section.appendChild(header);
+
+                const buttonGroup = document.createElement('div');
+                buttonGroup.className = 'action-buttons';
+
+                state.active_monsters.forEach(monster => {
+                    const btn = document.createElement('button');
+                    btn.className = 'button button-action button-attack';
+                    btn.textContent = `${monster.name} (${monster.status})`;
+                    btn.onclick = () => sendCommand(`attack ${monster.name}`);
+                    buttonGroup.appendChild(btn);
+                });
+
+                section.appendChild(buttonGroup);
+                container.appendChild(section);
+                hasActions = true;
+            }
+
+            // Spells - "Cast" actions
+            if (state.available_spells && state.available_spells.length > 0) {
+                const section = document.createElement('div');
+                section.className = 'action-section';
+
+                const header = document.createElement('div');
+                header.className = 'action-header';
+                header.textContent = 'SPELLS:';
+                section.appendChild(header);
+
+                const buttonGroup = document.createElement('div');
+                buttonGroup.className = 'action-buttons';
+
+                // Limit to first 5 spells to avoid clutter
+                state.available_spells.slice(0, 5).forEach(spell => {
+                    const btn = document.createElement('button');
+                    btn.className = 'button button-action button-cast';
+                    btn.textContent = `${spell.name} (L${spell.level})`;
+                    btn.title = `Cast by ${spell.caster}`;
+                    btn.onclick = () => sendCommand(`cast ${spell.name}`);
+                    buttonGroup.appendChild(btn);
+                });
+
+                section.appendChild(buttonGroup);
+                container.appendChild(section);
+                hasActions = true;
+            }
+
+            // Show/hide dynamic actions based on whether there are any
+            container.style.display = hasActions ? 'flex' : 'none';
         }
 
         function updatePartyDisplay() {
@@ -753,6 +930,134 @@
             document.getElementById('text-output').innerHTML += '<div class="game-message">' + msg + '</div>';
         }
 
+        // PRIORITY 6: Auto-Complete
+        // Dynamic autocomplete based on game state and context
+        function updateAutocomplete() {
+            const datalist = document.getElementById('command-suggestions');
+            const input = document.getElementById('command-box');
+            const inputValue = input.value.toLowerCase();
+
+            // Clear existing suggestions
+            datalist.innerHTML = '';
+
+            if (!inputValue || inputValue.length < 1) {
+                return; // Don't show suggestions for empty input
+            }
+
+            let suggestions = [];
+
+            // Base commands (always available)
+            const baseCommands = [
+                'attack', 'cast', 'memorize', 'take', 'drop', 'use', 'equip', 'unequip',
+                'north', 'south', 'east', 'west', 'up', 'down',
+                'look', 'search', 'examine', 'rest', 'sleep', 'wait',
+                'status', 'inventory', 'spells', 'map', 'help', 'quit',
+                'open', 'close', 'unlock', 'talk', 'give'
+            ];
+
+            // Add matching base commands
+            baseCommands.forEach(cmd => {
+                if (cmd.startsWith(inputValue) || inputValue.startsWith(cmd.substring(0, 2))) {
+                    suggestions.push(cmd);
+                }
+            });
+
+            // Context-aware suggestions based on current game state
+            if (gameActive && currentParty && currentParty.length > 0) {
+                const activeChar = currentParty[activeCharacterIndex];
+
+                // If user typed "attack " or "a ", suggest monster names
+                if (inputValue.startsWith('attack ') || inputValue.startsWith('a ')) {
+                    // TODO: Add active monster names when combat state is available
+                    // For now, suggest common monsters
+                    const commonMonsters = ['goblin', 'orc', 'kobold', 'skeleton', 'zombie', 'rat'];
+                    commonMonsters.forEach(monster => {
+                        suggestions.push('attack ' + monster);
+                    });
+                }
+
+                // If user typed "cast " or "c ", suggest spell names
+                if (inputValue.startsWith('cast ') || inputValue.startsWith('c ')) {
+                    const commonSpells = [
+                        'magic missile', 'cure light wounds', 'sleep', 'shield',
+                        'burning hands', 'detect magic', 'light', 'read magic'
+                    ];
+                    commonSpells.forEach(spell => {
+                        if (('cast ' + spell).startsWith(inputValue)) {
+                            suggestions.push('cast ' + spell);
+                        }
+                    });
+                }
+
+                // If user typed "take " or "t ", suggest common items
+                if (inputValue.startsWith('take ') || inputValue.startsWith('t ')) {
+                    const commonItems = [
+                        'sword', 'shield', 'armor', 'potion', 'gold', 'key',
+                        'torch', 'rope', 'rations', 'backpack'
+                    ];
+                    commonItems.forEach(item => {
+                        if (('take ' + item).startsWith(inputValue)) {
+                            suggestions.push('take ' + item);
+                        }
+                    });
+                }
+
+                // If user typed "equip " or "e ", suggest equipment
+                if (inputValue.startsWith('equip ') || inputValue.startsWith('e ')) {
+                    const equipment = [
+                        'sword', 'longsword', 'shield', 'armor', 'chain mail',
+                        'leather armor', 'dagger', 'bow', 'torch'
+                    ];
+                    equipment.forEach(item => {
+                        if (('equip ' + item).startsWith(inputValue)) {
+                            suggestions.push('equip ' + item);
+                        }
+                    });
+                }
+
+                // If user typed "drop " or "d ", suggest inventory items
+                if (inputValue.startsWith('drop ')) {
+                    if (activeChar.inventory && activeChar.inventory.length > 0) {
+                        activeChar.inventory.forEach(item => {
+                            suggestions.push('drop ' + item.name.toLowerCase());
+                        });
+                    }
+                }
+
+                // If user typed "use " or "u ", suggest consumable items
+                if (inputValue.startsWith('use ')) {
+                    const consumables = ['potion', 'scroll', 'wand', 'torch', 'rope'];
+                    consumables.forEach(item => {
+                        if (('use ' + item).startsWith(inputValue)) {
+                            suggestions.push('use ' + item);
+                        }
+                    });
+                }
+            }
+
+            // Direction shortcuts
+            if (['n', 'no', 'nor', 'nort'].some(prefix => inputValue.startsWith(prefix))) {
+                suggestions.push('north');
+            }
+            if (['s', 'so', 'sou', 'sout'].some(prefix => inputValue.startsWith(prefix))) {
+                suggestions.push('south');
+            }
+            if (['e', 'ea', 'eas'].some(prefix => inputValue.startsWith(prefix))) {
+                suggestions.push('east');
+            }
+            if (['w', 'we', 'wes'].some(prefix => inputValue.startsWith(prefix))) {
+                suggestions.push('west');
+            }
+
+            // Add suggestions to datalist (limit to 10 for performance)
+            const uniqueSuggestions = [...new Set(suggestions)].slice(0, 10);
+            uniqueSuggestions.forEach(suggestion => {
+                const option = document.createElement('option');
+                option.value = suggestion;
+                datalist.appendChild(option);
+            });
+        }
+
         function handleKeyPress(event) {
             if (event.key === 'Enter') {
                 let input = document.getElementById('command-box');
@@ -764,9 +1069,157 @@
             }
         }
 
+        // PRIORITY 7: Keyboard Shortcuts
+        // Global keyboard shortcut handler for gameplay
+        function handleGlobalKeyPress(event) {
+            // Don't capture keys if typing in input field
+            const input = document.getElementById('command-box');
+            if (document.activeElement === input) {
+                return; // Let normal typing work
+            }
+
+            // Don't capture if modifier keys pressed (Ctrl, Alt, etc.)
+            if (event.ctrlKey || event.altKey || event.metaKey) {
+                return;
+            }
+
+            if (!gameActive) {
+                return; // No shortcuts before game starts
+            }
+
+            let handled = false;
+
+            // Arrow Keys - Movement
+            if (event.key === 'ArrowUp' || event.key === 'ArrowDown' ||
+                event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+                event.preventDefault(); // Prevent page scrolling
+                const directionMap = {
+                    'ArrowUp': 'north',
+                    'ArrowDown': 'south',
+                    'ArrowLeft': 'west',
+                    'ArrowRight': 'east'
+                };
+                sendCommand(directionMap[event.key]);
+                handled = true;
+            }
+            // WASD Keys - Alternative movement
+            else if (event.key === 'w' || event.key === 'W') {
+                sendCommand('north');
+                handled = true;
+            }
+            else if (event.key === 's' || event.key === 'S') {
+                sendCommand('south');
+                handled = true;
+            }
+            else if (event.key === 'a' || event.key === 'A') {
+                sendCommand('west');
+                handled = true;
+            }
+            else if (event.key === 'd' || event.key === 'D') {
+                sendCommand('east');
+                handled = true;
+            }
+            // Number Keys - Party Member Selection (1-9)
+            else if (event.key >= '1' && event.key <= '9') {
+                const index = parseInt(event.key) - 1;
+                if (index < currentParty.length) {
+                    selectCharacter(index);
+                    handled = true;
+                }
+            }
+            // Action Keys
+            else if (event.key === 'l' || event.key === 'L') {
+                // L = Look
+                sendCommand('look');
+                handled = true;
+            }
+            else if (event.key === 'x' || event.key === 'X') {
+                // X = Search (examine)
+                sendCommand('search');
+                handled = true;
+            }
+            else if (event.key === 'r' || event.key === 'R') {
+                // R = Rest
+                sendCommand('rest');
+                handled = true;
+            }
+            else if (event.key === 'i' || event.key === 'I') {
+                // I = Inventory
+                sendCommand('inventory');
+                handled = true;
+            }
+            else if (event.key === 'm' || event.key === 'M') {
+                // M = Map
+                sendCommand('map');
+                handled = true;
+            }
+            else if (event.key === 'c' || event.key === 'C') {
+                // C = Character status
+                sendCommand('status');
+                handled = true;
+            }
+            else if (event.key === 'p' || event.key === 'P') {
+                // P = Spells
+                sendCommand('spells');
+                handled = true;
+            }
+            else if (event.key === 't' || event.key === 'T') {
+                // T = Take (focus input with 'take ' pre-filled)
+                input.value = 'take ';
+                input.focus();
+                input.setSelectionRange(input.value.length, input.value.length);
+                handled = true;
+            }
+            else if (event.key === 'e' || event.key === 'E') {
+                // E = Equip (focus input with 'equip ' pre-filled)
+                input.value = 'equip ';
+                input.focus();
+                input.setSelectionRange(input.value.length, input.value.length);
+                handled = true;
+            }
+            else if (event.key === 'k' || event.key === 'K') {
+                // K = Attack (focus input with 'attack ' pre-filled)
+                input.value = 'attack ';
+                input.focus();
+                input.setSelectionRange(input.value.length, input.value.length);
+                handled = true;
+            }
+            else if (event.key === 'z' || event.key === 'Z') {
+                // Z = Cast spell (focus input with 'cast ' pre-filled)
+                input.value = 'cast ';
+                input.focus();
+                input.setSelectionRange(input.value.length, input.value.length);
+                handled = true;
+            }
+            else if (event.key === ' ') {
+                // Space = Pass turn (wait command)
+                event.preventDefault(); // Prevent page scroll
+                sendCommand('wait');
+                handled = true;
+            }
+            else if (event.key === 'Escape') {
+                // Escape = Focus input (for manual commands)
+                input.value = '';
+                input.focus();
+                handled = true;
+            }
+            else if (event.key === '?' || (event.shiftKey && event.key === '/')) {
+                // ? = Help
+                sendCommand('help');
+                handled = true;
+            }
+
+            if (handled) {
+                event.preventDefault();
+            }
+        }
+
         // Focus input on load and check for existing session
         window.onload = function() {
             document.getElementById('command-box').focus();
+
+            // Add global keyboard shortcut handler
+            document.addEventListener('keydown', handleGlobalKeyPress);
 
             // Check if we have a session_id in the URL
             const urlSessionId = getUrlParameter('session_id');
