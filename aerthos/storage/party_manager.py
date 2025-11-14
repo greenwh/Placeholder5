@@ -86,36 +86,76 @@ class PartyManager:
         if party_id:
             # Find by ID
             for filepath in self.parties_dir.glob('*.json'):
-                with open(filepath, 'r') as f:
-                    data = json.load(f)
-                    if data['id'] == party_id:
-                        party_data = data
-                        break
+                try:
+                    with open(filepath, 'r') as f:
+                        data = json.load(f)
+                        if data['id'] == party_id:
+                            party_data = data
+                            break
+                except FileNotFoundError:
+                    print(f"Warning: {filepath} not found (may have been deleted)")
+                    continue
+                except json.JSONDecodeError as e:
+                    print(f"Error: {filepath} contains invalid JSON: {e}")
+                    continue
+                except (PermissionError, OSError) as e:
+                    print(f"Error reading {filepath}: {e}")
+                    continue
 
         if not party_data and party_name:
             # Find by name
             for filepath in self.parties_dir.glob('*.json'):
-                with open(filepath, 'r') as f:
-                    data = json.load(f)
-                    if data['name'].lower() == party_name.lower():
-                        party_data = data
-                        break
+                try:
+                    with open(filepath, 'r') as f:
+                        data = json.load(f)
+                        if data['name'].lower() == party_name.lower():
+                            party_data = data
+                            break
+                except FileNotFoundError:
+                    print(f"Warning: {filepath} not found (may have been deleted)")
+                    continue
+                except json.JSONDecodeError as e:
+                    print(f"Error: {filepath} contains invalid JSON: {e}")
+                    continue
+                except (PermissionError, OSError) as e:
+                    print(f"Error reading {filepath}: {e}")
+                    continue
 
         if not party_data:
             return None
+
+        # Validate loaded data
+        character_ids = party_data.get('character_ids', [])
+        formation = party_data.get('formation', [])
+
+        if len(character_ids) != len(formation):
+            print(f"Warning: Party {party_data.get('name', 'Unknown')} has mismatched formation. Auto-repairing...")
+            # Auto-repair formation
+            formation = ['front' if i < 2 else 'back' for i in range(len(character_ids))]
+            party_data['formation'] = formation
+
+        if not (1 <= len(character_ids) <= 6):
+            print(f"Warning: Party {party_data.get('name', 'Unknown')} has invalid size {len(character_ids)}")
+            if len(character_ids) > 6:
+                print(f"Truncating party to 6 members")
+                character_ids = character_ids[:6]
+                formation = formation[:6]
+            elif len(character_ids) == 0:
+                print(f"Error: Party is empty, cannot load")
+                return None
 
         # Load actual characters from roster
         from ..entities.party import Party
 
         party = Party()
-        for char_id in party_data['character_ids']:
+        for char_id in character_ids:
             character = self.character_roster.load_character(character_id=char_id)
             if character:
                 party.add_member(character)
             else:
                 print(f"Warning: Character {char_id} not found in roster")
 
-        party.formation = party_data['formation']
+        party.formation = formation
 
         return {
             'party': party,
@@ -186,11 +226,27 @@ class PartyManager:
         Returns:
             True if deleted, False if not found
         """
+        found_path = None
         for filepath in self.parties_dir.glob('*.json'):
-            with open(filepath, 'r') as f:
-                data = json.load(f)
-                if data['id'] == party_id:
-                    filepath.unlink()
-                    return True
+            try:
+                with open(filepath, 'r') as f:
+                    data = json.load(f)
+                    if data['id'] == party_id:
+                        # Store path, delete after iteration
+                        found_path = filepath
+                        break
+            except FileNotFoundError:
+                print(f"Warning: {filepath} not found (may have been deleted)")
+                continue
+            except json.JSONDecodeError as e:
+                print(f"Error: {filepath} contains invalid JSON: {e}")
+                continue
+            except (PermissionError, OSError) as e:
+                print(f"Error reading {filepath}: {e}")
+                continue
+
+        if found_path:
+            found_path.unlink()
+            return True
 
         return False

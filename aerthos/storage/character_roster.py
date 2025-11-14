@@ -95,18 +95,38 @@ class CharacterRoster:
         if character_id:
             # Find by ID
             for filepath in self.roster_dir.glob('*.json'):
-                with open(filepath, 'r') as f:
-                    data = json.load(f)
-                    if data['id'] == character_id:
-                        return self._deserialize_character(data)
+                try:
+                    with open(filepath, 'r') as f:
+                        data = json.load(f)
+                        if data['id'] == character_id:
+                            return self._deserialize_character(data)
+                except FileNotFoundError:
+                    print(f"Warning: {filepath} not found (may have been deleted)")
+                    continue
+                except json.JSONDecodeError as e:
+                    print(f"Error: {filepath} contains invalid JSON: {e}")
+                    continue
+                except (PermissionError, OSError) as e:
+                    print(f"Error reading {filepath}: {e}")
+                    continue
 
         if character_name:
             # Find by name
             for filepath in self.roster_dir.glob('*.json'):
-                with open(filepath, 'r') as f:
-                    data = json.load(f)
-                    if data['name'].lower() == character_name.lower():
-                        return self._deserialize_character(data)
+                try:
+                    with open(filepath, 'r') as f:
+                        data = json.load(f)
+                        if data['name'].lower() == character_name.lower():
+                            return self._deserialize_character(data)
+                except FileNotFoundError:
+                    print(f"Warning: {filepath} not found (may have been deleted)")
+                    continue
+                except json.JSONDecodeError as e:
+                    print(f"Error: {filepath} contains invalid JSON: {e}")
+                    continue
+                except (PermissionError, OSError) as e:
+                    print(f"Error reading {filepath}: {e}")
+                    continue
 
         return None
 
@@ -186,12 +206,28 @@ class CharacterRoster:
         Returns:
             True if deleted, False if not found
         """
+        found_path = None
         for filepath in self.roster_dir.glob('*.json'):
-            with open(filepath, 'r') as f:
-                data = json.load(f)
-                if data['id'] == character_id:
-                    filepath.unlink()
-                    return True
+            try:
+                with open(filepath, 'r') as f:
+                    data = json.load(f)
+                    if data['id'] == character_id:
+                        # Store path, delete after iteration
+                        found_path = filepath
+                        break
+            except FileNotFoundError:
+                print(f"Warning: {filepath} not found (may have been deleted)")
+                continue
+            except json.JSONDecodeError as e:
+                print(f"Error: {filepath} contains invalid JSON: {e}")
+                continue
+            except (PermissionError, OSError) as e:
+                print(f"Error reading {filepath}: {e}")
+                continue
+
+        if found_path:
+            found_path.unlink()
+            return True
 
         return False
 

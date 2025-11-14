@@ -236,7 +236,7 @@ class PlayerCharacter(Character):
         dex_bonus = self.get_ac_bonus()
         return equipment_ac + dex_bonus
 
-    def can_use_weapon(self, weapon: Weapon) -> tuple[bool, str]:
+    def can_use_weapon(self, weapon: Weapon) -> Tuple[bool, str]:
         """
         Check if character's class allows them to use this weapon
 

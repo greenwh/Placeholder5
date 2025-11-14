@@ -1023,7 +1023,7 @@ def manage_sessions(game_data: GameData):
             session_name = input("\nEnter session name (or press Enter for default): ").strip()
 
             try:
-                session_id = session_mgr.create_session(party_id, scenario_id, session_name or None)
+                session_id = session_mgr.create_session(party_id=party_id, scenario_id=scenario_id, session_name=session_name or None)
                 print(f"\n✓ Session created! ID: {session_id}")
                 print("Use 'Load & Play Session' to start playing.")
             except Exception as e:

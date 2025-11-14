@@ -29,9 +29,30 @@ class DiceRoller:
         # Handle flat modifiers like "4+1" (hit dice)
         if 'd' not in dice_string:
             # It's just a flat number or number+modifier
-            if '+' in dice_string or '-' in dice_string:
-                return eval(dice_string)
-            return int(dice_string)
+            if '+' in dice_string:
+                try:
+                    parts = dice_string.split('+')
+                    if len(parts) == 2:
+                        return int(parts[0]) + int(parts[1])
+                    else:
+                        raise ValueError(f"Invalid dice notation: {dice_string}")
+                except (ValueError, IndexError):
+                    raise ValueError(f"Invalid dice notation: {dice_string}")
+            elif '-' in dice_string:
+                try:
+                    parts = dice_string.split('-')
+                    if len(parts) == 2:
+                        return int(parts[0]) - int(parts[1])
+                    else:
+                        raise ValueError(f"Invalid dice notation: {dice_string}")
+                except (ValueError, IndexError):
+                    raise ValueError(f"Invalid dice notation: {dice_string}")
+
+            # Just a flat number
+            try:
+                return int(dice_string)
+            except ValueError:
+                raise ValueError(f"Invalid dice notation: {dice_string}")
 
         # Parse dice notation: XdY+Z or XdY-Z or XdY or dY (assumes 1d if no number before d)
         match = re.match(r'(\d*)d(\d+)([+\-]\d+)?', dice_string)

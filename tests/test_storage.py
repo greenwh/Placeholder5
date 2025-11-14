@@ -511,8 +511,8 @@ class TestSessionManager(unittest.TestCase):
         scenario_id = self.scenario_library.save_scenario(dungeon, scenario_name="Scenario")
 
         session_id = self.session_manager.create_session(
-            party_id,
-            scenario_id,
+            party_id=party_id,
+            scenario_id=scenario_id,
             session_name="Session1"
         )
 
@@ -536,8 +536,8 @@ class TestSessionManager(unittest.TestCase):
         scenario_id = self.scenario_library.save_scenario(dungeon, scenario_name="Scenario")
 
         session_id = self.session_manager.create_session(
-            party_id,
-            scenario_id,
+            party_id=party_id,
+            scenario_id=scenario_id,
             session_name="Delete Me"
         )
 

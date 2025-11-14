@@ -33,14 +33,14 @@ class SessionManager:
         self.party_manager = PartyManager(parties_dir=party_manager_dir, character_roster=self.character_roster) if party_manager_dir else PartyManager()
         self.scenario_library = ScenarioLibrary(scenarios_dir=scenario_library_dir) if scenario_library_dir else ScenarioLibrary()
 
-    def create_session(self, party_id: str, scenario_id: str,
+    def create_session(self, *, party_id: str, scenario_id: str,
                       session_name: str = None, session_id: str = None) -> str:
         """
         Create a new game session
 
         Args:
-            party_id: ID of party to use
-            scenario_id: ID of scenario to play
+            party_id: ID of party to use (keyword-only)
+            scenario_id: ID of scenario to play (keyword-only)
             session_name: Optional session name
             session_id: Optional ID (generates UUID if not provided)
 
@@ -99,8 +99,18 @@ class SessionManager:
         if not filepath.exists():
             return False
 
-        with open(filepath, 'r') as f:
-            session_data = json.load(f)
+        try:
+            with open(filepath, 'r') as f:
+                session_data = json.load(f)
+        except FileNotFoundError:
+            print(f"Warning: {filepath} not found (may have been deleted)")
+            return False
+        except json.JSONDecodeError as e:
+            print(f"Error: {filepath} contains invalid JSON: {e}")
+            return False
+        except (PermissionError, OSError) as e:
+            print(f"Error reading {filepath}: {e}")
+            return False
 
         # Update session data with current game state
         session_data['last_played'] = datetime.now().isoformat()
@@ -139,8 +149,18 @@ class SessionManager:
         if not filepath.exists():
             return None
 
-        with open(filepath, 'r') as f:
-            return json.load(f)
+        try:
+            with open(filepath, 'r') as f:
+                return json.load(f)
+        except FileNotFoundError:
+            print(f"Warning: {filepath} not found (may have been deleted)")
+            return None
+        except json.JSONDecodeError as e:
+            print(f"Error: {filepath} contains invalid JSON: {e}")
+            return None
+        except (PermissionError, OSError) as e:
+            print(f"Error reading {filepath}: {e}")
+            return None
 
     def list_sessions(self) -> List[Dict]:
         """

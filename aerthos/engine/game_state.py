@@ -218,12 +218,17 @@ class GameState:
 
             # Award XP to party or player
             if hasattr(self, 'party') and self.party:
-                xp_per_member = target.xp_value // len(self.party.get_living_members())
-                for member in self.party.get_living_members():
-                    level_up_msg = member.gain_xp(xp_per_member)
-                    if level_up_msg:
-                        messages.append(f"{member.name}: {level_up_msg}")
-                messages.append(f"Party gains {target.xp_value} XP! ({xp_per_member} each)")
+                living_members = self.party.get_living_members()
+                if living_members:
+                    xp_per_member = target.xp_value // len(living_members)
+                    for member in living_members:
+                        level_up_msg = member.gain_xp(xp_per_member)
+                        if level_up_msg:
+                            messages.append(f"{member.name}: {level_up_msg}")
+                    messages.append(f"Party gains {target.xp_value} XP! ({xp_per_member} each)")
+                else:
+                    # Party wiped out - no XP awarded
+                    messages.append(f"The party has fallen! No XP awarded.")
             else:
                 level_up_msg = self.player.gain_xp(target.xp_value)
                 messages.append(f"You gain {target.xp_value} XP!")
@@ -470,12 +475,17 @@ class GameState:
 
                 # Award XP to party or player
                 if hasattr(self, 'party') and self.party:
-                    xp_per_member = monster.xp_value // len(self.party.get_living_members())
-                    for member in self.party.get_living_members():
-                        level_up_msg = member.gain_xp(xp_per_member)
-                        if level_up_msg:
-                            messages.append(f"{member.name}: {level_up_msg}")
-                    messages.append(f"Party gains {monster.xp_value} XP! ({xp_per_member} each)")
+                    living_members = self.party.get_living_members()
+                    if living_members:
+                        xp_per_member = monster.xp_value // len(living_members)
+                        for member in living_members:
+                            level_up_msg = member.gain_xp(xp_per_member)
+                            if level_up_msg:
+                                messages.append(f"{member.name}: {level_up_msg}")
+                        messages.append(f"Party gains {monster.xp_value} XP! ({xp_per_member} each)")
+                    else:
+                        # Party wiped out - no XP awarded
+                        messages.append(f"The party has fallen! No XP awarded.")
                 else:
                     level_up_msg = self.player.gain_xp(monster.xp_value)
                     messages.append(f"You gain {monster.xp_value} XP!")
@@ -955,7 +965,12 @@ class GameState:
     def _create_monster_from_id(self, monster_id: str) -> Optional[Monster]:
         """Create a monster instance from monster ID"""
 
-        if not self.game_data or monster_id not in self.game_data.monsters:
+        if not self.game_data:
+            print("ERROR: GameData not loaded! Call load_game_data() first.")
+            return None
+
+        if monster_id not in self.game_data.monsters:
+            print(f"WARNING: Monster '{monster_id}' not found in game data.")
             return None
 
         data = self.game_data.monsters[monster_id]
@@ -990,6 +1005,7 @@ class GameState:
         """Create an item instance from name"""
 
         if not self.game_data:
+            print("ERROR: GameData not loaded! Call load_game_data() first.")
             return None
 
         # Find item in database

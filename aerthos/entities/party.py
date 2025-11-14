@@ -89,12 +89,12 @@ class Party:
         return [m for m in self.members if not m.is_alive]
 
     def get_front_line(self) -> List[PlayerCharacter]:
-        """Get front-line party members"""
-        return [self.members[i] for i, pos in enumerate(self.formation) if pos == 'front']
+        """Get front-line party members (safe with list sync)"""
+        return [member for member, pos in zip(self.members, self.formation) if pos == 'front']
 
     def get_back_line(self) -> List[PlayerCharacter]:
-        """Get back-line party members"""
-        return [self.members[i] for i, pos in enumerate(self.formation) if pos == 'back']
+        """Get back-line party members (safe with list sync)"""
+        return [member for member, pos in zip(self.members, self.formation) if pos == 'back']
 
     def is_alive(self) -> bool:
         """Check if any party members are alive"""
@@ -124,6 +124,7 @@ class Party:
         """
         living = self.get_living_members()
         if not living:
+            # No living members to award XP
             return
 
         xp_per_member = xp_amount // len(living)
@@ -176,6 +177,17 @@ class Party:
             result += "\n(Note: Resting in dangerous areas may trigger random encounters!)"
 
         return result
+
+    def _validate_formation_sync(self):
+        """Ensure members and formation lists are synchronized"""
+        if len(self.members) != len(self.formation):
+            # Auto-repair: regenerate formation
+            self.formation = []
+            for member in self.members:
+                if member.char_class in ['Fighter', 'Cleric']:
+                    self.formation.append('front')
+                else:
+                    self.formation.append('back')
 
     def __len__(self) -> int:
         """Get party size"""
