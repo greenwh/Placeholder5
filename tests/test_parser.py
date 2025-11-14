@@ -80,16 +80,17 @@ class TestCommandParser(unittest.TestCase):
         """Test spell with target"""
         cmd = self.parser.parse("cast cure light wounds on fighter")
         self.assertEqual(cmd.action, "cast")
-        # Parser extracts the spell name (first word after 'cast'), not the target creature
-        # In this case, it extracts "cure" from "cure light wounds"
-        self.assertEqual(cmd.target, "cure")
+        # Parser now returns FULL command after 'cast' for _handle_cast to parse
+        # This allows spell targeting to work correctly (e.g., "cast c on Shadow")
+        self.assertEqual(cmd.target, "cure light wounds on fighter")
 
     def test_cast_spell_at_target(self):
         """Test spell with 'at' preposition"""
         cmd = self.parser.parse("cast fireball at skeleton")
         self.assertEqual(cmd.action, "cast")
-        # Parser extracts the spell name (first word after 'cast'), not the target creature
-        self.assertEqual(cmd.target, "fireball")
+        # Parser now returns FULL command after 'cast' for _handle_cast to parse
+        # This allows spell targeting to work correctly
+        self.assertEqual(cmd.target, "fireball at skeleton")
 
     # Item commands
     def test_take_item(self):

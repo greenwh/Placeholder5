@@ -124,8 +124,9 @@ class CommandParser:
         """
 
         words = text.split()
-        # Remove stopwords but keep "with" for instrument parsing
-        return [w for w in words if w not in self.STOPWORDS or w == 'with']
+        # Remove stopwords but keep "with" for instrument parsing and "on"/"at"/"to" for spell targeting
+        keep_words = {'with', 'on', 'at', 'to'}
+        return [w for w in words if w not in self.STOPWORDS or w in keep_words]
 
     def _extract_verb(self, tokens: List[str]) -> str:
         """
@@ -176,7 +177,8 @@ class CommandParser:
 
         # Special case: cast spell "on" target
         if action == 'cast':
-            # Find spell name (word after 'cast')
+            # Return ALL tokens after 'cast' so _handle_cast can parse spell name and target
+            # e.g., "cast c on Shadow" → return "c on Shadow"
             try:
                 cast_idx = -1
                 for i, token in enumerate(tokens):
@@ -185,8 +187,9 @@ class CommandParser:
                         break
 
                 if cast_idx >= 0 and cast_idx + 1 < len(tokens):
-                    spell_name = tokens[cast_idx + 1]
-                    return spell_name
+                    # Return everything after 'cast' as a single string
+                    remaining_tokens = tokens[cast_idx + 1:]
+                    return ' '.join(remaining_tokens)
             except (ValueError, IndexError):
                 pass
 
