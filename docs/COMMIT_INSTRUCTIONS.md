@@ -36,9 +36,9 @@ All new test suite files and documentation created during this session:
 # Check current working directory
 pwd
 
-# Should show: /mnt/c/Users/tofm4/OneDrive/Development/aerthos
+# Should show: /mnt/d/Development/aerthos
 # If not, navigate there:
-cd /mnt/c/Users/tofm4/OneDrive/Development/aerthos
+cd /mnt/d/Development/aerthos
 ```
 
 ### Step 2: Check Git Status

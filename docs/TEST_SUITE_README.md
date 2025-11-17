@@ -298,7 +298,7 @@ ModuleNotFoundError: No module named 'aerthos'
 **Fix:**
 ```bash
 # Ensure you're in project root
-cd /mnt/c/Users/tofm4/OneDrive/Development/aerthos
+cd /mnt/d/Development/aerthos
 python3 run_tests.py
 ```
 

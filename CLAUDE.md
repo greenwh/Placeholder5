@@ -13,7 +13,7 @@ Aerthos is a faithful recreation of AD&D 1e mechanics as a single-player text ad
 
 **Project Status:** Active development - core systems complete, recent work on session management and party systems
 
-**Project Location:** `/mnt/c/Users/tofm4/OneDrive/Development/aerthos`
+**Project Location:** `/mnt/d/Development/aerthos`
 
 ---
 
@@ -700,7 +700,7 @@ python --version  # Need 3.10+
 ```bash
 # Ensure correct directory
 pwd  # Should end in aerthos
-cd /mnt/c/Users/tofm4/OneDrive/Development/aerthos
+cd /mnt/d/Development/aerthos
 
 # Check file exists
 ls main.py
