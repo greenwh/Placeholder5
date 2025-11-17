@@ -7,8 +7,10 @@ Successfully integrated the complete AD&D 1st Edition Monster Manual into the Ae
 ## Statistics
 
 - **Original database**: 39 monsters
-- **New database**: 223 monsters  
-- **Net increase**: +184 monsters (472% increase)
+- **Monster Manual monsters**: 223 monsters
+- **Restored from original**: 8 monsters (specific variants not in MM)
+- **Final database**: 231 monsters
+- **Net increase**: +192 monsters (492% increase)
 
 ## Monster Distribution by Power Level
 
@@ -104,11 +106,26 @@ Created `convert_monster_manual.py` which handles:
 - XP: 150
 - Special: paralysis_touch (implied from original data)
 
+## Restored Monsters
+
+The following 8 monsters from the original database were restored because they provide more specific variants than the generic Monster Manual entries:
+
+- **Giant Rat** - Specific stats vs generic "Rat, Giant"
+- **Hell Hound** - Already had good stats (4-7 HD variant)
+- **Hill Giant** - Specific giant type vs generic "Giant"
+- **Frost Giant** - Specific giant type vs generic "Giant"
+- **Fire Giant** - Specific giant type vs generic "Giant"
+- **Young Red Dragon** - Age/color variant vs generic "Dragon"
+- **Adult Black Dragon** - Age/color variant vs generic "Dragon"
+- **Adult Green Dragon** - Age/color variant vs generic "Dragon"
+
+These monsters had already been carefully balanced and are more useful for gameplay than the Monster Manual's generic entries.
+
 ## Files Changed
 
-- **aerthos/data/monsters.json** - Replaced with full Monster Manual (223 monsters)
+- **aerthos/data/monsters.json** - Full Monster Manual (223) + restored variants (8) = 231 monsters
 - **aerthos/data/monsters_original.json** - Backup of original 39 monsters
-- **aerthos/data/monsters_full.json** - Generated full database (same as monsters.json)
+- **aerthos/data/monsters_full.json** - Generated Monster Manual database (223 monsters)
 - **convert_monster_manual.py** - Conversion script (can be re-run if needed)
 
 ## Testing
@@ -159,10 +176,9 @@ The conversion script provides a foundation for:
 1. **Multi-attack**: Only first attack used from multi-attack monsters
 2. **Variable HD**: Monsters with HD ranges use lower bound
 3. **Special Abilities**: Simplified compared to full Monster Manual descriptions
-4. **Dragon Age Categories**: Generic "Dragon" entry instead of age/color variants
 
 These limitations are acceptable for current game scope and can be enhanced later.
 
 ## Conclusion
 
-The Monster Manual integration successfully expands Aerthos from 39 to 223 monsters while maintaining full compatibility with existing game systems. All tests pass, and the conversion process is documented and repeatable.
+The Monster Manual integration successfully expands Aerthos from 39 to 231 monsters (223 from Monster Manual + 8 restored specific variants) while maintaining full compatibility with existing game systems. All tests pass, and the conversion process is documented and repeatable. The database now includes both the comprehensive Monster Manual coverage and the carefully-balanced specific variants from the original database.
