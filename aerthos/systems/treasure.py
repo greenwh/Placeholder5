@@ -23,7 +23,7 @@ class TreasureHoard:
     platinum: int = 0
     gems: List[Dict] = field(default_factory=list)
     jewelry: List[Dict] = field(default_factory=list)
-    magic_items: List[str] = field(default_factory=list)
+    magic_items: List = field(default_factory=list)  # Now holds Item objects instead of strings
 
     def total_value_gp(self) -> int:
         """Calculate total value in gold pieces"""
@@ -44,6 +44,18 @@ class TreasureHoard:
 
     def to_dict(self) -> Dict:
         """Convert to dictionary for serialization"""
+        # Convert magic items (Item objects) to display strings
+        magic_items_display = []
+        for item in self.magic_items:
+            if hasattr(item, 'name'):
+                # It's an Item object
+                xp = getattr(item, 'xp_value', 0)
+                gp = getattr(item, 'gp_value', 0)
+                magic_items_display.append(f"{item.name} (XP: {xp}, Value: {gp}gp)")
+            else:
+                # It's a string (backward compatibility)
+                magic_items_display.append(str(item))
+
         return {
             "coins": {
                 "copper": self.copper,
@@ -54,7 +66,7 @@ class TreasureHoard:
             },
             "gems": self.gems,
             "jewelry": self.jewelry,
-            "magic_items": self.magic_items,
+            "magic_items": magic_items_display,
             "total_value_gp": self.total_value_gp()
         }
 
@@ -91,6 +103,10 @@ class TreasureGenerator:
 
         with open(magic_items_path, 'r') as f:
             self.magic_items = json.load(f)
+
+        # Initialize magic item factory
+        from .magic_item_factory import MagicItemFactory
+        self.magic_factory = MagicItemFactory(magic_items_path=magic_items_path)
 
     def _parse_treasure_entry(self, entry_str: str) -> Tuple[str, int]:
         """
@@ -512,11 +528,11 @@ class TreasureGenerator:
         # Roll for magic items
         for key in table:
             if key.startswith("magic_") and table[key] != "nil":
-                magic_items = self._roll_for_magic_items(key, table[key])
-                # Convert magic item dicts to readable strings
-                for item in magic_items:
-                    item_str = f"{item['name']} (XP: {item['xp_value']}, Value: {item['gp_value']}gp)"
-                    hoard.magic_items.append(item_str)
+                magic_item_dicts = self._roll_for_magic_items(key, table[key])
+                # Convert magic item dicts to functional Item objects
+                for item_dict in magic_item_dicts:
+                    magic_item_obj = self.magic_factory.create_from_treasure(item_dict)
+                    hoard.magic_items.append(magic_item_obj)
 
         return hoard
 

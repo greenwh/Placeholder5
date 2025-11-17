@@ -150,6 +150,20 @@ class CombatResolver:
         if weapon and hasattr(weapon, 'magic_bonus'):
             to_hit_bonus += weapon.magic_bonus
 
+        # Handle special weapon to-hit bonuses
+        if weapon and hasattr(weapon, 'properties'):
+            props = weapon.properties
+
+            # Dragon Slayer - bonus to hit vs dragons
+            if props.get('special') == 'dragon_slayer':
+                if hasattr(defender, 'name') and 'dragon' in defender.name.lower():
+                    to_hit_bonus += props.get('bonus_vs_dragons', 3)
+
+            # Vs Lycanthropes - bonus to hit vs lycanthropes
+            elif props.get('special') == 'vs_lycanthropes':
+                if hasattr(defender, 'name') and 'were' in defender.name.lower():
+                    to_hit_bonus += props.get('bonus_vs_lycanthropes', 2)
+
         adjusted_roll = roll + to_hit_bonus
 
         hit = adjusted_roll >= target_number
@@ -222,7 +236,34 @@ class CombatResolver:
         if weapon and hasattr(weapon, 'magic_bonus'):
             damage_bonus += weapon.magic_bonus
 
-        total_damage = base_damage + damage_bonus
+        # Handle special weapon properties
+        extra_damage = 0
+        if weapon and hasattr(weapon, 'properties'):
+            props = weapon.properties
+
+            # Flame Tongue - extra fire damage
+            if props.get('special') == 'flame_tongue':
+                fire_dice = props.get('fire_damage', '1d4+1')
+                extra_damage += self.dice_roller.roll(fire_dice)
+
+            # Frost Brand - extra cold damage
+            elif props.get('special') == 'frost_brand':
+                cold_dice = props.get('cold_damage', '1d6')
+                extra_damage += self.dice_roller.roll(cold_dice)
+
+            # Dragon Slayer - bonus vs dragons
+            elif props.get('special') == 'dragon_slayer':
+                if hasattr(defender, 'name') and 'dragon' in defender.name.lower():
+                    bonus_vs_dragons = props.get('bonus_vs_dragons', 3)
+                    damage_bonus += bonus_vs_dragons
+
+            # Vs Lycanthropes - bonus vs lycanthropes
+            elif props.get('special') == 'vs_lycanthropes':
+                if hasattr(defender, 'name') and 'were' in defender.name.lower():
+                    bonus_vs_lycan = props.get('bonus_vs_lycanthropes', 2)
+                    damage_bonus += bonus_vs_lycan
+
+        total_damage = base_damage + damage_bonus + extra_damage
 
         # Critical hit doubles the total
         if critical:
