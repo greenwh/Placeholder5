@@ -67,22 +67,30 @@ class TreasureGenerator:
     Handles individual and lair treasures.
     """
 
-    def __init__(self, treasure_tables_path: Optional[Path] = None):
+    def __init__(self, treasure_tables_path: Optional[Path] = None, magic_items_path: Optional[Path] = None):
         """
         Initialize treasure generator
 
         Args:
             treasure_tables_path: Path to treasure_tables.json (optional)
+            magic_items_path: Path to magic_items.json (optional)
         """
         if treasure_tables_path is None:
             base_dir = Path(__file__).parent.parent
             treasure_tables_path = base_dir / "data" / "treasure_tables.json"
+
+        if magic_items_path is None:
+            base_dir = Path(__file__).parent.parent
+            magic_items_path = base_dir / "data" / "magic_items.json"
 
         with open(treasure_tables_path, 'r') as f:
             data = json.load(f)
             self.treasure_types = data["treasure_types"]
             self.gem_values = data["gem_values"]
             self.jewelry_values = data["jewelry_values"]
+
+        with open(magic_items_path, 'r') as f:
+            self.magic_items = json.load(f)
 
     def _parse_treasure_entry(self, entry_str: str) -> Tuple[str, int]:
         """
@@ -250,6 +258,177 @@ class TreasureGenerator:
         # Generate jewelry
         return [self._generate_jewelry() for _ in range(num_pieces)]
 
+    def _generate_magic_item(self, category: str = "any") -> Dict:
+        """
+        Generate a magic item
+
+        Args:
+            category: Type of item (potion, scroll, weapon, armor, ring, misc, any)
+
+        Returns:
+            Dictionary with magic item data
+        """
+        if category == "any":
+            # Random category
+            categories = ["potions", "scrolls", "weapons", "armor", "rings", "misc_magic"]
+            category = random.choice(categories)
+
+        # Generate from appropriate table
+        if category == "potions":
+            roll = random.randint(1, 100)
+            for entry in self.magic_items["potions"]:
+                roll_range = entry["roll"]
+                parts = roll_range.split("-")
+                min_r = int(parts[0])
+                max_r = int(parts[1]) if parts[1] != "00" else 100
+                if min_r <= roll <= max_r:
+                    return {
+                        "type": "potion",
+                        "name": f"Potion of {entry['name']}",
+                        "xp_value": entry["xp"],
+                        "gp_value": entry["gp"]
+                    }
+
+        elif category == "scrolls":
+            # Simplified: protection scrolls
+            scroll = random.choice(self.magic_items["scrolls"]["protection_scrolls"])
+            return {
+                "type": "scroll",
+                "name": scroll["name"],
+                "xp_value": scroll["xp"],
+                "gp_value": scroll["gp"]
+            }
+
+        elif category == "weapons" or category == "swords":
+            # Roll for sword
+            roll = random.randint(1, 100)
+            for entry in self.magic_items["weapons"]["swords"]:
+                roll_range = entry["roll"]
+                parts = roll_range.split("-")
+                min_r = int(parts[0])
+                max_r = int(parts[1]) if parts[1] != "00" else 100
+                if min_r <= roll <= max_r:
+                    return {
+                        "type": "weapon",
+                        "name": entry["name"],
+                        "xp_value": entry["xp"],
+                        "gp_value": entry["gp"]
+                    }
+
+        elif category == "armor":
+            roll = random.randint(1, 100)
+            for entry in self.magic_items["armor"]:
+                roll_range = entry["roll"]
+                parts = roll_range.split("-")
+                min_r = int(parts[0])
+                max_r = int(parts[1]) if parts[1] != "00" else 100
+                if min_r <= roll <= max_r:
+                    return {
+                        "type": "armor",
+                        "name": entry["name"],
+                        "xp_value": entry["xp"],
+                        "gp_value": entry["gp"]
+                    }
+
+        elif category == "rings":
+            roll = random.randint(1, 100)
+            for entry in self.magic_items["rings"]:
+                roll_range = entry["roll"]
+                parts = roll_range.split("-")
+                min_r = int(parts[0])
+                max_r = int(parts[1]) if parts[1] != "00" else 100
+                if min_r <= roll <= max_r:
+                    return {
+                        "type": "ring",
+                        "name": entry["name"],
+                        "xp_value": entry["xp"],
+                        "gp_value": entry["gp"]
+                    }
+
+        elif category == "misc_magic":
+            item = random.choice(self.magic_items["misc_magic"])
+            return {
+                "type": "misc",
+                "name": item["name"],
+                "xp_value": item["xp"],
+                "gp_value": item["gp"]
+            }
+
+        # Fallback
+        return {
+            "type": "potion",
+            "name": "Potion of Healing",
+            "xp_value": 200,
+            "gp_value": 400
+        }
+
+    def _roll_for_magic_items(self, magic_key: str, percentage_str: str) -> List[Dict]:
+        """
+        Roll for magic items from treasure table
+
+        Args:
+            magic_key: Key like "magic_any_3" or "magic_any_2_plus_1_potion"
+            percentage_str: Percentage like "30%" or "nil"
+
+        Returns:
+            List of magic items
+        """
+        if not percentage_str or percentage_str == "nil":
+            return []
+
+        # Parse percentage
+        percentage = int(percentage_str.rstrip('%'))
+
+        # Check if magic items appear
+        if random.randint(1, 100) > percentage:
+            return []
+
+        items = []
+
+        # Parse the magic key to determine what to generate
+        # Examples:
+        # "magic_any_3" -> 3 random items
+        # "magic_any_2_plus_1_potion" -> 2 random + 1 potion
+        # "magic_sword_armor_misc" -> 1 sword/armor/misc weapon
+        # "magic_any_3_no_swords_plus_1_potion_plus_1_scroll" -> complex
+
+        # Extract number of "any" items
+        any_match = re.search(r'any_(\d+)', magic_key)
+        num_any = int(any_match.group(1)) if any_match else 0
+
+        # Check for restrictions
+        no_swords = "no_swords" in magic_key
+
+        # Generate "any" items
+        for _ in range(num_any):
+            if no_swords:
+                # Exclude weapons category
+                categories = ["potions", "scrolls", "armor", "rings", "misc_magic"]
+                category = random.choice(categories)
+                items.append(self._generate_magic_item(category))
+            else:
+                items.append(self._generate_magic_item("any"))
+
+        # Check for additional specific items
+        if "plus_1_potion" in magic_key or "plus_2_potion" in magic_key:
+            num_potions = 2 if "plus_2_potion" in magic_key else 1
+            for _ in range(num_potions):
+                items.append(self._generate_magic_item("potions"))
+
+        if "plus_1_scroll" in magic_key or "plus_2_scroll" in magic_key:
+            num_scrolls = 2 if "plus_2_scroll" in magic_key else 1
+            for _ in range(num_scrolls):
+                items.append(self._generate_magic_item("scrolls"))
+
+        # Handle special category restrictions
+        if "sword_armor_misc" in magic_key:
+            # One item from swords, armor, or misc weapons
+            categories = ["swords", "armor", "weapons"]
+            category = random.choice(categories)
+            items.append(self._generate_magic_item(category))
+
+        return items
+
     def generate_individual_treasure(self, treasure_type: str, num_individuals: int = 1) -> TreasureHoard:
         """
         Generate treasure for individual monsters
@@ -330,12 +509,14 @@ class TreasureGenerator:
         if table.get("jewelry") != "nil":
             hoard.jewelry = self._roll_for_jewelry(table["jewelry"])
 
-        # Magic items (TODO: implement when magic item tables are ready)
-        # For now, just note that magic items would appear
+        # Roll for magic items
         for key in table:
             if key.startswith("magic_") and table[key] != "nil":
-                # Placeholder - will implement later
-                pass
+                magic_items = self._roll_for_magic_items(key, table[key])
+                # Convert magic item dicts to readable strings
+                for item in magic_items:
+                    item_str = f"{item['name']} (XP: {item['xp_value']}, Value: {item['gp_value']}gp)"
+                    hoard.magic_items.append(item_str)
 
         return hoard
 
