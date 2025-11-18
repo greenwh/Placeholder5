@@ -1,0 +1,143 @@
+{
+  "_comment": "AD&D 1e Magic Item Tables (subset from DMG)",
+  "_note": "Focused on items appropriate for levels 1-5",
+
+  "potions": [
+    {"roll": "01-03", "name": "Animal Control", "xp": 250, "gp": 400},
+    {"roll": "04-07", "name": "Clairaudience", "xp": 250, "gp": 400},
+    {"roll": "08-10", "name": "Clairvoyance", "xp": 300, "gp": 500},
+    {"roll": "11-13", "name": "Climbing", "xp": 300, "gp": 500},
+    {"roll": "14-16", "name": "Diminution", "xp": 300, "gp": 500},
+    {"roll": "17-19", "name": "ESP", "xp": 500, "gp": 850},
+    {"roll": "20-22", "name": "Extra-Healing", "xp": 400, "gp": 800},
+    {"roll": "23-25", "name": "Flying", "xp": 500, "gp": 750},
+    {"roll": "26-28", "name": "Gaseous Form", "xp": 300, "gp": 400},
+    {"roll": "29-32", "name": "Giant Strength", "xp": 600, "gp": 1000},
+    {"roll": "33-47", "name": "Healing", "xp": 200, "gp": 400},
+    {"roll": "48-50", "name": "Heroism", "xp": 300, "gp": 500},
+    {"roll": "51-53", "name": "Invisibility", "xp": 250, "gp": 500},
+    {"roll": "54-56", "name": "Levitation", "xp": 250, "gp": 400},
+    {"roll": "57-59", "name": "Speed", "xp": 450, "gp": 900},
+    {"roll": "60-68", "name": "Poison", "xp": 0, "gp": 0},
+    {"roll": "69-00", "name": "Water Breathing", "xp": 400, "gp": 900}
+  ],
+
+  "scrolls": {
+    "protection_scrolls": [
+      {"name": "Protection from Demons", "xp": 2500, "gp": 1000},
+      {"name": "Protection from Devils", "xp": 2500, "gp": 1500},
+      {"name": "Protection from Elementals", "xp": 1500, "gp": 1000},
+      {"name": "Protection from Lycanthropes", "xp": 1000, "gp": 1000},
+      {"name": "Protection from Magic", "xp": 1500, "gp": 2500},
+      {"name": "Protection from Undead", "xp": 1500, "gp": 1000}
+    ],
+    "spell_levels": {
+      "_note": "Spell scrolls contain 1-7 spells of various levels",
+      "low_level": ["1st", "2nd", "3rd"],
+      "mid_level": ["3rd", "4th", "5th"],
+      "high_level": ["5th", "6th", "7th"]
+    }
+  },
+
+  "weapons": {
+    "swords": [
+      {"roll": "01-25", "name": "Sword +1", "xp": 400, "gp": 2000},
+      {"roll": "26-30", "name": "Sword +1, +2 vs Magic-Using Creatures", "xp": 600, "gp": 3500},
+      {"roll": "31-35", "name": "Sword +1, +3 vs Lycanthropes", "xp": 700, "gp": 4000},
+      {"roll": "36-40", "name": "Sword +1, +3 vs Regenerating Creatures", "xp": 800, "gp": 4500},
+      {"roll": "41-45", "name": "Sword +1, Flame Tongue", "xp": 900, "gp": 4500},
+      {"roll": "46-50", "name": "Sword +1, Luck Blade", "xp": 1000, "gp": 5000},
+      {"roll": "51-58", "name": "Sword +2", "xp": 800, "gp": 4000},
+      {"roll": "59-62", "name": "Sword +2, Giant Slayer", "xp": 900, "gp": 5000},
+      {"roll": "63-66", "name": "Sword +2, Dragon Slayer", "xp": 900, "gp": 4500},
+      {"roll": "67-70", "name": "Sword +3", "xp": 1400, "gp": 7000},
+      {"roll": "71-75", "name": "Sword +3, Frost Brand", "xp": 1600, "gp": 8000},
+      {"roll": "76-80", "name": "Sword +4", "xp": 2000, "gp": 10000},
+      {"roll": "81-85", "name": "Sword +5", "xp": 2600, "gp": 13000},
+      {"roll": "86-90", "name": "Sword +1, Cursed", "xp": 0, "gp": 0},
+      {"roll": "91-00", "name": "Sword -2, Cursed", "xp": 0, "gp": 0}
+    ],
+    "misc_weapons": [
+      {"name": "Arrow +1 (2d6)", "xp": 6, "gp": 15},
+      {"name": "Arrow +2 (1d6)", "xp": 12, "gp": 30},
+      {"name": "Arrow +3 (1d3)", "xp": 18, "gp": 45},
+      {"name": "Axe +1", "xp": 300, "gp": 1500},
+      {"name": "Axe +2", "xp": 600, "gp": 3000},
+      {"name": "Bolt +1 (2d6)", "xp": 6, "gp": 15},
+      {"name": "Bolt +2 (1d6)", "xp": 12, "gp": 30},
+      {"name": "Bow +1", "xp": 500, "gp": 2500},
+      {"name": "Dagger +1", "xp": 200, "gp": 1000},
+      {"name": "Dagger +2", "xp": 400, "gp": 2000},
+      {"name": "Hammer +1", "xp": 300, "gp": 1500},
+      {"name": "Hammer +2", "xp": 600, "gp": 3000},
+      {"name": "Mace +1", "xp": 300, "gp": 1500},
+      {"name": "Mace +2", "xp": 600, "gp": 3000},
+      {"name": "Spear +1", "xp": 300, "gp": 1500},
+      {"name": "Spear +2", "xp": 600, "gp": 3000}
+    ]
+  },
+
+  "armor": [
+    {"roll": "01-05", "name": "Leather Armor +1", "xp": 500, "gp": 2500},
+    {"roll": "06-10", "name": "Leather Armor +2", "xp": 1000, "gp": 5000},
+    {"roll": "11-20", "name": "Chain Mail +1", "xp": 500, "gp": 2500},
+    {"roll": "21-26", "name": "Chain Mail +2", "xp": 1000, "gp": 5000},
+    {"roll": "27-32", "name": "Chain Mail +3", "xp": 1500, "gp": 7500},
+    {"roll": "33-42", "name": "Plate Mail +1", "xp": 800, "gp": 5000},
+    {"roll": "43-50", "name": "Plate Mail +2", "xp": 1600, "gp": 10000},
+    {"roll": "51-56", "name": "Plate Mail +3", "xp": 2400, "gp": 15000},
+    {"roll": "57-60", "name": "Plate Mail +4", "xp": 3200, "gp": 20000},
+    {"roll": "61-65", "name": "Shield +1", "xp": 500, "gp": 2500},
+    {"roll": "66-70", "name": "Shield +2", "xp": 1000, "gp": 5000},
+    {"roll": "71-75", "name": "Shield +3", "xp": 1500, "gp": 7500},
+    {"roll": "76-85", "name": "Armor +1, Cursed", "xp": 0, "gp": 0},
+    {"roll": "86-00", "name": "Armor -1, Cursed AC 9", "xp": 0, "gp": 0}
+  ],
+
+  "rings": [
+    {"roll": "01-05", "name": "Ring of Contrariness (Cursed)", "xp": 0, "gp": 0},
+    {"roll": "06-10", "name": "Ring of Delusion (Cursed)", "xp": 0, "gp": 0},
+    {"roll": "11-15", "name": "Ring of Feather Falling", "xp": 1000, "gp": 5000},
+    {"roll": "16-20", "name": "Ring of Fire Resistance", "xp": 1000, "gp": 5000},
+    {"roll": "21-26", "name": "Ring of Invisibility", "xp": 1500, "gp": 7500},
+    {"roll": "27-32", "name": "Ring of Protection +1", "xp": 2000, "gp": 10000},
+    {"roll": "33-36", "name": "Ring of Protection +2", "xp": 4000, "gp": 20000},
+    {"roll": "37-40", "name": "Ring of Protection +3", "xp": 6000, "gp": 30000},
+    {"roll": "41-45", "name": "Ring of Regeneration", "xp": 4000, "gp": 20000},
+    {"roll": "46-55", "name": "Ring of Spell Storing", "xp": 3500, "gp": 22500},
+    {"roll": "56-60", "name": "Ring of Water Walking", "xp": 1000, "gp": 5000},
+    {"roll": "61-65", "name": "Ring of Weakness (Cursed)", "xp": 0, "gp": 0},
+    {"roll": "66-70", "name": "Ring of Wishes (1-2)", "xp": 12000, "gp": 24000},
+    {"roll": "71-75", "name": "Ring of Wishes (3)", "xp": 15000, "gp": 15000},
+    {"roll": "76-00", "name": "Ring of X-Ray Vision", "xp": 3500, "gp": 17500}
+  ],
+
+  "wands_staves_rods": [
+    {"type": "wand", "name": "Wand of Enemy Detection", "charges": "1d100", "xp": 2000, "gp": 10000},
+    {"type": "wand", "name": "Wand of Fear", "charges": "1d100", "xp": 3000, "gp": 15000},
+    {"type": "wand", "name": "Wand of Magic Detection", "charges": "1d100", "xp": 2500, "gp": 12500},
+    {"type": "wand", "name": "Wand of Magic Missiles", "charges": "1d100", "xp": 4000, "gp": 35000},
+    {"type": "wand", "name": "Wand of Paralyzation", "charges": "1d100", "xp": 3500, "gp": 25000},
+    {"type": "wand", "name": "Wand of Secret Door Detection", "charges": "1d100", "xp": 5000, "gp": 40000},
+    {"type": "staff", "name": "Staff of Striking", "charges": "25-1d6", "xp": 3500, "gp": 15000},
+    {"type": "staff", "name": "Staff of Healing", "charges": "25-1d6", "xp": 5000, "gp": 25000},
+    {"type": "rod", "name": "Rod of Cancellation", "charges": "50-1d10", "xp": 10000, "gp": 15000}
+  ],
+
+  "misc_magic": [
+    {"name": "Bag of Holding", "xp": 5000, "gp": 25000},
+    {"name": "Boots of Elvenkind", "xp": 1000, "gp": 5000},
+    {"name": "Boots of Levitation", "xp": 1500, "gp": 7500},
+    {"name": "Boots of Speed", "xp": 2500, "gp": 20000},
+    {"name": "Bracers of Defense AC 6", "xp": 1000, "gp": 5000},
+    {"name": "Bracers of Defense AC 4", "xp": 2000, "gp": 10000},
+    {"name": "Cloak of Displacement", "xp": 3000, "gp": 17500},
+    {"name": "Cloak of Elvenkind", "xp": 1000, "gp": 6000},
+    {"name": "Cloak of Protection +1", "xp": 1000, "gp": 10000},
+    {"name": "Cloak of Protection +2", "xp": 2000, "gp": 20000},
+    {"name": "Gauntlets of Ogre Power", "xp": 1000, "gp": 15000},
+    {"name": "Helm of Telepathy", "xp": 3000, "gp": 35000},
+    {"name": "Rope of Climbing", "xp": 1000, "gp": 10000},
+    {"name": "Rope of Entanglement", "xp": 1500, "gp": 12000}
+  ]
+}

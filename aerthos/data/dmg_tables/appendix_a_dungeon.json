@@ -1,0 +1,230 @@
+{
+  "_comment": "AD&D 1e Dungeon Generation Tables from DMG Appendix A (pp. 169-173)",
+  "_note": "These tables are rolled every 30' while mapping a dungeon",
+
+  "periodic_check": {
+    "_description": "Roll d20 every 30 feet in a passage",
+    "table": [
+      {"roll": "1-2", "result": "continue", "description": "Continue straight - check again in 60'"},
+      {"roll": "3-5", "result": "door", "description": "Door (see door table)"},
+      {"roll": "6-10", "result": "side_passage", "description": "Side Passage - check again in 30'"},
+      {"roll": "11-13", "result": "turn", "description": "Passage Turns (see turn table)"},
+      {"roll": "14-16", "result": "chamber", "description": "Chamber - check 30' after leaving"},
+      {"roll": "17", "result": "stairs", "description": "Stairs (see stairs table)"},
+      {"roll": "18", "result": "dead_end", "description": "Dead End"},
+      {"roll": "19", "result": "trick_trap", "description": "Trick/Trap - check again in 30'"},
+      {"roll": "20", "result": "wandering_monster", "description": "Wandering Monster, then check again"}
+    ]
+  },
+
+  "door_location": {
+    "_description": "Roll d20 to determine door location",
+    "table": [
+      {"roll": "1-6", "location": "left"},
+      {"roll": "7-12", "location": "right"},
+      {"roll": "13-20", "location": "ahead"}
+    ]
+  },
+
+  "door_space_beyond": {
+    "_description": "What's on the other side of the door",
+    "table": [
+      {"roll": "1-4", "result": "parallel_passage", "description": "Parallel passage or 10x10 room"},
+      {"roll": "5-8", "result": "passage_straight", "description": "Passage straight ahead"},
+      {"roll": "9-10", "result": "passage_45", "description": "Passage at 45 degrees"},
+      {"roll": "11-18", "result": "room", "description": "Room (use chamber table)"},
+      {"roll": "19-20", "result": "chamber", "description": "Chamber (use chamber table)"}
+    ]
+  },
+
+  "door_type": {
+    "_description": "Type of door encountered",
+    "table": [
+      {"roll": "1-6", "type": "wooden", "stuck_chance": 2, "locked_chance": 1},
+      {"roll": "7-8", "type": "wooden_stuck", "stuck_chance": 6, "locked_chance": 0},
+      {"roll": "9-10", "type": "wooden_locked", "stuck_chance": 0, "locked_chance": 6},
+      {"roll": "11-12", "type": "stone", "stuck_chance": 3, "locked_chance": 1},
+      {"roll": "13", "type": "iron", "stuck_chance": 2, "locked_chance": 3},
+      {"roll": "14-15", "type": "portcullis", "stuck_chance": 1, "locked_chance": 2},
+      {"roll": "16-17", "type": "secret_door", "stuck_chance": 0, "locked_chance": 0},
+      {"roll": "18-20", "type": "door_with_trap", "stuck_chance": 2, "locked_chance": 2}
+    ]
+  },
+
+  "side_passage": {
+    "_description": "Direction of side passage (d20)",
+    "table": [
+      {"roll": "1-2", "direction": "left_90", "description": "Left 90 degrees"},
+      {"roll": "3-4", "direction": "right_90", "description": "Right 90 degrees"},
+      {"roll": "5", "direction": "left_45_ahead", "description": "Left 45 degrees ahead"},
+      {"roll": "6", "direction": "right_45_ahead", "description": "Right 45 degrees ahead"},
+      {"roll": "7", "direction": "left_45_behind", "description": "Left 45 degrees behind (135)"},
+      {"roll": "8", "direction": "right_45_behind", "description": "Right 45 degrees behind (135)"},
+      {"roll": "9", "direction": "left_curve_45", "description": "Left curve 45 degrees ahead"},
+      {"roll": "10", "direction": "right_curve_45", "description": "Right curve 45 degrees ahead"},
+      {"roll": "11-13", "direction": "t_junction", "description": "Passage T's"},
+      {"roll": "14-15", "direction": "y_junction", "description": "Passage Y's"},
+      {"roll": "16-19", "direction": "four_way", "description": "Four-way intersection"},
+      {"roll": "20", "direction": "x_junction", "description": "Passage X's"}
+    ]
+  },
+
+  "passage_turn": {
+    "_description": "Direction passage turns (d20)",
+    "table": [
+      {"roll": "1-8", "direction": "left_90", "description": "Left 90 degrees"},
+      {"roll": "9", "direction": "left_45_ahead", "description": "Left 45 degrees ahead"},
+      {"roll": "10", "direction": "left_45_behind", "description": "Left 45 degrees behind (135)"},
+      {"roll": "11-18", "direction": "right_90", "description": "Right 90 degrees"},
+      {"roll": "19", "direction": "right_45_ahead", "description": "Right 45 degrees ahead"},
+      {"roll": "20", "direction": "right_45_behind", "description": "Right 45 degrees behind (135)"}
+    ]
+  },
+
+  "chamber_size": {
+    "_description": "Chamber/Room shape and size (d20)",
+    "chamber_table": [
+      {"roll": "1-2", "shape": "square", "size": "20x20"},
+      {"roll": "3-4", "shape": "square", "size": "20x20"},
+      {"roll": "5-6", "shape": "square", "size": "30x30"},
+      {"roll": "7-8", "shape": "square", "size": "40x40"},
+      {"roll": "9-10", "shape": "rectangular", "size": "20x30"},
+      {"roll": "11-13", "shape": "rectangular", "size": "20x30"},
+      {"roll": "14-15", "shape": "rectangular", "size": "30x50"},
+      {"roll": "16-17", "shape": "rectangular", "size": "40x60"},
+      {"roll": "18-20", "shape": "unusual", "size": "varies"}
+    ],
+    "room_table": [
+      {"roll": "1-2", "shape": "square", "size": "10x10"},
+      {"roll": "3-4", "shape": "square", "size": "20x20"},
+      {"roll": "5-6", "shape": "square", "size": "30x30"},
+      {"roll": "7-8", "shape": "square", "size": "40x40"},
+      {"roll": "9-10", "shape": "rectangular", "size": "10x20"},
+      {"roll": "11-13", "shape": "rectangular", "size": "20x30"},
+      {"roll": "14-15", "shape": "rectangular", "size": "20x40"},
+      {"roll": "16-17", "shape": "rectangular", "size": "30x40"},
+      {"roll": "18-20", "shape": "unusual", "size": "varies"}
+    ]
+  },
+
+  "chamber_contents": {
+    "_description": "What's in the chamber/room (d20)",
+    "table": [
+      {"roll": "1-12", "contents": "empty", "description": "Empty"},
+      {"roll": "13-14", "contents": "monster", "description": "Monster only"},
+      {"roll": "15-17", "contents": "monster_treasure", "description": "Monster and treasure"},
+      {"roll": "18", "contents": "special", "description": "Special or stairway"},
+      {"roll": "19", "contents": "trick_trap", "description": "Trick/Trap"},
+      {"roll": "20", "contents": "treasure", "description": "Treasure only"}
+    ]
+  },
+
+  "stairs": {
+    "_description": "Type of stairs encountered (d20)",
+    "table": [
+      {"roll": "1-5", "type": "down_1", "description": "Down 1 level"},
+      {"roll": "6", "type": "down_2", "description": "Down 2 levels"},
+      {"roll": "7", "type": "down_3", "description": "Down 3 levels"},
+      {"roll": "8", "type": "up_1", "description": "Up 1 level"},
+      {"roll": "9", "type": "up_dead_end", "description": "Up to dead end"},
+      {"roll": "10", "type": "down_dead_end", "description": "Down to dead end"},
+      {"roll": "11-13", "type": "chimney", "description": "Chimney (up and down)"},
+      {"roll": "14-16", "type": "trapdoor_down_1", "description": "Trap door down 1 level"},
+      {"roll": "17", "type": "trapdoor_down_2", "description": "Trap door down 2 levels"},
+      {"roll": "18-20", "type": "up_1_down_2", "description": "Up 1 then down 2 (net down 1)"}
+    ]
+  },
+
+  "trick_trap": {
+    "_description": "Trick or trap encountered (d20)",
+    "table": [
+      {"roll": "1-5", "type": "secret_door", "description": "Secret door (search to find)"},
+      {"roll": "6-7", "type": "pit_10", "description": "Pit, 10' deep"},
+      {"roll": "8", "type": "pit_10_spikes", "description": "Pit, 10' deep with spikes"},
+      {"roll": "9-11", "type": "elevator_room", "description": "Elevator room (rises or falls)"},
+      {"roll": "12", "type": "falling_block", "description": "Falling block from ceiling"},
+      {"roll": "13", "type": "arrow_trap", "description": "Arrow trap"},
+      {"roll": "14", "type": "poison_gas", "description": "Poison gas trap"},
+      {"roll": "15", "type": "teleporter", "description": "Teleporter (random destination)"},
+      {"roll": "16", "type": "rotating_room", "description": "Rotating room"},
+      {"roll": "17", "type": "falling_ceiling", "description": "Falling ceiling"},
+      {"roll": "18", "type": "crushing_walls", "description": "Crushing walls"},
+      {"roll": "19", "type": "flooding_room", "description": "Flooding room"},
+      {"roll": "20", "type": "illusion", "description": "Illusion (wall, pit, monster, etc.)"}
+    ]
+  },
+
+  "passage_width": {
+    "_description": "Width of dungeon passages",
+    "standard_dungeon": [
+      {"roll": "1-12", "width": 10, "description": "10 feet wide"},
+      {"roll": "13-16", "width": 20, "description": "20 feet wide"},
+      {"roll": "17-18", "width": 30, "description": "30 feet wide"},
+      {"roll": "19-20", "width": 5, "description": "5 feet wide"}
+    ]
+  },
+
+  "exit_count": {
+    "_description": "Number of exits from a chamber",
+    "table": [
+      {"roll": "1-3", "exits": 0, "description": "No other exits (dead end)"},
+      {"roll": "4-6", "exits": 1, "description": "1 exit"},
+      {"roll": "7-9", "exits": 2, "description": "2 exits"},
+      {"roll": "10-12", "exits": 3, "description": "3 exits"},
+      {"roll": "13-15", "exits": 4, "description": "4 exits"},
+      {"roll": "16-17", "exits": 5, "description": "5 exits"},
+      {"roll": "18-19", "exits": 6, "description": "6 exits"},
+      {"roll": "20", "exits": "1d4+2", "description": "1d4+2 exits"}
+    ]
+  },
+
+  "exit_location": {
+    "_description": "Where exits are located in a room",
+    "table": [
+      {"roll": "1-7", "location": "opposite_wall", "description": "Opposite wall from entry"},
+      {"roll": "8-12", "location": "left_wall", "description": "Left wall"},
+      {"roll": "13-17", "location": "right_wall", "description": "Right wall"},
+      {"roll": "18-20", "location": "same_wall", "description": "Same wall as entry"}
+    ]
+  },
+
+  "dungeon_dressing": {
+    "_description": "Atmospheric details for empty rooms and passages",
+    "general": [
+      "arrow, broken", "bones", "cobwebs", "cracks in floor", "cracks in wall",
+      "dripping water", "dust", "fungi, common", "iron bar, bent and rusted",
+      "moisture seeping through walls", "rags", "rubble and dirt",
+      "slime coating on walls", "sticks", "stones, small", "torch stub",
+      "wall scratchings", "water, large puddle", "water, small puddle"
+    ],
+    "unexplained_sounds": [
+      "bellowing", "chanting", "chiming", "clanking", "coughing",
+      "footsteps ahead", "footsteps approaching", "footsteps behind",
+      "footsteps receding", "footsteps to side", "giggling (faint)",
+      "gong", "groaning", "grunting", "hissing", "hooting",
+      "horn blowing", "howling", "jingling", "knocking", "laughter",
+      "moaning", "murmuring", "rattling", "ringing", "screaming",
+      "shuffling", "slithering", "snapping", "sneezing", "sobbing",
+      "splashing", "splintering", "tapping", "thud", "tinkling",
+      "whispering", "whistling"
+    ],
+    "furnishings": [
+      "altar", "armoire", "bed", "bench", "brazier", "cabinet",
+      "candelabrum", "carpet", "chair", "chandelier", "chest",
+      "couch", "crate", "desk", "fireplace", "fountain", "idol",
+      "keg", "mat", "pallet", "pedestal", "pillar", "screen",
+      "shelf", "shrine", "statue", "stool", "table", "tapestry",
+      "throne", "trunk", "tub", "urn", "workbench"
+    ],
+    "container_contents": [
+      "ashes", "bark", "bodkins", "bones", "books", "candles",
+      "chunks of raw meat", "cloth, bolt of", "coal", "coins",
+      "dishes (crockery)", "dust", "fabric, bolt of", "food scraps",
+      "fur, scraps", "gravel", "hides and skins", "ingots (metal)",
+      "jewelry", "keys", "leaves and twigs", "leather scraps",
+      "lumps of unrefined ore", "pottery shards", "powder (unidentified)",
+      "rags", "rope", "rubble", "scrolls and parchment", "spices",
+      "straw", "tools", "wax (candle)", "weapons", "wood"
+    ]
+  }
+}

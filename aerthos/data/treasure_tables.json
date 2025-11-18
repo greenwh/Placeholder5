@@ -1,0 +1,325 @@
+{
+  "_comment": "AD&D 1e Treasure Tables from DMG p. 121",
+  "_note": "Format: '1-8 :50%' means roll 1d8 thousand, 50% chance of appearing",
+
+  "treasure_types": {
+    "A": {
+      "copper_thousands": "1-6 :25%",
+      "silver_thousands": "1-6 :30%",
+      "electrum_thousands": "1-6 :35%",
+      "gold_thousands": "2-12 :50%",
+      "platinum_hundreds": "1-4 :25%",
+      "gems": "4-24 :60%",
+      "jewelry": "3-18 :50%",
+      "magic_any_3": "30%"
+    },
+    "B": {
+      "copper_thousands": "1-8 :50%",
+      "silver_thousands": "1-6 :25%",
+      "electrum_thousands": "1-4 :25%",
+      "gold_thousands": "1-3 :25%",
+      "platinum_hundreds": "nil",
+      "gems": "1-8 :30%",
+      "jewelry": "1-4 :20%",
+      "magic_sword_armor_misc": "10%"
+    },
+    "C": {
+      "copper_thousands": "1-12 :20%",
+      "silver_thousands": "1-6 :30%",
+      "electrum_thousands": "1-4 :10%",
+      "gold_thousands": "1-6 :50%",
+      "platinum_hundreds": "nil",
+      "gems": "1-6 :25%",
+      "jewelry": "1-3 :20%",
+      "magic_any_2": "10%"
+    },
+    "D": {
+      "copper_thousands": "1-8 :10%",
+      "silver_thousands": "1-12 :15%",
+      "electrum_thousands": "1-8 :15%",
+      "gold_thousands": "1-12 :60%",
+      "platinum_hundreds": "nil",
+      "gems": "1-10 :30%",
+      "jewelry": "1-6 :25%",
+      "magic_any_2_plus_1_potion": "15%"
+    },
+    "E": {
+      "copper_thousands": "1-10 :5%",
+      "silver_thousands": "1-12 :25%",
+      "electrum_thousands": "1-8 :25%",
+      "gold_thousands": "1-8 :25%",
+      "platinum_hundreds": "nil",
+      "gems": "1-12 :15%",
+      "jewelry": "1-8 :10%",
+      "magic_any_3_plus_1_scroll": "25%"
+    },
+    "F": {
+      "copper_thousands": "nil",
+      "silver_thousands": "2-20 :10%",
+      "electrum_thousands": "1-12 :15%",
+      "gold_thousands": "1-10 :45%",
+      "platinum_hundreds": "1-8 :30%",
+      "gems": "2-24 :20%",
+      "jewelry": "1-12 :10%",
+      "magic_any_3_no_swords_plus_1_potion_plus_1_scroll": "30%"
+    },
+    "G": {
+      "copper_thousands": "nil",
+      "silver_thousands": "nil",
+      "electrum_thousands": "nil",
+      "gold_thousands": "10-40 :75%",
+      "platinum_hundreds": "1-20 :50%",
+      "gems": "3-18 :25%",
+      "jewelry": "1-10 :25%",
+      "magic_any_4_plus_1_scroll": "35%"
+    },
+    "H": {
+      "copper_thousands": "3-24 :25%",
+      "silver_thousands": "1-100 :40%",
+      "electrum_thousands": "10-60 :40%",
+      "gold_thousands": "10-60 :55%",
+      "platinum_hundreds": "5-30 :25%",
+      "gems": "1-100 :50%",
+      "jewelry": "10-40 :50%",
+      "magic_any_4_plus_1_potion_plus_1_scroll": "15%"
+    },
+    "I": {
+      "copper_thousands": "nil",
+      "silver_thousands": "nil",
+      "electrum_thousands": "nil",
+      "gold_thousands": "nil",
+      "platinum_hundreds": "nil",
+      "gems": "2-12 :30%",
+      "jewelry": "1-8 :10%",
+      "magic_any_1": "15%"
+    },
+    "J": {
+      "copper_thousands": "3-24 :25%",
+      "silver_thousands": "1-8 :10%",
+      "electrum_thousands": "nil",
+      "gold_thousands": "nil",
+      "platinum_hundreds": "nil",
+      "gems": "nil",
+      "jewelry": "nil",
+      "magic_none": "nil"
+    },
+    "K": {
+      "copper_thousands": "nil",
+      "silver_individual": "3-18",
+      "electrum_thousands": "nil",
+      "gold_thousands": "nil",
+      "platinum_hundreds": "nil",
+      "gems": "nil",
+      "jewelry": "nil",
+      "magic_none": "nil"
+    },
+    "L": {
+      "copper_thousands": "nil",
+      "silver_thousands": "nil",
+      "electrum_individual": "2-12",
+      "gold_thousands": "nil",
+      "platinum_hundreds": "nil",
+      "gems": "nil",
+      "jewelry": "nil",
+      "magic_none": "nil"
+    },
+    "M": {
+      "copper_thousands": "nil",
+      "silver_thousands": "nil",
+      "electrum_thousands": "nil",
+      "gold_individual": "2-8",
+      "platinum_hundreds": "nil",
+      "gems": "nil",
+      "jewelry": "nil",
+      "magic_none": "nil"
+    },
+    "N": {
+      "copper_thousands": "nil",
+      "silver_thousands": "nil",
+      "electrum_thousands": "nil",
+      "gold_thousands": "nil",
+      "platinum_individual": "1-6",
+      "gems": "nil",
+      "jewelry": "nil",
+      "magic_none": "nil"
+    },
+    "O": {
+      "copper_thousands": "1-4 :25%",
+      "silver_thousands": "1-3 :20%",
+      "electrum_thousands": "nil",
+      "gold_thousands": "nil",
+      "platinum_hundreds": "nil",
+      "gems": "nil",
+      "jewelry": "nil",
+      "magic_none": "nil"
+    },
+    "P": {
+      "copper_thousands": "nil",
+      "silver_thousands": "1-6 :30%",
+      "electrum_thousands": "1-2 :25%",
+      "gold_thousands": "nil",
+      "platinum_hundreds": "nil",
+      "gems": "nil",
+      "jewelry": "nil",
+      "magic_none": "nil"
+    },
+    "Q": {
+      "copper_thousands": "nil",
+      "silver_thousands": "nil",
+      "electrum_thousands": "nil",
+      "gold_thousands": "nil",
+      "platinum_hundreds": "nil",
+      "gems": "1-4 :50%",
+      "jewelry": "nil",
+      "magic_none": "nil"
+    },
+    "R": {
+      "copper_thousands": "nil",
+      "silver_thousands": "nil",
+      "electrum_thousands": "nil",
+      "gold_thousands": "2-20 :100%",
+      "platinum_hundreds": "10-60 :75%",
+      "gems": "4-32 :60%",
+      "jewelry": "1-12 :60%",
+      "magic_none": "nil"
+    },
+    "S": {
+      "copper_thousands": "nil",
+      "silver_thousands": "nil",
+      "electrum_thousands": "nil",
+      "gold_thousands": "nil",
+      "platinum_hundreds": "nil",
+      "gems": "nil",
+      "jewelry": "nil",
+      "magic_potions_2_8": "40%"
+    },
+    "T": {
+      "copper_thousands": "nil",
+      "silver_thousands": "nil",
+      "electrum_thousands": "nil",
+      "gold_thousands": "nil",
+      "platinum_hundreds": "nil",
+      "gems": "nil",
+      "jewelry": "nil",
+      "magic_1_4_scrolls": "50%"
+    },
+    "U": {
+      "copper_thousands": "nil",
+      "silver_thousands": "nil",
+      "electrum_thousands": "nil",
+      "gold_thousands": "nil",
+      "platinum_hundreds": "nil",
+      "gems": "10-40 :90%",
+      "jewelry": "2-12 :80%",
+      "magic_any_1": "70%"
+    },
+    "V": {
+      "copper_thousands": "nil",
+      "silver_thousands": "nil",
+      "electrum_thousands": "nil",
+      "gold_thousands": "nil",
+      "platinum_hundreds": "nil",
+      "gems": "nil",
+      "jewelry": "nil",
+      "magic_any_2": "85%"
+    },
+    "W": {
+      "copper_thousands": "nil",
+      "silver_thousands": "nil",
+      "electrum_thousands": "nil",
+      "gold_thousands": "5-30 :60%",
+      "platinum_hundreds": "1-8 :15%",
+      "gems": "10-40 :60%",
+      "jewelry": "5-20 :60%",
+      "magic_any_2": "60%"
+    },
+    "X": {
+      "copper_thousands": "nil",
+      "silver_thousands": "nil",
+      "electrum_thousands": "nil",
+      "gold_thousands": "nil",
+      "platinum_hundreds": "nil",
+      "gems": "nil",
+      "jewelry": "nil",
+      "magic_potions_only": "60%"
+    },
+    "Y": {
+      "copper_thousands": "nil",
+      "silver_thousands": "nil",
+      "electrum_thousands": "nil",
+      "gold_thousands": "2-12 :70%",
+      "platinum_hundreds": "nil",
+      "gems": "nil",
+      "jewelry": "nil",
+      "magic_none": "nil"
+    },
+    "Z": {
+      "copper_thousands": "nil",
+      "silver_thousands": "nil",
+      "electrum_thousands": "nil",
+      "gold_thousands": "nil",
+      "platinum_hundreds": "nil",
+      "gems": "1-3 :55%",
+      "jewelry": "1-3 :50%",
+      "magic_any_3": "50%"
+    }
+  },
+
+  "gem_values": [
+    {
+      "roll_d100": "01-20",
+      "value_gp": 10,
+      "types": ["quartz", "agate", "turquoise", "citrine", "jasper", "moonstone"]
+    },
+    {
+      "roll_d100": "21-45",
+      "value_gp": 50,
+      "types": ["bloodstone", "carnelian", "chalcedony", "onyx", "sardonyx", "zircon"]
+    },
+    {
+      "roll_d100": "46-75",
+      "value_gp": 100,
+      "types": ["amber", "amethyst", "coral", "jade", "pearl", "topaz"]
+    },
+    {
+      "roll_d100": "76-95",
+      "value_gp": 500,
+      "types": ["garnet", "aquamarine", "opal", "peridot", "spinel", "tourmaline"]
+    },
+    {
+      "roll_d100": "96-00",
+      "value_gp": 1000,
+      "types": ["ruby", "emerald", "diamond", "sapphire", "jacinth", "star ruby"]
+    }
+  ],
+
+  "jewelry_values": [
+    {
+      "roll_d100": "01-20",
+      "base_value_gp": 100,
+      "types": ["silver necklace", "copper brooch", "bronze bracelet", "pewter ring"]
+    },
+    {
+      "roll_d100": "21-40",
+      "base_value_gp": 500,
+      "types": ["gold ring", "silver bracelet", "electrum necklace", "copper crown"]
+    },
+    {
+      "roll_d100": "41-60",
+      "base_value_gp": 1000,
+      "types": ["jeweled brooch", "gold necklace", "silver crown", "ornate bracelet"]
+    },
+    {
+      "roll_d100": "61-80",
+      "base_value_gp": 5000,
+      "types": ["platinum ring", "jeweled crown", "gold scepter", "ornate necklace"]
+    },
+    {
+      "roll_d100": "81-00",
+      "base_value_gp": 10000,
+      "types": ["royal crown", "platinum necklace", "jeweled scepter", "ceremonial sword"]
+    }
+  ],
+
+  "_magic_item_tables_note": "Magic item generation will be in separate file: magic_items.json"
+}

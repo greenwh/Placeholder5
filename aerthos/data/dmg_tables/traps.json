@@ -1,0 +1,118 @@
+{
+  "_comment": "AD&D 1e Trap Tables from DMG Appendix G (p. 216)",
+  "_note": "Traps for dungeons with search and disarm mechanics",
+
+  "trap_types": {
+    "table": [
+      {"roll": "01-05", "trap": "arrow_trap", "damage": "1-6", "save": "none", "description": "Spring-loaded arrow fires from wall"},
+      {"roll": "06", "trap": "arrow_trap_poisoned", "damage": "1-6+poison", "save": "poison", "description": "Poisoned arrow (save or die)"},
+      {"roll": "07", "trap": "spear_trap", "damage": "2-8", "save": "none", "description": "Spear thrusts from wall or floor"},
+      {"roll": "08-09", "trap": "caltrops", "damage": "1-3", "save": "none", "description": "Scattered caltrops on floor, half movement"},
+      {"roll": "10-13", "trap": "crossbow_trap", "damage": "1-8", "save": "none", "description": "Heavy crossbow fires bolt"},
+      {"roll": "14-16", "trap": "ceiling_block", "damage": "3-18", "save": "breath", "description": "Heavy block falls from ceiling"},
+      {"roll": "17-18", "trap": "ceiling_collapse", "damage": "5-30", "save": "breath", "description": "Entire ceiling section collapses"},
+      {"roll": "19-23", "trap": "door_falling", "damage": "2-12", "save": "breath", "description": "Door falls forward when opened"},
+      {"roll": "24-26", "trap": "javelin_trap", "damage": "1-6", "save": "none", "description": "Javelin shoots from wall"},
+      {"roll": "27-32", "trap": "spear_spring", "damage": "1-6", "save": "none", "description": "Spear on spring mechanism"},
+      {"roll": "33", "trap": "floor_collapse", "damage": "2-12", "save": "breath", "description": "Floor collapses into pit below"},
+      {"roll": "34-36", "trap": "pit_10ft", "damage": "1-6", "save": "breath", "description": "10-foot deep pit"},
+      {"roll": "37-38", "trap": "gas_corroding", "damage": "1-6/round", "save": "breath", "description": "Corrosive gas fills room"},
+      {"roll": "39-43", "trap": "gas_blinding", "damage": "special", "save": "breath", "description": "Blinding gas (-4 to hit for 2-12 rounds)"},
+      {"roll": "44-46", "trap": "gas_fear", "damage": "special", "save": "spell", "description": "Fear gas (save or flee for 2-8 rounds)"},
+      {"roll": "47-48", "trap": "gas_poison", "damage": "poison", "save": "poison", "description": "Deadly poison gas (save or die)"},
+      {"roll": "49-54", "trap": "darts_needle", "damage": "1-4", "save": "none", "description": "Poison needle springs from lock"},
+      {"roll": "55-57", "trap": "darts_spring", "damage": "1-3 each", "save": "none", "description": "Multiple darts fire"},
+      {"roll": "58-59", "trap": "pendulum_ball", "damage": "2-12", "save": "breath", "description": "Heavy ball swings from ceiling"},
+      {"roll": "60-63", "trap": "pit_covered", "damage": "1-6", "save": "breath", "description": "Covered pit, 10 feet deep"},
+      {"roll": "64-66", "trap": "pit_spiked_10ft", "damage": "2-12", "save": "breath", "description": "10-foot pit with spikes"},
+      {"roll": "67", "trap": "pit_spiked_20ft", "damage": "4-24", "save": "breath", "description": "20-foot pit with spikes"},
+      {"roll": "68-70", "trap": "pit_spiked_poison", "damage": "2-12+poison", "save": "breath", "description": "Spiked pit with poisoned spikes"},
+      {"roll": "71-73", "trap": "scything_blade", "damage": "3-18", "save": "breath", "description": "Blade scythes across passage"},
+      {"roll": "74-76", "trap": "spear_pit", "damage": "2-8", "save": "breath", "description": "Spears shoot up from pit bottom"},
+      {"roll": "77-79", "trap": "stone_block", "damage": "2-20", "save": "breath", "description": "Stone block drops from above"},
+      {"roll": "80-82", "trap": "teleporter", "damage": "special", "save": "none", "description": "Teleports victim to random location"},
+      {"roll": "83-85", "trap": "net_falling", "damage": "special", "save": "breath", "description": "Net drops, entangles victim"},
+      {"roll": "86-88", "trap": "pit_water", "damage": "special", "save": "breath", "description": "Pit fills with water (drowning)"},
+      {"roll": "89-91", "trap": "crushing_walls", "damage": "5-50", "save": "breath", "description": "Walls close together slowly"},
+      {"roll": "92-94", "trap": "flooding_room", "damage": "special", "save": "none", "description": "Room floods with water"},
+      {"roll": "95-97", "trap": "cage_dropping", "damage": "special", "save": "breath", "description": "Cage drops, trapping victim"},
+      {"roll": "98-00", "trap": "magic_symbol", "damage": "varies", "save": "spell", "description": "Magical glyph or symbol activates"}
+    ]
+  },
+
+  "trap_detection": {
+    "_note": "Detection chances for different character types",
+    "thief": {
+      "base_chance": "uses_thief_skill",
+      "description": "Thieves use Find/Remove Traps skill"
+    },
+    "dwarf": {
+      "base_chance": "2_in_6",
+      "type": "construction_traps",
+      "description": "Dwarves detect construction-based traps"
+    },
+    "elf": {
+      "base_chance": "1_in_6",
+      "type": "secret_doors",
+      "description": "Elves find secret doors better"
+    },
+    "other": {
+      "base_chance": "1_in_6",
+      "description": "Others have 1 in 6 chance when actively searching"
+    }
+  },
+
+  "search_time": {
+    "passage_10ft": "1_round",
+    "room_small": "1_turn",
+    "room_medium": "2_turns",
+    "room_large": "3_turns"
+  },
+
+  "trap_saves": {
+    "_note": "Saving throw types for different traps",
+    "physical": "breath_weapon",
+    "poison": "poison_death",
+    "magic": "spell"
+  },
+
+  "disarm_difficulty": {
+    "_note": "Base percentages for disarming (thief skill)",
+    "simple": {"modifier": 10, "example": "Simple tripwire"},
+    "standard": {"modifier": 0, "example": "Standard trap"},
+    "complex": {"modifier": -10, "example": "Multi-part mechanism"},
+    "magical": {"modifier": -20, "example": "Magical trap (rare)"}
+  },
+
+  "trap_triggers": [
+    "pressure_plate",
+    "tripwire",
+    "door_handle",
+    "door_opening",
+    "chest_lid",
+    "stepping_on_floor",
+    "touching_object",
+    "entering_room",
+    "pulling_lever",
+    "opening_container"
+  ],
+
+  "poison_types": {
+    "_note": "Poison effects for poisoned traps",
+    "type_a": {
+      "name": "Deadly poison",
+      "effect": "Save or die in 1-4 rounds",
+      "save_modifier": 0
+    },
+    "type_b": {
+      "name": "Paralytic poison",
+      "effect": "Save or paralyzed 2-8 turns",
+      "save_modifier": 2
+    },
+    "type_c": {
+      "name": "Weakening poison",
+      "effect": "Save or -4 STR for 1-6 hours",
+      "save_modifier": 0
+    }
+  }
+}
