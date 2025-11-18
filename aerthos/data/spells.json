@@ -1035,7 +1035,8 @@
     "components": "standard",
     "description": "Traps a closable object (e.g., door, chest) to explode with fire damage (1-4 HP, half with save) when opened/touched by an unauthorized creature.",
     "class_availability": [
-      "Druid"
+      "Druid",
+      "Magic-User"
     ]
   },
   "heat_metal": {
@@ -1217,7 +1218,8 @@
     "components": "standard",
     "description": "Permanently forms an existing piece of stone (3 cubic feet/level) into a desired shape (e.g., weapon, trapdoor, idol).",
     "class_availability": [
-      "Druid"
+      "Druid",
+      "Magic-User"
     ]
   },
   "summon_insects": {
@@ -1973,7 +1975,8 @@
     "components": "standard",
     "description": "Enables the caster to speak the language of any creature (same as Cleric 4th Level).",
     "class_availability": [
-      "Magic-User"
+      "Magic-User",
+      "Cleric"
     ],
     "reversible": true
   },
@@ -2168,6 +2171,2841 @@
     "saving_throw": "Varies",
     "components": "standard",
     "description": "Creates an illusion that includes sound, smell, and thermal illusions.",
+    "class_availability": [
+      "Illusionist"
+    ]
+  },
+  "detect_lie": {
+    "name": "Detect Lie",
+    "level": 4,
+    "school": "rev.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Enables the recipient to determine if truth is being spoken (lasts 1 round/level). Reverse: *Undetectable Lie* makes a lie seem reasonable.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "divination": {
+    "name": "Divination",
+    "level": 4,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Gives information regarding an area (small woods, building, dungeon level). Success chance 60% + 1%/level, adjusted by DM for area specifics.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "exorcise": {
+    "name": "Exorcise",
+    "level": 4,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Negates possession of a creature or object by an outside/supernatural force (e.g., demon, curse, charm, *magic jar*). Base 1-100% chance of success, checked each turn.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "lower_water": {
+    "name": "Lower Water",
+    "level": 4,
+    "school": "rev.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Causes water or similar fluid in a 1\" x 1\" square/level area to sink away (5% of original effect/level). Reverse: *Raise Water* causes water to return to its normal highest level + 1 foot/level.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "speak_with_plants": {
+    "name": "Speak With Plants",
+    "level": 4,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Enables the cleric to converse with any living vegetable, allowing questions about creatures, making thickets part, etc. (lasts 1 round/level).",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "sticks_to_snakes": {
+    "name": "Sticks to Snakes",
+    "level": 4,
+    "school": "rev.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Changes 1 stick/level into a snake (5% chance/level of being venomous) that attacks as commanded. Reverse: *Snakes to Sticks* changes snakes to sticks.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "atonement": {
+    "name": "Atonement",
+    "level": 5,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Removes the onus of unwilling or unknown deeds, or magical alignment change. Requires true repentance.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "commune": {
+    "name": "Commune",
+    "level": 5,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Contacts the cleric's divinity (or agents) to request information in the form of questions answered by a simple \"yes\" or \"no\" (1 question/level).",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "cure_critical_wounds": {
+    "name": "Cure Critical Wounds",
+    "level": 5,
+    "school": "rev.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Heals 6-27 (3d8+3) HP damage. Reverse: *Cause Critical Wounds* inflicts 6-27 HP damage (requires touch attack).",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "dispel_evil": {
+    "name": "Dispel Evil",
+    "level": 5,
+    "school": "rev.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Causes summoned/enchanted evil creatures to return to their own plane or place. Affected creatures attack the caster at -7 penalty. Reverse: *Dispel Good* against summoned/enchanted good creatures.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "flame_strike": {
+    "name": "Flame Strike",
+    "level": 5,
+    "school": "evocation",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Calls down a column of fire, inflicting 6-48 (6d8) HP damage (half if saving throw is successful).",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "insect_plague": {
+    "name": "Insect Plague",
+    "level": 5,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Horde of insects swarms in a 36\" diameter, 6\" high cloud, dealing 1 HP damage/round to creatures within, and forcing morale checks.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "plane_shift": {
+    "name": "Plane Shift",
+    "level": 5,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Moves the cleric (and up to 6 others linked in a circle) to another plane of existence. The specific destination depends on a small, forked metal rod component.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "quest": {
+    "name": "Quest",
+    "level": 5,
+    "school": "enchantment",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Requires an affected creature to perform a service and return with proof. Failure results in -1 penalty to saving throws daily.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "raise_dead": {
+    "name": "Raise Dead",
+    "level": 5,
+    "school": "rev.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Restores life to a dwarf, gnome, half-elf, halfling, or human dead up to 1 day per level of the cleric (subject to Constitution survival save). Reverse: *Slay Living* (inflicts *cause serious wounds* damage on a successful touch attack).",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "true_seeing": {
+    "name": "True Seeing",
+    "level": 5,
+    "school": "rev.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Allows the cleric to see things as they actually are in a 12\" sight range, revealing secret doors, invisible things, illusions, and creature auras. Reverse: *False Seeing* causes a person to see things as they are not.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "aerial_servant": {
+    "name": "Aerial Servant",
+    "level": 6,
+    "school": "conjuration",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Summons an invisible stalker to perform the cleric's bidding for a maximum of 1 day/level, primarily for finding and returning objects.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "animate_object": {
+    "name": "Animate Object",
+    "level": 6,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Imbues inanimate objects (1 cubic foot/level) with mobility and a semblance of life to attack as commanded.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "blade_barrier": {
+    "name": "Blade Barrier",
+    "level": 6,
+    "school": "evocation",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates a wall of whirling, razor-sharp blades that inflicts 8-64 (8d8) HP damage to creatures passing through. Lasts 3 rounds/level.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "conjure_animals": {
+    "name": "Conjure Animals",
+    "level": 6,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Summons one or more mammals with total HD up to the cleric's level to attack opponents. Lasts 2 rounds/level.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "find_the_path": {
+    "name": "Find The Path",
+    "level": 6,
+    "school": "rev.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Enables the cleric to find the shortest, most direct route to a known destination (outdoors, underground, trap, or *maze* spell). Reverse: *Lose the Path* makes the creature touched totally lost.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "heal": {
+    "name": "Heal",
+    "level": 6,
+    "school": "rev.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Completely cures any disease/blindness, and heals all wound/injury damage suffered (1-4 HP remaining damage). Reverse: *Harm* infects the victim with a disease and causes loss of all hit points (1-4 remaining damage).",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "part_water": {
+    "name": "Part Water",
+    "level": 6,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Causes water or similar liquid to move apart, forming a trough 3' deep by 1' wide by 2\" long/level.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "speak_with_monsters": {
+    "name": "Speak With Monsters",
+    "level": 6,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Allows the cleric to converse with any type of creature with communicative ability (lasts 1 melee round/level).",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "stone_tell": {
+    "name": "Stone Tell",
+    "level": 6,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "The very stones of an area (1 cubic yard of stone) speak and relate what has touched them, what is concealed, and what has transpired.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "astral_spell": {
+    "name": "Astral Spell",
+    "level": 7,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Projects the cleric's astral body into the Astral Plane, leaving the physical body behind in suspended animation. Allows travel to other planes.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "control_weather": {
+    "name": "Control Weather",
+    "level": 7,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Allows the cleric to change the weather in an area of 4-16 square miles (takes 1 turn to cast, 1-4 turns for effect).",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "earthquake": {
+    "name": "Earthquake",
+    "level": 7,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates a local tremor in a circular area (1/2\" diameter/level), causing cliffs/caves to collapse, ground to crack, and structures to sustain damage/fall.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "gate": {
+    "name": "Gate",
+    "level": 7,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Opens an ultra-dimensional connection to a specific powerful being (demon, devil, demi-god, god, etc.), causing it to step through the portal or be attracted.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "holy_(unholy)_word": {
+    "name": "Holy (Unholy) Word",
+    "level": 7,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Utterance has tremendous power, driving off evil (or good for *Unholy Word*) creatures from other planes, and affecting other creatures of differing alignment (killing, paralyzing, stunning, deafening) based on their HD/level.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "regenerate": {
+    "name": "Regenerate",
+    "level": 7,
+    "school": "rev.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Causes body members, bones, or organs to grow back. Reverse: *Wither* causes a member or organ to shrivel and cease functioning.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "restoration": {
+    "name": "Restoration",
+    "level": 7,
+    "school": "rev.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Raises the life energy level of the recipient creature by one, subsuming previous life energy level drain. Reverse: *Energy Drain* draws away one life energy level (requires touch attack).",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "resurrection": {
+    "name": "Resurrection",
+    "level": 7,
+    "school": "rev.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Restores life and complete strength to a dead person (subject to Constitution survival save) dead up to 10 years/level. Reverse: *Destruction* causes the victim to be instantly dead and turned to dust.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "symbol": {
+    "name": "Symbol",
+    "level": 7,
+    "school": "conjuration",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Inscribes magical runes that, when triggered, affect creatures passing over/touching/reading/passing through the portal with a chosen effect (Death, Discord, Fear, Hopelessness).",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "wind_walk": {
+    "name": "Wind Walk",
+    "level": 7,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Alters the cleric's body (and up to two others touched) to cloud-like vapors, allowing travel at up to 60\" per turn (not invisible, but appear misty). ***",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "animal_summoning_i": {
+    "name": "Animal Summoning I",
+    "level": 4,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Calls up to eight animals (max 4 HD each) of whatever sort the druid names (if within range) to aid the druid.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "call_woodland_beings": {
+    "name": "Call Woodland Beings",
+    "level": 4,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Summons certain woodland creatures (brownies, centaurs, dryads, pixies, satyrs, sprites, treants, unicorns) to the druid's locale to aid them (subject to save).",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "control_temperature_10_radius": {
+    "name": "Control Temperature, 10' Radius",
+    "level": 4,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Alters the temperature surrounding the druid by 9 degrees Fahrenheit per level (up or down).",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "hallucinatory_forest": {
+    "name": "Hallucinatory Forest",
+    "level": 4,
+    "school": "rev.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates the illusion of a perfectly natural forest in a 4\" square/level area. Reverse: *Hallucinatory Clearing*.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "hold_plant": {
+    "name": "Hold Plant",
+    "level": 4,
+    "school": "enchantment",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Affects vegetable matter (e.g., green slime, treants) to cease moving, entwining, or making sound.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "plant_door": {
+    "name": "Plant Door",
+    "level": 4,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Opens a magical portal through trees or other growth for the druid (and higher level druids/dryads) to enter and move from inside to another tree of the same species.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "produce_fire": {
+    "name": "Produce Fire",
+    "level": 4,
+    "school": "rev.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Causes a common-type fire (up to 12\" square) to ignite combustibles and cause 1-4 HP damage in a single round. Reverse: *Quench Fire* extinguishes a normal fire.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "protection_from_lightning": {
+    "name": "Protection From Lightning",
+    "level": 4,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Grants invulnerability to normal electrical attacks and 50% damage reduction (+4 save bonus) against magical lightning/electrical attacks for 1 turn/level.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "repel_insects": {
+    "name": "Repel Insects",
+    "level": 4,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates an invisible barrier up to 10' radius that prevents normal insects from approaching.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "animal_growth": {
+    "name": "Animal Growth",
+    "level": 5,
+    "school": "rev.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Causes animals (max 8) in a 2\" square area to grow to twice their normal size, doubling hit dice and damage in combat. Reverse: *Animal Shrinkage* reduces size by half.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "animal_summoning_ii": {
+    "name": "Animal Summoning II",
+    "level": 5,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Calls up to six animals (max 8 HD each) or 12 animals (max 4 HD each).",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "anti_plant_shell": {
+    "name": "Anti-Plant Shell",
+    "level": 5,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates an invisible hemispherical force field (20' diameter) that prevents the entrance of any animal matter of normal (not magical) nature.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "commune_with_nature": {
+    "name": "Commune With Nature",
+    "level": 5,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Enables the druid to become one with nature in a 1/2 mile radius/level, gaining knowledge of one fact about the surrounding territory (ground, plants, water, people).",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "control_winds": {
+    "name": "Control Winds",
+    "level": 5,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Alters wind force in a 4\"/level radius hemisphere, increasing/decreasing force by 3 mph/level (e.g., winds of 75+ mph cause devastation).",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "moonbeam": {
+    "name": "Moonbeam",
+    "level": 5,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Summons a 1\" diameter, 1\" long/level column of pale, cold light that inflicts 2-12 (2d6) HP damage (half with save) to creatures within and has an effect similar to *Dispel Magic* on enchanted creatures.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "pass_plant": {
+    "name": "Pass Plant",
+    "level": 5,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Allows the druid to enter a tree and move from inside it to another living tree of the same species within range.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "spike_stones": {
+    "name": "Spike Stones",
+    "level": 5,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Permanently creates an area of jagged spikes (1\" square area/level) that inflicts 2-12 (2d6) HP damage to creatures moving 1\" or more per round.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "transmute_rock_to_mud": {
+    "name": "Transmute Rock to Mud",
+    "level": 5,
+    "school": "rev.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Turns natural rock (2 cubic \"/level) into an equal volume of mud. Reverse: *Mud to Rock* hardens normal mud into soft stone.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "wall_of_fire": {
+    "name": "Wall of Fire",
+    "level": 5,
+    "school": "evocation",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates a blazing curtain of magical fire (up to 2\" square/level) that inflicts 4-16 HP damage (or 2-8 HP near the wall) to creatures passing through.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "animal_summoning_iii": {
+    "name": "Animal Summoning III",
+    "level": 6,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Calls up to four animals (max 16 HD each), eight animals (max 8 HD each), or 16 creatures (max 4 HD each).",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "anti_animal_shell": {
+    "name": "Anti-Animal Shell",
+    "level": 6,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates an invisible hemispherical force field (20' diameter) that prevents the entrance of any animal matter of normal (not magical) nature.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "conjure_fire_elemental": {
+    "name": "Conjure Fire Elemental",
+    "level": 6,
+    "school": "rev.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Summons a strong (16 HD) fire elemental to aid the druid. Reverse: *Dismiss Fire Elemental*.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "feeblemind": {
+    "name": "Feeblemind",
+    "level": 6,
+    "school": "enchantment",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Causes a victim's brain to become that of a moronic child, remaining in this state until *heal*, *restoration*, or *wish* is used.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "fire_seeds": {
+    "name": "Fire Seeds",
+    "level": 6,
+    "school": "conjuration",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates up to four acorn missiles (2-16 HP on impact) or eight holly berry timed incendiaries (1-8 HP burst damage on command) that ignite combustibles.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "liveoak": {
+    "name": "Liveoak",
+    "level": 6,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Permanently animates an acorn into a Small, mobile tree to serve as a guard or servitor.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "transport_via_plants": {
+    "name": "Transport Via Plants",
+    "level": 6,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Allows the druid to enter any large living plant and pass any distance to a living plant of the same species in a single round.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "turn_wood": {
+    "name": "Turn Wood",
+    "level": 6,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Pushes away all wooden objects in a 12\" wide path, 2\" long/level, splinters fixed objects, and drags objects (and carriers) back.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "wall_of_thorns": {
+    "name": "Wall Of Thorns",
+    "level": 6,
+    "school": "conjuration",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates a barrier of very tough, pliable green tangled brush (10\" cube/level) that inflicts 8 HP damage + AC to creatures breaking through.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "weather_summoning": {
+    "name": "Weather Summoning",
+    "level": 6,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Calls forth weather commensurate with the climate and season (e.g., tornado, heat wave, blizzard). Not under the druid's control.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "animate_rock": {
+    "name": "Animate Rock",
+    "level": 7,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Causes a single lithic object (2 cubic feet of stone/level) to move and attack as commanded.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "chariot_of_sustarre": {
+    "name": "Chariot Of Sustarre",
+    "level": 7,
+    "school": "evocation",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Summons a large flaming chariot pulled by two fiery horses for transport (24\" on ground, 48\" flying). Creatures within 5' take *wall of fire* damage.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "confusion": {
+    "name": "Confusion",
+    "level": 7,
+    "school": "enchantment",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Causes 2-8 creatures within a 4\" X 4\" area to become confused (act randomly, 10% wander away, 50% confused, 20% attack nearest, 20% attack druid/party).",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "conjure_earth_elemental": {
+    "name": "Conjure Earth Elemental",
+    "level": 7,
+    "school": "rev.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Summons a strong (16 HD) earth elemental to aid the druid. Reverse: *Dismiss Earth Elemental*.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "creeping_doom": {
+    "name": "Creeping Doom",
+    "level": 7,
+    "school": "conjuration",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Calls forth a mass of venomous, biting, and stinging arachnids, insects, and myriapods (500-1000 in number) that swarm and attack.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "finger_of_death": {
+    "name": "Finger Of Death",
+    "level": 7,
+    "school": "enchantment",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Causes the victim's heart to stop, slaying the creature if it fails its saving throw.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "fire_storm": {
+    "name": "Fire Storm",
+    "level": 7,
+    "school": "rev.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates a whole area (2\" cube/level) shot through with sheets of roaring flame, inflicting 2-16 HP damage + 1 HP/level (half with save). Reverse: *Fire Quench* smothers a fire.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "reincarnate": {
+    "name": "Reincarnate",
+    "level": 7,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Brings back a dead person (dead up to 1 week) in a new, random body and race (subject to *Magic-User Reincarnation Table*).",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "transmute_metal_to_wood": {
+    "name": "Transmute Metal To Wood",
+    "level": 7,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Changes one metal object (max 80 gp weight/level) into wood. Magical objects are 10% likely to be affected. ***",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "charm_monster": {
+    "name": "Charm Monster",
+    "level": 4,
+    "school": "enchantment",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Charms any living creature (or several of lesser level) to regard the caster as friendly (same as 1st level, but more powerful).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "dig": {
+    "name": "Dig",
+    "level": 4,
+    "school": "evocation",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Excavates 125 cubic feet of earth/sand/mud per round (5' cube).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "dimension_door": {
+    "name": "Dimension Door",
+    "level": 4,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Instantly transfers the caster and additional weight (up to 5,000 gp) to a well-known destination within range (no error).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "enchanted_weapon": {
+    "name": "Enchanted Weapon",
+    "level": 4,
+    "school": "rev.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Turns an ordinary weapon (two small or one large) into a magical weapon (no bonuses, but hits any opponent) for 5 rounds/level.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "extension_i": {
+    "name": "Extension I",
+    "level": 4,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Prolongs the duration of a previously cast 1st, 2nd, or 3rd level spell by 50%.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "fear": {
+    "name": "Fear",
+    "level": 4,
+    "school": "phantasm",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Sends forth an invisible ray that causes creatures (HD 1 to 12) within its area to turn and flee in panic (base 60% chance, reduced 5%/level).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "fire_charm": {
+    "name": "Fire Charm",
+    "level": 4,
+    "school": "enchantment",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Causes a normal fire source to serve as a magical agent, with a gossamer veil of flame circling it, charming creatures observing it to remain motionless (subject to save).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "fire_shield": {
+    "name": "Fire Shield",
+    "level": 4,
+    "school": "evocation",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Immolates the caster (but no damage taken) with flames, protecting against cold-based attacks (half damage, +2 save bonus) and dealing double damage to body/hand-held weapon attackers.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "fumble": {
+    "name": "Fumble",
+    "level": 4,
+    "school": "enchantment",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Causes the recipient creature to suddenly become clumsy and awkward, potentially dropping held objects or weapons.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "hallucinatory_terrain": {
+    "name": "Hallucinatory Terrain",
+    "level": 4,
+    "school": "phantasm",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates an illusion which hides the actual terrain (e.g., field looks like a swamp) in an area 1\" X 1\" square/level.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "ice_storm": {
+    "name": "Ice Storm",
+    "level": 4,
+    "school": "evocation",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Causes either great hail stones (3-30 HP damage) or driving sleet (blinding creatures and slowing movement by 50%) to fall in the area of effect.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "massmorph": {
+    "name": "Massmorph",
+    "level": 4,
+    "school": "phantasm",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Causes willing creatures (man-size or smaller, up to 10/level) to appear as normal trees of any sort.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "minor_globe_of_invulnerability": {
+    "name": "Minor Globe of Invulnerability",
+    "level": 4,
+    "school": "abj.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates a magical sphere around the caster which prevents any 1st, 2nd, or 3rd level spells from penetrating.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "monster_summoning_ii": {
+    "name": "Monster Summoning II",
+    "level": 4,
+    "school": "conjuration",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Summons 1-6 second level monsters.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "polymorph_other": {
+    "name": "Polymorph Other",
+    "level": 4,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Completely alters the form, ability, personality, and mentality of one creature (subject to Constitution system shock save).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "polymorph_self": {
+    "name": "Polymorph Self",
+    "level": 4,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Allows the caster to assume the form of any creature (wren to hippopotomus) and its form of locomotion, but without gaining new abilities (2 turns/level).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "rarys_mnemonic_enhancer": {
+    "name": "Rary's Mnemonic Enhancer",
+    "level": 4,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Allows the magic-user to memorize (or retain the memory of) three additional spell levels (e.g., three 1st level spells, or one 3rd level spell).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "wall_of_ice": {
+    "name": "Wall Of Ice",
+    "level": 4,
+    "school": "evocation",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates a sheet of strong, flexible ice (1\" thick/level, 1\" square area/level) that stops pursuers and deals 2 HP damage/inch of thickness to creatures breaking through.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "wizard_eye": {
+    "name": "Wizard Eye",
+    "level": 4,
+    "school": "alt.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates an invisible sensory organ that sends visual information to the caster and travels at 3\" per round.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "airy_water": {
+    "name": "Airy Water",
+    "level": 5,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Turns normal liquid to a less dense, breathable substance in a 2\" diameter sphere/4\" diameter hemisphere, allowing movement and breathing underwater.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "bigbys_interposing_hand": {
+    "name": "Bigby's Interposing Hand",
+    "level": 5,
+    "school": "evocation",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates a large, disembodied hand of force that interposes itself between the caster and opponent, taking damage as the caster.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "chaos": {
+    "name": "Chaos",
+    "level": 5,
+    "school": "enchantment",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Causes all creatures in a 4\" X 4\" area to become confused (same as 4th level, but affects all creatures).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "cloudkill": {
+    "name": "Cloudkill",
+    "level": 5,
+    "school": "evocation",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Generates a billowing cloud of yellowish-green vapors (4\" wide, 2\" high, 2\" deep) that slays creatures with < 4+1 HD/levels, and causes those up to 6 HD/levels to save vs. poison or be slain.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "cone_of_cold": {
+    "name": "Cone Of Cold",
+    "level": 5,
+    "school": "evocation",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Causes a cone-shaped area of extreme cold (1/2\" long/level) to erupt from the caster's hand, inflicting 1d4+1 HP damage/level (half if saving throw is successful).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "conjure_elemental": {
+    "name": "Conjure Elemental",
+    "level": 5,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Summons a 16 HD Air, Earth, Fire, or Water Elemental to do the caster's bidding (requires concentration, 5% chance of turning on caster).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "contact_other_plane": {
+    "name": "Contact Other Plane",
+    "level": 5,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Sends the caster's mind to another plane of existence to request information (answered with \"yes/no/maybe/never\"). Risk of insanity or death increases with distance.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "distance_distortion": {
+    "name": "Distance Distortion",
+    "level": 5,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Causes an earth elemental to distort an area's dimensions (100 sq. \"/level) to effectively appear half or twice the distance to those traveling over it.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "hold_monster": {
+    "name": "Hold Monster",
+    "level": 5,
+    "school": "enchantment",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Immobilizes 1-4 creatures of any type (monsters/humans) in sight and range for 1 round/level.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "leomunds_secret_chest": {
+    "name": "Leomund's Secret Chest",
+    "level": 5,
+    "school": "alt., conj.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Instantly transfers a specially crafted chest and its contents (1 cubic foot/level) to the ethereal plane, retrievable by a tiny replica.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "magic_jar": {
+    "name": "Magic Jar",
+    "level": 5,
+    "school": "poss.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Transfers the caster's life force to a special container (gem/crystal), from which it can possess the mind and body of a victim (subject to save).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "monster_summoning_iii": {
+    "name": "Monster Summoning III",
+    "level": 5,
+    "school": "conjuration",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Summons 1-4 third level monsters.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "mordenkainens_faithful_hound": {
+    "name": "Mordenkainen's Faithful Hound",
+    "level": 5,
+    "school": "conjuration",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Summons a phantom watchdog that only the caster can see. It guards an area and attacks creatures approaching it from behind with a vicious 3-18 HP bite.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "passwall": {
+    "name": "Passwall",
+    "level": 5,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Opens a passage (5' wide, 8' high, 10' deep) through wooden, plaster, or stone walls. Lasts 6 turns + 1 turn/level.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "telekinesis": {
+    "name": "Telekinesis",
+    "level": 5,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Mentally moves objects or opponents (up to 250 gp weight/level) by will force, with movement increasing each round.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "teleport": {
+    "name": "Teleport",
+    "level": 5,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Instantly transports the caster and additional weight to a well-known destination (distance is not a factor). Risk of error increases with unfamiliarity.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "wall_of_force": {
+    "name": "Wall Of Force",
+    "level": 5,
+    "school": "evocation",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates an invisible barrier (20' square/level) that is totally impervious to all magic, spells, blows, and missiles (destroyed only by *disintegrate*).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "wall_of_iron": {
+    "name": "Wall Of Iron",
+    "level": 5,
+    "school": "evocation",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates a vertical iron wall (1/4\" thick/level, 15 sq. ft./level) that inserts itself into surrounding material. Permanent unless dispelled or destroyed by force.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "wall_of_stone": {
+    "name": "Wall Of Stone",
+    "level": 5,
+    "school": "evocation",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates a wall of granite rock (1/4\" thick, 20' square/level) that merges into adjoining rock surfaces. Permanent unless destroyed by *disintegrate* or force.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "anti_magic_shell": {
+    "name": "Anti-Magic Shell",
+    "level": 6,
+    "school": "abj.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates an invisible barrier (1'/level diameter sphere) that surrounds the caster and moves with them, totally impervious to all magic and spell effects (1st-5th level spells).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "bigbys_forceful_hand": {
+    "name": "Bigby's Forceful Hand",
+    "level": 6,
+    "school": "evocation",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates a large, disembodied hand of force that pushes creatures (up to 500 lbs) away or slows movement of larger creatures.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "death_spell": {
+    "name": "Death Spell",
+    "level": 6,
+    "school": "conjuration",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Instantly and irrevocably slays creatures with less than 2 HD, or 4-80 (4d20) HD of creatures with 2-8 HD in a 1/2\" square/level area.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "disintegrate": {
+    "name": "Disintegrate",
+    "level": 6,
+    "school": "alt.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Causes matter (living or non-living, up to 1\" cubic volume) to vanish permanently (subject to save).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "enchant_an_item": {
+    "name": "Enchant An Item",
+    "level": 6,
+    "school": "conjuration",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Prepares a non-magical item (must be finest quality) to accept a magical dweomer. Casting time is 16 hours + 8d8 hours.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "extension_iii": {
+    "name": "Extension III",
+    "level": 6,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Prolongs the duration of a previously cast 1st-3rd level spell to double duration, and 4th or 5th level spell by 50%.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "geas": {
+    "name": "Geas",
+    "level": 6,
+    "school": "enchantment",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Places a magical command upon a creature to carry out some service or refrain from some action. Failure results in sickness and eventual death (1-4 weeks).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "glassee": {
+    "name": "Glassee",
+    "level": 6,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Makes a section of metal, stone, or wood transparent to the caster's gaze (or creates a transparent area) for 1 round/level.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "globe_of_invulnerability": {
+    "name": "Globe Of Invulnerability",
+    "level": 6,
+    "school": "abj.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates a magical sphere around the caster which prevents any 1st through 4th level spells from penetrating.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "guards_and_wards": {
+    "name": "Guards And Wards",
+    "level": 6,
+    "school": "evocation",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Defends a stronghold with various permanent effects: misty corridors, *wizard locked* doors, illusory wall, web-filled stairs, minor confusion, and other chosen magics.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "invisible_stalker": {
+    "name": "Invisible Stalker",
+    "level": 6,
+    "school": "conjuration",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Summons an 8 HD invisible stalker from the Elemental Plane of Air to obey the caster's commands.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "legend_lore": {
+    "name": "Legend Lore",
+    "level": 6,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Determines information regarding a known person, place, or thing (casting time 1 turn up to 12 weeks, depending on information known).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "move_earth": {
+    "name": "Move Earth",
+    "level": 6,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Moves dirt (clay, loam, sand) and its components to collapse embankments, shift dunes, etc., over a 4\" square area/turn of casting.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "otilukes_freezing_sphere": {
+    "name": "Otiluke's Freezing Sphere",
+    "level": 6,
+    "school": "evocation",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates a globe of matter at absolute zero temperature that, on contact with water, freezes a 6\" deep layer of ice over 100 sq. ft./level, or can be cast as a thin ray (4 HP/level damage).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "project_image": {
+    "name": "Project Image",
+    "level": 6,
+    "school": "phantasm",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates a non-material duplicate of the caster up to 1\"/level distant, which performs actions (walking, speaking, spell-casting) identical to the caster. Spells originate from the image.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "reincarnation": {
+    "name": "Reincarnation",
+    "level": 6,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Same as Druid 7th Level (but with *Magic-User Reincarnation Table*).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "repulsion": {
+    "name": "Repulsion",
+    "level": 6,
+    "school": "abj.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Causes all creatures in a 1\" path to move away from the caster at 3\" per round.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "spiritwrack": {
+    "name": "Spiritwrack",
+    "level": 6,
+    "school": "evocation",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Strong protection/punishment spell against powerful creatures of the nether planes (Demons, Devils) whose name the caster knows. Roots them to the spot and causes pain/damage unless they succeed in a series of saves.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "stone_to_flesh": {
+    "name": "Stone To Flesh",
+    "level": 6,
+    "school": "rev.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Turns any sort of stone (9 cubic feet/level) into flesh (restoring life if formerly living). Reverse: *Flesh to Stone* turns flesh of any sort to stone (subject to save).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "tensers_transformation": {
+    "name": "Tenser's Transformation",
+    "level": 6,
+    "school": "evocation",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Undergoes a startling transformation, doubling hit points and attack rate, improving AC by 4, and granting +2 damage on attacks (lasts 1 round/level).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "bigbys_grasping_hand": {
+    "name": "Bigby's Grasping Hand",
+    "level": 7,
+    "school": "evocation",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates a huge, disembodied hand of force that can hold motionless a creature or object of up to 1,000 lbs weight.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "cacodemon": {
+    "name": "Cacodemon",
+    "level": 7,
+    "school": "conjuration",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Summons a powerful Demon of type IV, V, or VI (if name is known) to serve the caster (by threat of *spiritwrack* or promise of tribute/human sacrifices).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "charm_plants": {
+    "name": "Charm Plants",
+    "level": 7,
+    "school": "enchantment",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Brings under command vegetable life forms in a 3\" X 1\" area/level (same as Druid 7th Level).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "delayed_blast_fireball": {
+    "name": "Delayed Blast Fireball",
+    "level": 7,
+    "school": "evocation",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Same as *Fireball*, but +1 on each damage die, and can be commanded to release its blast up to 5 rounds after casting.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "drawmijs_instant_summons": {
+    "name": "Drawmij's Instant Summons",
+    "level": 7,
+    "school": "conjuration",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Instantly teleports one small, non-living object (max 75 gp weight) to the caster's hand upon crushing a gem component.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "duo_dimension": {
+    "name": "Duo-Dimension",
+    "level": 7,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Causes the caster to have only two dimensions, making them invisible when turned sideways (3 rounds + 1 round/level).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "limited_wish": {
+    "name": "Limited Wish",
+    "level": 7,
+    "school": "conjuration",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Fulfills literally, but only partially or for a limited duration, the utterance of the spell caster. Will not substantially change major realities.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "mass_invisibility": {
+    "name": "Mass Invisibility",
+    "level": 7,
+    "school": "phantasm",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Makes up to 300-400 man-sized creatures invisible within a 3\" X 3\" area.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "monster_summoning_v": {
+    "name": "Monster Summoning V",
+    "level": 7,
+    "school": "conjuration",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Summons 1-2 fifth level monsters.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "mordenkainens_sword": {
+    "name": "Mordenkainen's Sword",
+    "level": 7,
+    "school": "evocation",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Brings into being a shimmering sword-like plane of force that strikes as a fighter of half the caster's level, dealing 5-20 HP damage.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "phase_door": {
+    "name": "Phase Door",
+    "level": 7,
+    "school": "alt.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates an invisible door/passage through a wall for the caster to enter and disappear (lasts 1 usage/2 levels).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "power_word_stun": {
+    "name": "Power Word, Stun",
+    "level": 7,
+    "school": "conjuration",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Stuns one creature with up to 90 HP for 1-8 rounds, with duration depending on the victim's current HP.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "reverse_gravity": {
+    "name": "Reverse Gravity",
+    "level": 7,
+    "school": "alt.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Reverses gravity in a 1/2\"/level range area, causing all unfixed objects and creatures to \"fall\" upwards.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "simulacrum": {
+    "name": "Simulacrum",
+    "level": 7,
+    "school": "phantasm",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates a non-material duplicate of any creature, with 51-60% of the original's HP and some knowledge/personality (formed from snow/ice).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "statue": {
+    "name": "Statue",
+    "level": 7,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Turns the caster or another creature (and gear) into solid stone (subject to save), where they can still see/hear/smell.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "teleport_without_error": {
+    "name": "Teleport Without Error",
+    "level": 7,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Instantly transports the caster and additional weight to a well-known destination without any risk of error.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "vanish": {
+    "name": "Vanish",
+    "level": 7,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Causes an object (up to 500 gp weight/level) to vanish by placing it into the ethereal plane, potentially replaced by stone.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "antipathy/sympathy": {
+    "name": "Antipathy/Sympathy",
+    "level": 8,
+    "school": "enchantment",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates certain vibrations that either repel (*Antipathy*) or attract (*Sympathy*) a specific type of living, intelligent creature or character alignment in the area/item.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "bigbys_clenched_fist": {
+    "name": "Bigby's Clenched Fist",
+    "level": 8,
+    "school": "evocation",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates a huge, disembodied hand of force that strikes an opponent each round, with varying degrees of damage/stunning (1-6 HP up to 4-24 HP).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "clone": {
+    "name": "Clone",
+    "level": 8,
+    "school": "nec.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates a duplicate of a person, complete to the level of experience, which takes 2-8 months to grow. Dual existence of original and clone causes insanity/suicide.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "glassteel": {
+    "name": "Glassteel",
+    "level": 8,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Turns crystal or glass (max 10 lbs/level) into a transparent substance with the tensile strength and unbreakability of steel.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "incendiary_cloud": {
+    "name": "Incendiary Cloud",
+    "level": 8,
+    "school": "evocation",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates a dense vapor cloud (10' high, 20' long/wide) that begins to flame on the 3rd round, dealing 1/2 HP damage/level to creatures inside.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "mass_charm": {
+    "name": "Mass Charm",
+    "level": 8,
+    "school": "enchantment",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Charms a number of creatures (total HD not exceeding twice the caster's level) in a maximum 3\" X 3\" area.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "maze": {
+    "name": "Maze",
+    "level": 8,
+    "school": "conjuration",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Traps one creature in an extra-dimensional shifting labyrinth of force planes. The creature wanders for a period dependent on its intelligence.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "mind_blank": {
+    "name": "Mind Blank",
+    "level": 8,
+    "school": "abj.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Totally protects the recipient from all spells and devices that detect, influence, or read emotions/thoughts (e.g., *charm, ESP, geas, wish*).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "monster_summoning_vi": {
+    "name": "Monster Summoning VI",
+    "level": 8,
+    "school": "conjuration",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Summons 1 or 2 sixth level monsters.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "ottos_irresistible_dance": {
+    "name": "Otto's Irresistible Dance",
+    "level": 8,
+    "school": "enchantment",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Causes the recipient creature to begin dancing uncontrollably, lowering their AC by -4, making saves impossible, and negating shield use.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "permanency": {
+    "name": "Permanency",
+    "level": 8,
+    "school": "alt.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Makes the duration of certain other spells (e.g., *enlarge, invisibility, wall of force, wall of fire*) permanent, at the cost of 1 Constitution point to the caster.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "polymorph_any_object": {
+    "name": "Polymorph Any Object",
+    "level": 8,
+    "school": "alt.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Changes one object (living or otherwise) into another, with variable duration depending on the radical difference in kingdom, class, size, etc.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "power_word_blind": {
+    "name": "Power Word, Blind",
+    "level": 8,
+    "school": "conjuration",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Temporarily blinds one or more creatures (up to 100 HP total affected) for 2-5 rounds or turns, with duration based on current HP.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "sertens_spell_immunity": {
+    "name": "Serten's Spell Immunity",
+    "level": 8,
+    "school": "abj.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Confers virtual immunity and a large bonus (+5 to +9) to saving throws against certain spells (e.g., *charm, fear, hold, geas*).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "trap_the_soul": {
+    "name": "Trap The Soul",
+    "level": 8,
+    "school": "conjuration",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Forces a creature's life force into a special prison gem (requires gem cost 1,000 gp/HD, plus a *maze* spell enchanted onto it).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "bigbys_crushing_hand": {
+    "name": "Bigby's Crushing Hand",
+    "level": 9,
+    "school": "evocation",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates a huge, disembodied hand of force that grasps and squeezes an opponent, dealing increasing damage over successive rounds.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "imprisonment": {
+    "name": "Imprisonment",
+    "level": 9,
+    "school": "rev.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Entombes the recipient creature in a state of suspended animation in a small sphere far below the earth's surface. Reverse: *Freedom* causes the victim to reappear at the spot they were entombed.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "meteor_swarm": {
+    "name": "Meteor Swarm",
+    "level": 9,
+    "school": "evocation",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Launches four 2\" diameter spheres or eight 1\" diameter spheres that burst as *fireballs* (10-40 HP or 5-20 HP damage each) in a diamond or box pattern.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "monster_summoning_vii": {
+    "name": "Monster Summoning VII",
+    "level": 9,
+    "school": "conjuration",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Summons 1 or 2 seventh level monsters or 1 eighth level monster.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "power_word_kill": {
+    "name": "Power Word, Kill",
+    "level": 9,
+    "school": "conjuration",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Instantly slays one or more creatures with up to 60 HP total.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "prismatic_sphere": {
+    "name": "Prismatic Sphere",
+    "level": 9,
+    "school": "abj., conj.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Conjures an opaque globe of shimmering, multi-colored spheres that surrounds the caster. Each of the seven colors (red, orange, yellow, green, blue, indigo, violet) has a different power/protection against attacks and spells.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "shape_change": {
+    "name": "Shape Change",
+    "level": 9,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Allows the caster to assume the form of any creature (short of a demi-god, demon prince, etc.) and all its physical abilities, over and over (1 turn/level).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "temporal_stasis": {
+    "name": "Temporal Stasis",
+    "level": 9,
+    "school": "rev.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Places the recipient creature into a state of suspended animation, where time stops for them (no aging/body functions). Reverse: *Temporal Reinstatement* removes the stasis.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "time_stop": {
+    "name": "Time Stop",
+    "level": 9,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Stops the flow of time in the area of effect, allowing the caster to move and act freely while other creatures are frozen (1/2 segment/level).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "wish": {
+    "name": "Wish",
+    "level": 9,
+    "school": "conjuration",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "A more potent version of *Limited Wish*, which can fulfill the caster's utterance literally, but can still cause disaster if phrased poorly. ***",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "dispel_exhaustion": {
+    "name": "Dispel Exhaustion",
+    "level": 4,
+    "school": "phantasm",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Gives the illusion that a touched person is fresh and well, restoring 50% of lost HP.",
+    "class_availability": [
+      "Illusionist"
+    ]
+  },
+  "emotion": {
+    "name": "Emotion",
+    "level": 4,
+    "school": "enchantment",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Projects a chosen emotion (Fear, Hate, Hopelessness, Rage) from the illusionist, affecting morale, attack rolls, damage, or saving throws.",
+    "class_availability": [
+      "Illusionist"
+    ]
+  },
+  "phantasmal_killer": {
+    "name": "Phantasmal Killer",
+    "level": 4,
+    "school": "phantasm",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates the illusion of the victim's most fearsome imagined thing. On a successful hit, the victim dies from fright.",
+    "class_availability": [
+      "Illusionist"
+    ]
+  },
+  "demi_shadow_monsters": {
+    "name": "Demi-Shadow Monsters",
+    "level": 5,
+    "school": "phantasm",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates quasi-real monsters (40% real) of armor class 8 with 40% of normal hit points and damage potential.",
+    "class_availability": [
+      "Illusionist"
+    ]
+  },
+  "major_creation": {
+    "name": "Major Creation",
+    "level": 5,
+    "school": "alt.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates mineral objects (same as *Minor Creation* for vegetable objects, but permanent).",
+    "class_availability": [
+      "Illusionist"
+    ]
+  },
+  "shadow_magic": {
+    "name": "Shadow Magic",
+    "level": 5,
+    "school": "phantasm",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Allows the caster to cast a quasi-real M-U spell (*magic missile, fireball, lightning bolt, or cone of cold*) that deals damage (or 1 HP/level if recognized).",
+    "class_availability": [
+      "Illusionist"
+    ]
+  },
+  "demi_shadow_magic": {
+    "name": "Demi-Shadow Magic",
+    "level": 6,
+    "school": "phantasm",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Allows the caster to cast quasi-real M-U spells (*wall of fire, wall of ice, or cloudkill*) that deal more damage than *Shadow Magic*.",
+    "class_availability": [
+      "Illusionist"
+    ]
+  },
+  "mass_suggestion": {
+    "name": "Mass Suggestion",
+    "level": 6,
+    "school": "enchantment",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Same as M-U 3rd Level, but affects one creature per level of the illusionist.",
+    "class_availability": [
+      "Illusionist"
+    ]
+  },
+  "permanent_illusion": {
+    "name": "Permanent Illusion",
+    "level": 6,
+    "school": "phantasm",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates a lasting *spectral force* (same as *Phantasmal Force* but permanent and requires no concentration).",
+    "class_availability": [
+      "Illusionist"
+    ]
+  },
+  "shades": {
+    "name": "Shades",
+    "level": 6,
+    "school": "phantasm",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates quasi-real monsters (60% real) of armor class 6 with 60% of normal hit points and damage potential.",
+    "class_availability": [
+      "Illusionist"
+    ]
+  },
+  "true_sight": {
+    "name": "True Sight",
+    "level": 6,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Allows the illusionist to see its actual or former form, but does not allow determination of alignment.",
+    "class_availability": [
+      "Illusionist"
+    ]
+  },
+  "veil": {
+    "name": "Veil",
+    "level": 6,
+    "school": "phantasm",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Instantly changes the appearance of surroundings (up to 2\" X 2\"/level) to fool creatures, making a filthy den look like a sumptuous room.",
+    "class_availability": [
+      "Illusionist"
+    ]
+  },
+  "alter_reality": {
+    "name": "Alter Reality",
+    "level": 7,
+    "school": "phantasm, conj.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Similar to *Limited Wish*, allowing the illusionist to alter reality through the casting of a *phantasmal force* illusion.",
+    "class_availability": [
+      "Illusionist"
+    ]
+  },
+  "prismatic_spray": {
+    "name": "Prismatic Spray",
+    "level": 7,
+    "school": "abj., conj.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Causes 7 rays of the *prismatic sphere* spell (red, orange, yellow, green, blue, indigo, violet) to spring from the caster's hand, affecting creatures with a random effect (based on d8 roll).",
+    "class_availability": [
+      "Illusionist"
+    ]
+  },
+  "prismatic_wall": {
+    "name": "Prismatic Wall",
+    "level": 7,
+    "school": "abj., conj.",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Creates a wall, or curtain, of scintillating colors with effects identical to the *prismatic sphere* globes, with maximum proportions 4' wide per level and 2' high per level.",
+    "class_availability": [
+      "Illusionist"
+    ]
+  },
+  "vision": {
+    "name": "Vision",
+    "level": 7,
+    "school": "divination",
+    "casting_time": "1 round",
+    "range": "0",
+    "duration": "1 round/level",
+    "area": "Special",
+    "saving_throw": "None",
+    "components": "standard",
+    "description": "Allows the illusionist to call upon a power for supernatural guidance, receiving a *vision* in answer to a question (chance of success based on dice roll, intelligence, and sacrifice).",
     "class_availability": [
       "Illusionist"
     ]
