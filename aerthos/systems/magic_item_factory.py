@@ -247,27 +247,30 @@ class MagicItemFactory:
         magic_bonus = int(bonus_match.group(1)) if bonus_match else 1
 
         # Determine armor type and base AC
-        ac_bonus = 0
+        # In new system: ac is the actual AC value (lower is better)
+        # Old system had ac_bonus which improved AC by that amount
+        # Conversion: ac = 10 - ac_bonus
+        base_ac = 10
         is_shield = False
 
         if "Leather" in name:
-            ac_bonus = 2
+            base_ac = 8  # AC 8 (was ac_bonus=2)
         elif "Chain" in name:
-            ac_bonus = 5
+            base_ac = 5  # AC 5 (was ac_bonus=5)
         elif "Plate" in name or "Plate Mail" in name:
-            ac_bonus = 8
+            base_ac = 3  # AC 3 (was ac_bonus=7, but some sources say 8)
         elif "Shield" in name:
-            ac_bonus = 1
+            base_ac = 9  # Shield gives AC 9 (was ac_bonus=1)
             is_shield = True
 
         # Check for cursed
         is_cursed = "Cursed" in name or "cursed" in name
         if is_cursed:
-            magic_bonus = -1  # Cursed armor makes AC worse
+            magic_bonus = -1  # Cursed armor makes AC worse (adds to AC, making it higher/worse)
 
         armor = Armor(
             name=name,
-            ac_bonus=ac_bonus,
+            ac=base_ac,
             magic_bonus=magic_bonus,
             weight=25 if not is_shield else 5,
             properties={
@@ -276,7 +279,7 @@ class MagicItemFactory:
                 "is_cursed": is_cursed,
                 "is_shield": is_shield
             },
-            description=f"Magical armor providing AC {ac_bonus + magic_bonus}"
+            description=f"Magical armor with base AC {base_ac} (effective AC {base_ac - magic_bonus} with +{magic_bonus} bonus)"
         )
         # Add xp and gp values as attributes for easy access
         armor.xp_value = xp_value

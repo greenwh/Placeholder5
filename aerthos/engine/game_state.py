@@ -1082,10 +1082,14 @@ class GameState:
                 description=item_data.get('description', '')
             )
         elif item_data['type'] == 'armor':
+            # Convert old ac_bonus to new ac format (ac = 10 - ac_bonus)
+            ac_bonus = item_data.get('ac_bonus', 0)
+            base_ac = 10 - ac_bonus
+
             return Armor(
                 name=item_data['name'],
                 weight=item_data['weight'],
-                ac_bonus=item_data['ac_bonus'],
+                ac=base_ac,
                 magic_bonus=item_data.get('magic_bonus', 0),
                 properties={'cost_gp': item_data.get('cost_gp', 0)},
                 description=item_data.get('description', '')
