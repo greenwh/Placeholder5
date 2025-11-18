@@ -1,0 +1,485 @@
+{
+  "backpack": {
+    "name": "Backpack",
+    "type": "container",
+    "cost_gp": 2,
+    "weight_gp": 20,
+    "capacity_gp": 400,
+    "description": "A leather backpack with straps and buckles. Can hold up to 400 gp of weight."
+  },
+  "rope_50ft": {
+    "name": "Rope, 50 feet",
+    "type": "equipment",
+    "cost_gp": 1,
+    "weight_gp": 50,
+    "description": "50 feet of sturdy hemp rope."
+  },
+  "rope_100ft": {
+    "name": "Rope, 100 feet",
+    "type": "equipment",
+    "cost_gp": 2,
+    "weight_gp": 100,
+    "description": "100 feet of sturdy hemp rope."
+  },
+  "grappling_hook": {
+    "name": "Grappling Hook",
+    "type": "equipment",
+    "cost_gp": 1,
+    "weight_gp": 80,
+    "description": "An iron hook with multiple prongs for securing ropes."
+  },
+  "crowbar": {
+    "name": "Crowbar",
+    "type": "tool",
+    "cost_gp": 1,
+    "weight_gp": 50,
+    "description": "An iron bar for prying open doors or containers. +2 bonus to force doors."
+  },
+  "hammer": {
+    "name": "Hammer",
+    "type": "tool",
+    "cost_gp": 1,
+    "weight_gp": 10,
+    "description": "A small hammer for driving spikes and pitons."
+  },
+  "piton": {
+    "name": "Iron Spike/Piton",
+    "type": "equipment",
+    "cost_gp": 0.01,
+    "weight_gp": 5,
+    "description": "An iron spike for securing ropes or wedging doors."
+  },
+  "torch": {
+    "name": "Torch",
+    "type": "light_source",
+    "cost_gp": 0.01,
+    "weight_gp": 10,
+    "burn_time_turns": 6,
+    "light_radius": 30,
+    "description": "A wooden stick wrapped in oil-soaked cloth. Burns for 1 hour (6 turns)."
+  },
+  "lantern_hooded": {
+    "name": "Lantern, Hooded",
+    "type": "light_source",
+    "cost_gp": 7,
+    "weight_gp": 20,
+    "burn_time_turns": 24,
+    "light_radius": 30,
+    "description": "An oil-burning lantern with a hood. Burns for 4 hours per flask of oil."
+  },
+  "lantern_bullseye": {
+    "name": "Lantern, Bullseye",
+    "type": "light_source",
+    "cost_gp": 12,
+    "weight_gp": 30,
+    "burn_time_turns": 24,
+    "light_radius": 60,
+    "description": "A directional lantern with focused beam. Burns for 4 hours per flask of oil."
+  },
+  "oil_flask": {
+    "name": "Oil, Flask (1 pint)",
+    "type": "consumable",
+    "cost_gp": 2,
+    "weight_gp": 10,
+    "burn_time_turns": 24,
+    "description": "A flask of lamp oil. Burns for 4 hours in a lantern. Can be used as a weapon (thrown, 1d8 fire damage if lit)."
+  },
+  "waterskin": {
+    "name": "Waterskin",
+    "type": "container",
+    "cost_gp": 1,
+    "weight_gp": 5,
+    "capacity_gp": 40,
+    "description": "A leather skin for carrying water or wine. Holds 1 quart when full."
+  },
+  "sack_small": {
+    "name": "Sack, Small",
+    "type": "container",
+    "cost_gp": 0.5,
+    "weight_gp": 5,
+    "capacity_gp": 200,
+    "description": "A small cloth or leather sack. Can hold up to 200 gp of weight."
+  },
+  "sack_large": {
+    "name": "Sack, Large",
+    "type": "container",
+    "cost_gp": 2,
+    "weight_gp": 10,
+    "capacity_gp": 600,
+    "description": "A large cloth or leather sack. Can hold up to 600 gp of weight."
+  },
+  "chest": {
+    "name": "Chest",
+    "type": "container",
+    "cost_gp": 2,
+    "weight_gp": 250,
+    "capacity_gp": 1000,
+    "description": "A wooden chest with iron bands and a lock."
+  },
+  "pouch_belt": {
+    "name": "Pouch, Belt",
+    "type": "container",
+    "cost_gp": 1,
+    "weight_gp": 5,
+    "capacity_gp": 50,
+    "description": "A small leather pouch worn on the belt. Can hold up to 50 gp of weight."
+  },
+  "rations_standard": {
+    "name": "Rations, Standard (per day)",
+    "type": "consumable",
+    "cost_gp": 0.5,
+    "weight_gp": 20,
+    "description": "One day's worth of preserved food (dried meat, hard bread, cheese)."
+  },
+  "rations_iron": {
+    "name": "Rations, Iron (per day)",
+    "type": "consumable",
+    "cost_gp": 1,
+    "weight_gp": 10,
+    "description": "One day's worth of dried rations. Lasts 3 months without spoiling."
+  },
+  "trail_rations": {
+    "name": "Trail Rations (per week)",
+    "type": "consumable",
+    "cost_gp": 5,
+    "weight_gp": 140,
+    "description": "One week's worth of trail rations for wilderness travel."
+  },
+  "wine_quart": {
+    "name": "Wine (per quart)",
+    "type": "consumable",
+    "cost_gp": 0.2,
+    "weight_gp": 30,
+    "description": "A quart of common wine."
+  },
+  "ale_quart": {
+    "name": "Ale (per quart)",
+    "type": "consumable",
+    "cost_gp": 0.05,
+    "weight_gp": 30,
+    "description": "A quart of common ale or beer."
+  },
+  "clothing_common": {
+    "name": "Clothing, Common",
+    "type": "clothing",
+    "cost_gp": 3,
+    "weight_gp": 30,
+    "description": "A set of common clothes (tunic, breeches, simple shoes)."
+  },
+  "clothing_fine": {
+    "name": "Clothing, Fine",
+    "type": "clothing",
+    "cost_gp": 15,
+    "weight_gp": 40,
+    "description": "A set of fine clothes suitable for nobility."
+  },
+  "cloak": {
+    "name": "Cloak",
+    "type": "clothing",
+    "cost_gp": 0.5,
+    "weight_gp": 10,
+    "description": "A hooded woolen cloak."
+  },
+  "boots": {
+    "name": "Boots",
+    "type": "clothing",
+    "cost_gp": 1,
+    "weight_gp": 20,
+    "description": "A sturdy pair of leather boots."
+  },
+  "boots_riding": {
+    "name": "Boots, Riding",
+    "type": "clothing",
+    "cost_gp": 3,
+    "weight_gp": 30,
+    "description": "High leather boots designed for riding."
+  },
+  "thieves_tools": {
+    "name": "Thieves' Tools",
+    "type": "tool",
+    "cost_gp": 30,
+    "weight_gp": 10,
+    "description": "A set of lockpicks, files, and other tools for thiefwork. Required for picking locks and disarming traps."
+  },
+  "healers_kit": {
+    "name": "Healer's Kit",
+    "type": "tool",
+    "cost_gp": 25,
+    "weight_gp": 30,
+    "description": "Bandages, herbs, and medical tools. Grants +2 bonus to healing checks."
+  },
+  "mining_pick": {
+    "name": "Mining Pick",
+    "type": "tool",
+    "cost_gp": 3,
+    "weight_gp": 100,
+    "description": "A heavy iron pick for mining and digging through stone."
+  },
+  "shovel": {
+    "name": "Shovel",
+    "type": "tool",
+    "cost_gp": 2,
+    "weight_gp": 80,
+    "description": "A wooden-handled shovel with iron blade."
+  },
+  "holy_symbol_wood": {
+    "name": "Holy Symbol, Wooden",
+    "type": "religious",
+    "cost_gp": 1,
+    "weight_gp": 1,
+    "description": "A wooden holy symbol. Required for clerics to turn undead."
+  },
+  "holy_symbol_silver": {
+    "name": "Holy Symbol, Silver",
+    "type": "religious",
+    "cost_gp": 25,
+    "weight_gp": 1,
+    "description": "A silver holy symbol. Required for clerics to turn undead."
+  },
+  "holy_water": {
+    "name": "Holy Water, Vial",
+    "type": "consumable",
+    "cost_gp": 25,
+    "weight_gp": 1,
+    "description": "A vial of blessed water. Deals 2d4 damage to undead when thrown."
+  },
+  "mirror_small": {
+    "name": "Mirror, Small Steel",
+    "type": "equipment",
+    "cost_gp": 20,
+    "weight_gp": 5,
+    "description": "A small polished steel mirror. Useful for seeing around corners or detecting certain monsters."
+  },
+  "pole_10ft": {
+    "name": "Pole, 10 feet",
+    "type": "equipment",
+    "cost_gp": 0.2,
+    "weight_gp": 100,
+    "description": "A 10-foot wooden pole. Useful for probing for traps or testing floors."
+  },
+  "chain_10ft": {
+    "name": "Chain, 10 feet",
+    "type": "equipment",
+    "cost_gp": 30,
+    "weight_gp": 30,
+    "description": "10 feet of iron chain. Stronger than rope."
+  },
+  "lock_good": {
+    "name": "Lock, Good",
+    "type": "equipment",
+    "cost_gp": 100,
+    "weight_gp": 10,
+    "description": "A high-quality lock with key. Difficult to pick (-10% to thief skill)."
+  },
+  "lock_poor": {
+    "name": "Lock, Poor",
+    "type": "equipment",
+    "cost_gp": 20,
+    "weight_gp": 10,
+    "description": "A simple lock with key. Easy to pick (+10% to thief skill)."
+  },
+  "manacles": {
+    "name": "Manacles",
+    "type": "equipment",
+    "cost_gp": 15,
+    "weight_gp": 20,
+    "description": "Iron shackles with a lock. Used to restrain prisoners."
+  },
+  "candle": {
+    "name": "Candle",
+    "type": "light_source",
+    "cost_gp": 0.01,
+    "weight_gp": 1,
+    "burn_time_turns": 6,
+    "light_radius": 5,
+    "description": "A wax candle. Burns for 1 hour. Provides dim light."
+  },
+  "chalk": {
+    "name": "Chalk",
+    "type": "equipment",
+    "cost_gp": 0.01,
+    "weight_gp": 1,
+    "description": "A piece of chalk for marking walls and doors."
+  },
+  "parchment": {
+    "name": "Parchment (per sheet)",
+    "type": "equipment",
+    "cost_gp": 1,
+    "weight_gp": 1,
+    "description": "A sheet of parchment for writing."
+  },
+  "ink_vial": {
+    "name": "Ink, Vial",
+    "type": "equipment",
+    "cost_gp": 8,
+    "weight_gp": 1,
+    "description": "A vial of black ink for writing."
+  },
+  "quill": {
+    "name": "Quill",
+    "type": "equipment",
+    "cost_gp": 0.01,
+    "weight_gp": 0,
+    "description": "A writing quill."
+  },
+  "spellbook_blank": {
+    "name": "Spellbook, Blank",
+    "type": "equipment",
+    "cost_gp": 15,
+    "weight_gp": 30,
+    "description": "A blank spellbook with 100 pages. Required for magic-users to record spells."
+  },
+  "scroll_case": {
+    "name": "Scroll Case",
+    "type": "container",
+    "cost_gp": 1,
+    "weight_gp": 5,
+    "capacity_gp": 10,
+    "description": "A leather or wooden tube for storing scrolls and maps."
+  },
+  "bedroll": {
+    "name": "Bedroll",
+    "type": "equipment",
+    "cost_gp": 0.5,
+    "weight_gp": 50,
+    "description": "A blanket and sleeping mat rolled together."
+  },
+  "tent_small": {
+    "name": "Tent, Small",
+    "type": "equipment",
+    "cost_gp": 5,
+    "weight_gp": 200,
+    "description": "A small tent for 1-2 people."
+  },
+  "tent_large": {
+    "name": "Tent, Large",
+    "type": "equipment",
+    "cost_gp": 25,
+    "weight_gp": 500,
+    "description": "A large tent for 4-6 people."
+  },
+  "tinderbox": {
+    "name": "Tinderbox (flint & steel)",
+    "type": "equipment",
+    "cost_gp": 1,
+    "weight_gp": 5,
+    "description": "Flint, steel, and tinder for starting fires."
+  },
+  "whetstone": {
+    "name": "Whetstone",
+    "type": "equipment",
+    "cost_gp": 0.02,
+    "weight_gp": 10,
+    "description": "A stone for sharpening bladed weapons."
+  },
+  "fishhook": {
+    "name": "Fishhook",
+    "type": "equipment",
+    "cost_gp": 0.1,
+    "weight_gp": 0,
+    "description": "An iron fishhook."
+  },
+  "fishing_net_25ft": {
+    "name": "Fishing Net, 25 sq. ft.",
+    "type": "equipment",
+    "cost_gp": 4,
+    "weight_gp": 50,
+    "description": "A fishing net, 5 feet by 5 feet."
+  },
+  "ladder_10ft": {
+    "name": "Ladder, 10 feet",
+    "type": "equipment",
+    "cost_gp": 0.5,
+    "weight_gp": 200,
+    "description": "A wooden ladder, 10 feet long."
+  },
+  "barrel": {
+    "name": "Barrel",
+    "type": "container",
+    "cost_gp": 2,
+    "weight_gp": 300,
+    "capacity_gp": 3000,
+    "description": "A wooden barrel for storing liquids or goods. Holds 40 gallons."
+  },
+  "bottle_glass": {
+    "name": "Bottle, Glass",
+    "type": "container",
+    "cost_gp": 2,
+    "weight_gp": 1,
+    "capacity_gp": 10,
+    "description": "A glass bottle with a cork stopper."
+  },
+  "horn_signal": {
+    "name": "Signal Horn",
+    "type": "equipment",
+    "cost_gp": 1,
+    "weight_gp": 20,
+    "description": "A horn for signaling. Can be heard up to 1 mile away."
+  },
+  "wolfsbane": {
+    "name": "Wolfsbane (bunch)",
+    "type": "consumable",
+    "cost_gp": 10,
+    "weight_gp": 1,
+    "description": "A bunch of wolfsbane herb. Repels lycanthropes."
+  },
+  "garlic": {
+    "name": "Garlic (bunch)",
+    "type": "consumable",
+    "cost_gp": 0.05,
+    "weight_gp": 1,
+    "description": "A bunch of garlic. Repels vampires."
+  },
+  "horse_riding": {
+    "name": "Horse, Riding",
+    "type": "animal",
+    "cost_gp": 75,
+    "weight_gp": 0,
+    "movement_rate": 24,
+    "carrying_capacity_gp": 3000,
+    "description": "A standard riding horse. Movement 24\", can carry up to 3000 gp weight."
+  },
+  "horse_war": {
+    "name": "Horse, War (Heavy)",
+    "type": "animal",
+    "cost_gp": 250,
+    "weight_gp": 0,
+    "movement_rate": 18,
+    "carrying_capacity_gp": 4000,
+    "description": "A heavy warhorse trained for combat. Movement 18\", can carry up to 4000 gp weight."
+  },
+  "pony": {
+    "name": "Pony",
+    "type": "animal",
+    "cost_gp": 30,
+    "weight_gp": 0,
+    "movement_rate": 12,
+    "carrying_capacity_gp": 2000,
+    "description": "A small pony. Movement 12\", can carry up to 2000 gp weight."
+  },
+  "mule": {
+    "name": "Mule",
+    "type": "animal",
+    "cost_gp": 20,
+    "weight_gp": 0,
+    "movement_rate": 12,
+    "carrying_capacity_gp": 2000,
+    "description": "A pack mule. Movement 12\", can carry up to 2000 gp weight."
+  },
+  "cart": {
+    "name": "Cart",
+    "type": "transport",
+    "cost_gp": 50,
+    "weight_gp": 4000,
+    "carrying_capacity_gp": 4000,
+    "description": "A two-wheeled cart. Requires horse or mule to pull. Can carry up to 4000 gp weight."
+  },
+  "wagon": {
+    "name": "Wagon",
+    "type": "transport",
+    "cost_gp": 200,
+    "weight_gp": 2500,
+    "carrying_capacity_gp": 15000,
+    "description": "A four-wheeled wagon. Requires 2 horses or 4 mules to pull. Can carry up to 15000 gp weight."
+  }
+}
