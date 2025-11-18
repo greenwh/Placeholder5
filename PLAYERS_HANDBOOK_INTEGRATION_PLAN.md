@@ -34,7 +34,16 @@
 - Individual initiative: d6 + weapon speed + DEX modifier
 - **Files:** `aerthos/data/weapons.json`, `aerthos/engine/combat.py` (modified)
 
-**All Tests Passing:** 109/109 tests ✅
+### ✅ Phase 1.1: Complete Ability Score Modifier Tables (COMPLETED 2025-11-18)
+- All six ability score tables implemented (STR, DEX, CON, INT, WIS, CHA)
+- Exceptional strength for Fighters (18/01 through 18/00)
+- Spell learning mechanics, system shock, resurrection survival
+- Complete thief skill modifiers from DEX
+- Bonus cleric spells from WIS, spell failure checks
+- Max hirelings and loyalty from CHA
+- **Files:** `aerthos/data/ability_score_tables.json`, `aerthos/systems/ability_modifiers.py`, `aerthos/entities/character.py` (modified), `tests/test_ability_modifiers.py`
+
+**All Tests Passing:** 128/128 tests ✅ (19 new ability modifier tests)
 
 ---
 
@@ -48,7 +57,17 @@ These tasks complete the foundational game mechanics from the Players Handbook.
 
 ---
 
-### Task 1.1: Complete Ability Score Modifier Tables
+### Task 1.1: Complete Ability Score Modifier Tables ✅ COMPLETED
+
+**Status:** ✅ COMPLETED (2025-11-18)
+**Actual Effort:** ~6 hours
+**Commit:** `bf61b97` - "[Phase 1.1] Complete Ability Score Modifier Tables"
+**Files Created:**
+- `aerthos/data/ability_score_tables.json` (1833 lines added)
+- `aerthos/systems/ability_modifiers.py` (445 lines)
+- `tests/test_ability_modifiers.py` (19 tests, all passing)
+**Files Modified:**
+- `aerthos/entities/character.py` (updated to use ability system)
 
 **Priority:** HIGH
 **Estimated Effort:** 4-6 hours
@@ -148,6 +167,16 @@ Implement all six ability score modifier tables with comprehensive lookups for b
 - ✅ All modifiers match Players Handbook exactly
 - ✅ Tests passing for all ability score ranges
 - ✅ Character creation properly applies all modifiers
+
+**Completion Notes:**
+- Implemented comprehensive JSON tables with all modifiers from PH
+- Created AbilityModifierSystem with 20+ methods for modifier lookups
+- Updated Character class to use lazy-loaded ability system
+- Added property accessors (str, dex, con, int, wis, cha) for convenience
+- All 19 new tests passing, total test count increased to 128
+- Backward compatible with existing code using get_to_hit_bonus(), etc.
+- System supports spell learning rolls, system shock checks, door forcing
+- Ready for integration with Task 1.3 (spell level restrictions by INT)
 
 ---
 
