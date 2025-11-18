@@ -1,0 +1,1011 @@
+{
+  "strength": {
+    "3": {
+      "hit_prob": -3,
+      "damage": -1,
+      "weight_allowance": -350,
+      "open_doors": "1-2",
+      "bend_bars_lift_gates": 1
+    },
+    "4": {
+      "hit_prob": -2,
+      "damage": -1,
+      "weight_allowance": -250,
+      "open_doors": "1-2",
+      "bend_bars_lift_gates": 2
+    },
+    "5": {
+      "hit_prob": -2,
+      "damage": -1,
+      "weight_allowance": -250,
+      "open_doors": "1-2",
+      "bend_bars_lift_gates": 2
+    },
+    "6": {
+      "hit_prob": -1,
+      "damage": 0,
+      "weight_allowance": -150,
+      "open_doors": "1-2",
+      "bend_bars_lift_gates": 4
+    },
+    "7": {
+      "hit_prob": -1,
+      "damage": 0,
+      "weight_allowance": -150,
+      "open_doors": "1-2",
+      "bend_bars_lift_gates": 4
+    },
+    "8": {
+      "hit_prob": 0,
+      "damage": 0,
+      "weight_allowance": 0,
+      "open_doors": "1-2",
+      "bend_bars_lift_gates": 7
+    },
+    "9": {
+      "hit_prob": 0,
+      "damage": 0,
+      "weight_allowance": 0,
+      "open_doors": "1-2",
+      "bend_bars_lift_gates": 10
+    },
+    "10": {
+      "hit_prob": 0,
+      "damage": 0,
+      "weight_allowance": 0,
+      "open_doors": "1-2",
+      "bend_bars_lift_gates": 13
+    },
+    "11": {
+      "hit_prob": 0,
+      "damage": 0,
+      "weight_allowance": 0,
+      "open_doors": "1-2",
+      "bend_bars_lift_gates": 13
+    },
+    "12": {
+      "hit_prob": 0,
+      "damage": 0,
+      "weight_allowance": 0,
+      "open_doors": "1-2",
+      "bend_bars_lift_gates": 13
+    },
+    "13": {
+      "hit_prob": 0,
+      "damage": 0,
+      "weight_allowance": 100,
+      "open_doors": "1-3",
+      "bend_bars_lift_gates": 16
+    },
+    "14": {
+      "hit_prob": 0,
+      "damage": 0,
+      "weight_allowance": 200,
+      "open_doors": "1-3",
+      "bend_bars_lift_gates": 20
+    },
+    "15": {
+      "hit_prob": 0,
+      "damage": 0,
+      "weight_allowance": 350,
+      "open_doors": "1-3",
+      "bend_bars_lift_gates": 25
+    },
+    "16": {
+      "hit_prob": 1,
+      "damage": 1,
+      "weight_allowance": 500,
+      "open_doors": "1-3",
+      "bend_bars_lift_gates": 30
+    },
+    "17": {
+      "hit_prob": 1,
+      "damage": 2,
+      "weight_allowance": 750,
+      "open_doors": "1-4",
+      "bend_bars_lift_gates": 35
+    },
+    "18": {
+      "hit_prob": 2,
+      "damage": 3,
+      "weight_allowance": 1000,
+      "open_doors": "1-4",
+      "bend_bars_lift_gates": 40
+    },
+    "18/01": {
+      "hit_prob": 1,
+      "damage": 3,
+      "weight_allowance": 1000,
+      "open_doors": "2(1)",
+      "bend_bars_lift_gates": 40,
+      "exceptional": true
+    },
+    "18/25": {
+      "hit_prob": 1,
+      "damage": 3,
+      "weight_allowance": 1000,
+      "open_doors": "2(1)",
+      "bend_bars_lift_gates": 40,
+      "exceptional": true
+    },
+    "18/50": {
+      "hit_prob": 1,
+      "damage": 3,
+      "weight_allowance": 1000,
+      "open_doors": "2(1)",
+      "bend_bars_lift_gates": 40,
+      "exceptional": true
+    },
+    "18/51": {
+      "hit_prob": 2,
+      "damage": 3,
+      "weight_allowance": 1250,
+      "open_doors": "3(1)",
+      "bend_bars_lift_gates": 45,
+      "exceptional": true
+    },
+    "18/75": {
+      "hit_prob": 2,
+      "damage": 3,
+      "weight_allowance": 1250,
+      "open_doors": "3(1)",
+      "bend_bars_lift_gates": 45,
+      "exceptional": true
+    },
+    "18/76": {
+      "hit_prob": 2,
+      "damage": 4,
+      "weight_allowance": 1500,
+      "open_doors": "3(2)",
+      "bend_bars_lift_gates": 50,
+      "exceptional": true
+    },
+    "18/90": {
+      "hit_prob": 2,
+      "damage": 4,
+      "weight_allowance": 1500,
+      "open_doors": "3(2)",
+      "bend_bars_lift_gates": 50,
+      "exceptional": true
+    },
+    "18/91": {
+      "hit_prob": 2,
+      "damage": 5,
+      "weight_allowance": 2000,
+      "open_doors": "4(1)",
+      "bend_bars_lift_gates": 60,
+      "exceptional": true
+    },
+    "18/99": {
+      "hit_prob": 2,
+      "damage": 5,
+      "weight_allowance": 2000,
+      "open_doors": "4(1)",
+      "bend_bars_lift_gates": 60,
+      "exceptional": true
+    },
+    "18/00": {
+      "hit_prob": 3,
+      "damage": 6,
+      "weight_allowance": 2500,
+      "open_doors": "4(2)",
+      "bend_bars_lift_gates": 70,
+      "exceptional": true
+    }
+  },
+  "intelligence": {
+    "3": {
+      "additional_languages": 0,
+      "spell_learn_chance": 0,
+      "min_spells_per_level": 0,
+      "max_spells_per_level": 0
+    },
+    "4": {
+      "additional_languages": 0,
+      "spell_learn_chance": 0,
+      "min_spells_per_level": 0,
+      "max_spells_per_level": 0
+    },
+    "5": {
+      "additional_languages": 0,
+      "spell_learn_chance": 0,
+      "min_spells_per_level": 0,
+      "max_spells_per_level": 0
+    },
+    "6": {
+      "additional_languages": 0,
+      "spell_learn_chance": 0,
+      "min_spells_per_level": 0,
+      "max_spells_per_level": 0
+    },
+    "7": {
+      "additional_languages": 0,
+      "spell_learn_chance": 0,
+      "min_spells_per_level": 0,
+      "max_spells_per_level": 0
+    },
+    "8": {
+      "additional_languages": 0,
+      "spell_learn_chance": 0,
+      "min_spells_per_level": 0,
+      "max_spells_per_level": 0
+    },
+    "9": {
+      "additional_languages": 1,
+      "spell_learn_chance": 35,
+      "min_spells_per_level": 4,
+      "max_spells_per_level": 6,
+      "max_spell_level": 4
+    },
+    "10": {
+      "additional_languages": 1,
+      "spell_learn_chance": 45,
+      "min_spells_per_level": 5,
+      "max_spells_per_level": 7,
+      "max_spell_level": 5
+    },
+    "11": {
+      "additional_languages": 2,
+      "spell_learn_chance": 45,
+      "min_spells_per_level": 5,
+      "max_spells_per_level": 7,
+      "max_spell_level": 5
+    },
+    "12": {
+      "additional_languages": 2,
+      "spell_learn_chance": 45,
+      "min_spells_per_level": 5,
+      "max_spells_per_level": 7,
+      "max_spell_level": 6
+    },
+    "13": {
+      "additional_languages": 3,
+      "spell_learn_chance": 55,
+      "min_spells_per_level": 6,
+      "max_spells_per_level": 9,
+      "max_spell_level": 6
+    },
+    "14": {
+      "additional_languages": 3,
+      "spell_learn_chance": 55,
+      "min_spells_per_level": 6,
+      "max_spells_per_level": 9,
+      "max_spell_level": 7
+    },
+    "15": {
+      "additional_languages": 4,
+      "spell_learn_chance": 65,
+      "min_spells_per_level": 7,
+      "max_spells_per_level": 11,
+      "max_spell_level": 7
+    },
+    "16": {
+      "additional_languages": 5,
+      "spell_learn_chance": 75,
+      "min_spells_per_level": 7,
+      "max_spells_per_level": 14,
+      "max_spell_level": 8
+    },
+    "17": {
+      "additional_languages": 6,
+      "spell_learn_chance": 85,
+      "min_spells_per_level": 9,
+      "max_spells_per_level": 18,
+      "max_spell_level": 8
+    },
+    "18": {
+      "additional_languages": 7,
+      "spell_learn_chance": 95,
+      "min_spells_per_level": 10,
+      "max_spells_per_level": 999,
+      "max_spell_level": 9
+    },
+    "19": {
+      "additional_languages": 8,
+      "spell_learn_chance": 95,
+      "min_spells_per_level": 10,
+      "max_spells_per_level": 999,
+      "max_spell_level": 9
+    },
+    "20": {
+      "additional_languages": 9,
+      "spell_learn_chance": 95,
+      "min_spells_per_level": 10,
+      "max_spells_per_level": 999,
+      "max_spell_level": 9
+    },
+    "21": {
+      "additional_languages": 10,
+      "spell_learn_chance": 95,
+      "min_spells_per_level": 10,
+      "max_spells_per_level": 999,
+      "max_spell_level": 9
+    },
+    "22": {
+      "additional_languages": 11,
+      "spell_learn_chance": 95,
+      "min_spells_per_level": 10,
+      "max_spells_per_level": 999,
+      "max_spell_level": 9
+    },
+    "23": {
+      "additional_languages": 12,
+      "spell_learn_chance": 95,
+      "min_spells_per_level": 10,
+      "max_spells_per_level": 999,
+      "max_spell_level": 9
+    },
+    "24": {
+      "additional_languages": 13,
+      "spell_learn_chance": 95,
+      "min_spells_per_level": 10,
+      "max_spells_per_level": 999,
+      "max_spell_level": 9
+    },
+    "25": {
+      "additional_languages": 15,
+      "spell_learn_chance": 95,
+      "min_spells_per_level": 10,
+      "max_spells_per_level": 999,
+      "max_spell_level": 9
+    }
+  },
+  "wisdom": {
+    "3": {
+      "magic_attack_adjustment": -3,
+      "spell_bonus": {},
+      "spell_failure": 40
+    },
+    "4": {
+      "magic_attack_adjustment": -2,
+      "spell_bonus": {},
+      "spell_failure": 20
+    },
+    "5": {
+      "magic_attack_adjustment": -2,
+      "spell_bonus": {},
+      "spell_failure": 20
+    },
+    "6": {
+      "magic_attack_adjustment": -1,
+      "spell_bonus": {},
+      "spell_failure": 15
+    },
+    "7": {
+      "magic_attack_adjustment": -1,
+      "spell_bonus": {},
+      "spell_failure": 15
+    },
+    "8": {
+      "magic_attack_adjustment": -1,
+      "spell_bonus": {},
+      "spell_failure": 10
+    },
+    "9": {
+      "magic_attack_adjustment": 0,
+      "spell_bonus": {},
+      "spell_failure": 5
+    },
+    "10": {
+      "magic_attack_adjustment": 0,
+      "spell_bonus": {},
+      "spell_failure": 0
+    },
+    "11": {
+      "magic_attack_adjustment": 0,
+      "spell_bonus": {},
+      "spell_failure": 0
+    },
+    "12": {
+      "magic_attack_adjustment": 0,
+      "spell_bonus": {},
+      "spell_failure": 0
+    },
+    "13": {
+      "magic_attack_adjustment": 0,
+      "spell_bonus": {"1": 1},
+      "spell_failure": 0
+    },
+    "14": {
+      "magic_attack_adjustment": 0,
+      "spell_bonus": {"1": 1},
+      "spell_failure": 0
+    },
+    "15": {
+      "magic_attack_adjustment": 0,
+      "spell_bonus": {"1": 2},
+      "spell_failure": 0
+    },
+    "16": {
+      "magic_attack_adjustment": 1,
+      "spell_bonus": {"1": 2, "2": 1},
+      "spell_failure": 0
+    },
+    "17": {
+      "magic_attack_adjustment": 2,
+      "spell_bonus": {"1": 2, "2": 1, "3": 1},
+      "spell_failure": 0
+    },
+    "18": {
+      "magic_attack_adjustment": 3,
+      "spell_bonus": {"1": 2, "2": 1, "3": 1, "4": 1},
+      "spell_failure": 0
+    },
+    "19": {
+      "magic_attack_adjustment": 4,
+      "spell_bonus": {"1": 2, "2": 2, "3": 1, "4": 1},
+      "spell_failure": 0
+    },
+    "20": {
+      "magic_attack_adjustment": 4,
+      "spell_bonus": {"1": 2, "2": 2, "3": 1, "4": 1},
+      "spell_failure": 0
+    },
+    "21": {
+      "magic_attack_adjustment": 4,
+      "spell_bonus": {"1": 2, "2": 2, "3": 1, "4": 1},
+      "spell_failure": 0
+    },
+    "22": {
+      "magic_attack_adjustment": 4,
+      "spell_bonus": {"1": 2, "2": 2, "3": 1, "4": 1},
+      "spell_failure": 0
+    },
+    "23": {
+      "magic_attack_adjustment": 4,
+      "spell_bonus": {"1": 2, "2": 2, "3": 1, "4": 1},
+      "spell_failure": 0
+    },
+    "24": {
+      "magic_attack_adjustment": 4,
+      "spell_bonus": {"1": 2, "2": 2, "3": 1, "4": 1},
+      "spell_failure": 0
+    },
+    "25": {
+      "magic_attack_adjustment": 4,
+      "spell_bonus": {"1": 2, "2": 2, "3": 1, "4": 1},
+      "spell_failure": 0
+    }
+  },
+  "dexterity": {
+    "3": {
+      "reaction_attack_adj": -3,
+      "defensive_adj": 4,
+      "pick_pockets": -15,
+      "open_locks": -10,
+      "find_remove_traps": -10,
+      "move_silently": -20,
+      "hide_in_shadows": -10,
+      "hear_noise": -10,
+      "climb_walls": -10,
+      "read_languages": -10
+    },
+    "4": {
+      "reaction_attack_adj": -2,
+      "defensive_adj": 3,
+      "pick_pockets": -10,
+      "open_locks": -5,
+      "find_remove_traps": -10,
+      "move_silently": -15,
+      "hide_in_shadows": -5,
+      "hear_noise": -5,
+      "climb_walls": -5,
+      "read_languages": -5
+    },
+    "5": {
+      "reaction_attack_adj": -2,
+      "defensive_adj": 3,
+      "pick_pockets": -10,
+      "open_locks": -5,
+      "find_remove_traps": -10,
+      "move_silently": -15,
+      "hide_in_shadows": -5,
+      "hear_noise": -5,
+      "climb_walls": -5,
+      "read_languages": -5
+    },
+    "6": {
+      "reaction_attack_adj": -2,
+      "defensive_adj": 3,
+      "pick_pockets": -10,
+      "open_locks": -5,
+      "find_remove_traps": -10,
+      "move_silently": -15,
+      "hide_in_shadows": -5,
+      "hear_noise": -5,
+      "climb_walls": -5,
+      "read_languages": -5
+    },
+    "7": {
+      "reaction_attack_adj": -1,
+      "defensive_adj": 2,
+      "pick_pockets": -5,
+      "open_locks": 0,
+      "find_remove_traps": -5,
+      "move_silently": -10,
+      "hide_in_shadows": 0,
+      "hear_noise": 0,
+      "climb_walls": 0,
+      "read_languages": 0
+    },
+    "8": {
+      "reaction_attack_adj": -1,
+      "defensive_adj": 1,
+      "pick_pockets": 0,
+      "open_locks": 0,
+      "find_remove_traps": 0,
+      "move_silently": 0,
+      "hide_in_shadows": 0,
+      "hear_noise": 0,
+      "climb_walls": 0,
+      "read_languages": 0
+    },
+    "9": {
+      "reaction_attack_adj": 0,
+      "defensive_adj": 0,
+      "pick_pockets": 0,
+      "open_locks": 0,
+      "find_remove_traps": 0,
+      "move_silently": 0,
+      "hide_in_shadows": 0,
+      "hear_noise": 0,
+      "climb_walls": 0,
+      "read_languages": 0
+    },
+    "10": {
+      "reaction_attack_adj": 0,
+      "defensive_adj": 0,
+      "pick_pockets": 0,
+      "open_locks": 0,
+      "find_remove_traps": 0,
+      "move_silently": 0,
+      "hide_in_shadows": 0,
+      "hear_noise": 0,
+      "climb_walls": 0,
+      "read_languages": 0
+    },
+    "11": {
+      "reaction_attack_adj": 0,
+      "defensive_adj": 0,
+      "pick_pockets": 0,
+      "open_locks": 0,
+      "find_remove_traps": 0,
+      "move_silently": 0,
+      "hide_in_shadows": 0,
+      "hear_noise": 0,
+      "climb_walls": 0,
+      "read_languages": 0
+    },
+    "12": {
+      "reaction_attack_adj": 0,
+      "defensive_adj": 0,
+      "pick_pockets": 0,
+      "open_locks": 0,
+      "find_remove_traps": 0,
+      "move_silently": 0,
+      "hide_in_shadows": 0,
+      "hear_noise": 0,
+      "climb_walls": 0,
+      "read_languages": 0
+    },
+    "13": {
+      "reaction_attack_adj": 0,
+      "defensive_adj": 0,
+      "pick_pockets": 0,
+      "open_locks": 0,
+      "find_remove_traps": 0,
+      "move_silently": 0,
+      "hide_in_shadows": 0,
+      "hear_noise": 0,
+      "climb_walls": 0,
+      "read_languages": 0
+    },
+    "14": {
+      "reaction_attack_adj": 0,
+      "defensive_adj": 0,
+      "pick_pockets": 0,
+      "open_locks": 0,
+      "find_remove_traps": 0,
+      "move_silently": 0,
+      "hide_in_shadows": 0,
+      "hear_noise": 0,
+      "climb_walls": 0,
+      "read_languages": 0
+    },
+    "15": {
+      "reaction_attack_adj": 0,
+      "defensive_adj": 0,
+      "pick_pockets": 0,
+      "open_locks": 0,
+      "find_remove_traps": 0,
+      "move_silently": 0,
+      "hide_in_shadows": 0,
+      "hear_noise": 0,
+      "climb_walls": 0,
+      "read_languages": 0
+    },
+    "16": {
+      "reaction_attack_adj": 1,
+      "defensive_adj": -1,
+      "pick_pockets": 0,
+      "open_locks": 5,
+      "find_remove_traps": 0,
+      "move_silently": 0,
+      "hide_in_shadows": 0,
+      "hear_noise": 0,
+      "climb_walls": 5,
+      "read_languages": 0
+    },
+    "17": {
+      "reaction_attack_adj": 2,
+      "defensive_adj": -2,
+      "pick_pockets": 5,
+      "open_locks": 10,
+      "find_remove_traps": 0,
+      "move_silently": 5,
+      "hide_in_shadows": 5,
+      "hear_noise": 5,
+      "climb_walls": 5,
+      "read_languages": 5
+    },
+    "18": {
+      "reaction_attack_adj": 3,
+      "defensive_adj": -4,
+      "pick_pockets": 10,
+      "open_locks": 15,
+      "find_remove_traps": 5,
+      "move_silently": 10,
+      "hide_in_shadows": 10,
+      "hear_noise": 10,
+      "climb_walls": 10,
+      "read_languages": 10
+    },
+    "19": {
+      "reaction_attack_adj": 3,
+      "defensive_adj": -4,
+      "pick_pockets": 15,
+      "open_locks": 20,
+      "find_remove_traps": 10,
+      "move_silently": 15,
+      "hide_in_shadows": 15,
+      "hear_noise": 15,
+      "climb_walls": 15,
+      "read_languages": 15
+    },
+    "20": {
+      "reaction_attack_adj": 3,
+      "defensive_adj": -4,
+      "pick_pockets": 20,
+      "open_locks": 25,
+      "find_remove_traps": 15,
+      "move_silently": 20,
+      "hide_in_shadows": 20,
+      "hear_noise": 20,
+      "climb_walls": 20,
+      "read_languages": 20
+    },
+    "21": {
+      "reaction_attack_adj": 4,
+      "defensive_adj": -5,
+      "pick_pockets": 25,
+      "open_locks": 30,
+      "find_remove_traps": 20,
+      "move_silently": 25,
+      "hide_in_shadows": 25,
+      "hear_noise": 25,
+      "climb_walls": 25,
+      "read_languages": 25
+    },
+    "22": {
+      "reaction_attack_adj": 4,
+      "defensive_adj": -5,
+      "pick_pockets": 30,
+      "open_locks": 35,
+      "find_remove_traps": 25,
+      "move_silently": 30,
+      "hide_in_shadows": 30,
+      "hear_noise": 30,
+      "climb_walls": 30,
+      "read_languages": 30
+    },
+    "23": {
+      "reaction_attack_adj": 4,
+      "defensive_adj": -5,
+      "pick_pockets": 35,
+      "open_locks": 40,
+      "find_remove_traps": 30,
+      "move_silently": 35,
+      "hide_in_shadows": 35,
+      "hear_noise": 35,
+      "climb_walls": 35,
+      "read_languages": 35
+    },
+    "24": {
+      "reaction_attack_adj": 5,
+      "defensive_adj": -6,
+      "pick_pockets": 40,
+      "open_locks": 45,
+      "find_remove_traps": 35,
+      "move_silently": 40,
+      "hide_in_shadows": 40,
+      "hear_noise": 40,
+      "climb_walls": 40,
+      "read_languages": 40
+    },
+    "25": {
+      "reaction_attack_adj": 5,
+      "defensive_adj": -6,
+      "pick_pockets": 45,
+      "open_locks": 50,
+      "find_remove_traps": 40,
+      "move_silently": 45,
+      "hide_in_shadows": 45,
+      "hear_noise": 45,
+      "climb_walls": 45,
+      "read_languages": 45
+    }
+  },
+  "constitution": {
+    "3": {
+      "hp_adjustment": -2,
+      "hp_adjustment_fighter": -2,
+      "system_shock": 35,
+      "resurrection_survival": 40
+    },
+    "4": {
+      "hp_adjustment": -1,
+      "hp_adjustment_fighter": -1,
+      "system_shock": 40,
+      "resurrection_survival": 45
+    },
+    "5": {
+      "hp_adjustment": -1,
+      "hp_adjustment_fighter": -1,
+      "system_shock": 40,
+      "resurrection_survival": 45
+    },
+    "6": {
+      "hp_adjustment": -1,
+      "hp_adjustment_fighter": -1,
+      "system_shock": 45,
+      "resurrection_survival": 50
+    },
+    "7": {
+      "hp_adjustment": -1,
+      "hp_adjustment_fighter": -1,
+      "system_shock": 50,
+      "resurrection_survival": 55
+    },
+    "8": {
+      "hp_adjustment": 0,
+      "hp_adjustment_fighter": 0,
+      "system_shock": 55,
+      "resurrection_survival": 60
+    },
+    "9": {
+      "hp_adjustment": 0,
+      "hp_adjustment_fighter": 0,
+      "system_shock": 60,
+      "resurrection_survival": 65
+    },
+    "10": {
+      "hp_adjustment": 0,
+      "hp_adjustment_fighter": 0,
+      "system_shock": 65,
+      "resurrection_survival": 70
+    },
+    "11": {
+      "hp_adjustment": 0,
+      "hp_adjustment_fighter": 0,
+      "system_shock": 70,
+      "resurrection_survival": 75
+    },
+    "12": {
+      "hp_adjustment": 0,
+      "hp_adjustment_fighter": 0,
+      "system_shock": 75,
+      "resurrection_survival": 80
+    },
+    "13": {
+      "hp_adjustment": 0,
+      "hp_adjustment_fighter": 0,
+      "system_shock": 80,
+      "resurrection_survival": 85
+    },
+    "14": {
+      "hp_adjustment": 0,
+      "hp_adjustment_fighter": 0,
+      "system_shock": 85,
+      "resurrection_survival": 90
+    },
+    "15": {
+      "hp_adjustment": 0,
+      "hp_adjustment_fighter": 0,
+      "system_shock": 88,
+      "resurrection_survival": 92
+    },
+    "16": {
+      "hp_adjustment": 1,
+      "hp_adjustment_fighter": 1,
+      "system_shock": 90,
+      "resurrection_survival": 94
+    },
+    "17": {
+      "hp_adjustment": 2,
+      "hp_adjustment_fighter": 3,
+      "system_shock": 95,
+      "resurrection_survival": 98
+    },
+    "18": {
+      "hp_adjustment": 2,
+      "hp_adjustment_fighter": 4,
+      "system_shock": 99,
+      "resurrection_survival": 100
+    },
+    "19": {
+      "hp_adjustment": 2,
+      "hp_adjustment_fighter": 5,
+      "system_shock": 99,
+      "resurrection_survival": 100
+    },
+    "20": {
+      "hp_adjustment": 2,
+      "hp_adjustment_fighter": 5,
+      "system_shock": 99,
+      "resurrection_survival": 100,
+      "regeneration": true
+    },
+    "21": {
+      "hp_adjustment": 2,
+      "hp_adjustment_fighter": 6,
+      "system_shock": 99,
+      "resurrection_survival": 100,
+      "regeneration": true
+    },
+    "22": {
+      "hp_adjustment": 2,
+      "hp_adjustment_fighter": 6,
+      "system_shock": 99,
+      "resurrection_survival": 100,
+      "regeneration": true
+    },
+    "23": {
+      "hp_adjustment": 2,
+      "hp_adjustment_fighter": 6,
+      "system_shock": 99,
+      "resurrection_survival": 100,
+      "regeneration": true
+    },
+    "24": {
+      "hp_adjustment": 2,
+      "hp_adjustment_fighter": 7,
+      "system_shock": 99,
+      "resurrection_survival": 100,
+      "regeneration": true
+    },
+    "25": {
+      "hp_adjustment": 2,
+      "hp_adjustment_fighter": 7,
+      "system_shock": 99,
+      "resurrection_survival": 100,
+      "regeneration": true
+    }
+  },
+  "charisma": {
+    "3": {
+      "max_henchmen": 1,
+      "loyalty_base": -30,
+      "reaction_adjustment": -25
+    },
+    "4": {
+      "max_henchmen": 1,
+      "loyalty_base": -25,
+      "reaction_adjustment": -20
+    },
+    "5": {
+      "max_henchmen": 2,
+      "loyalty_base": -20,
+      "reaction_adjustment": -15
+    },
+    "6": {
+      "max_henchmen": 2,
+      "loyalty_base": -15,
+      "reaction_adjustment": -10
+    },
+    "7": {
+      "max_henchmen": 3,
+      "loyalty_base": -10,
+      "reaction_adjustment": -5
+    },
+    "8": {
+      "max_henchmen": 3,
+      "loyalty_base": -5,
+      "reaction_adjustment": 0
+    },
+    "9": {
+      "max_henchmen": 4,
+      "loyalty_base": 0,
+      "reaction_adjustment": 0
+    },
+    "10": {
+      "max_henchmen": 4,
+      "loyalty_base": 0,
+      "reaction_adjustment": 0
+    },
+    "11": {
+      "max_henchmen": 4,
+      "loyalty_base": 0,
+      "reaction_adjustment": 0
+    },
+    "12": {
+      "max_henchmen": 4,
+      "loyalty_base": 0,
+      "reaction_adjustment": 0
+    },
+    "13": {
+      "max_henchmen": 5,
+      "loyalty_base": 0,
+      "reaction_adjustment": 5
+    },
+    "14": {
+      "max_henchmen": 6,
+      "loyalty_base": 5,
+      "reaction_adjustment": 10
+    },
+    "15": {
+      "max_henchmen": 7,
+      "loyalty_base": 10,
+      "reaction_adjustment": 15
+    },
+    "16": {
+      "max_henchmen": 8,
+      "loyalty_base": 15,
+      "reaction_adjustment": 20
+    },
+    "17": {
+      "max_henchmen": 10,
+      "loyalty_base": 20,
+      "reaction_adjustment": 25
+    },
+    "18": {
+      "max_henchmen": 15,
+      "loyalty_base": 30,
+      "reaction_adjustment": 35
+    },
+    "19": {
+      "max_henchmen": 20,
+      "loyalty_base": 40,
+      "reaction_adjustment": 40
+    },
+    "20": {
+      "max_henchmen": 25,
+      "loyalty_base": 50,
+      "reaction_adjustment": 45
+    },
+    "21": {
+      "max_henchmen": 30,
+      "loyalty_base": 60,
+      "reaction_adjustment": 50
+    },
+    "22": {
+      "max_henchmen": 35,
+      "loyalty_base": 70,
+      "reaction_adjustment": 55
+    },
+    "23": {
+      "max_henchmen": 40,
+      "loyalty_base": 80,
+      "reaction_adjustment": 60
+    },
+    "24": {
+      "max_henchmen": 45,
+      "loyalty_base": 90,
+      "reaction_adjustment": 65
+    },
+    "25": {
+      "max_henchmen": 50,
+      "loyalty_base": 100,
+      "reaction_adjustment": 70
+    }
+  }
+}

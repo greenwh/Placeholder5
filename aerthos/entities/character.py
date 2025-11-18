@@ -7,6 +7,19 @@ from typing import List, Optional
 from dataclasses import dataclass, field
 
 
+# Lazy-loaded ability modifier system to avoid circular imports
+_ability_modifier_system = None
+
+
+def _get_ability_system():
+    """Get singleton AbilityModifierSystem instance"""
+    global _ability_modifier_system
+    if _ability_modifier_system is None:
+        from ..systems.ability_modifiers import AbilityModifierSystem
+        _ability_modifier_system = AbilityModifierSystem()
+    return _ability_modifier_system
+
+
 @dataclass
 class Character:
     """Base class for all entities (Player Characters and Monsters)"""
@@ -26,8 +39,9 @@ class Character:
     wisdom: int = 10
     charisma: int = 10
 
-    # Exceptional strength (18/xx for fighters)
-    strength_percentile: int = 0
+    # Exceptional strength (18/01-18/00 for fighters)
+    strength_percentile: int = 0  # 1-100 (0 = none)
+    exceptional_strength: int = 0  # Alias for strength_percentile
 
     # Experience Points
     xp: int = 0
@@ -56,73 +70,28 @@ class Character:
 
     def get_to_hit_bonus(self) -> int:
         """Calculate to-hit bonus from STR (for melee)"""
-        if self.strength >= 18:
-            if self.strength_percentile >= 91:
-                return 3
-            elif self.strength_percentile >= 51:
-                return 2
-            else:
-                return 1
-        elif self.strength >= 17:
-            return 1
-        elif self.strength <= 5:
-            return -2
-        elif self.strength <= 6:
-            return -1
-        return 0
+        system = _get_ability_system()
+        mods = system.get_strength_modifiers(self.strength, self.strength_percentile)
+        return mods.get('hit_prob', 0)
 
     def get_damage_bonus(self) -> int:
         """Calculate damage bonus from STR"""
-        if self.strength >= 18:
-            if self.strength_percentile >= 91:
-                return 5
-            elif self.strength_percentile >= 76:
-                return 4
-            elif self.strength_percentile >= 51:
-                return 3
-            else:
-                return 2
-        elif self.strength >= 17:
-            return 1
-        elif self.strength <= 5:
-            return -2
-        elif self.strength <= 6:
-            return -1
-        return 0
+        system = _get_ability_system()
+        mods = system.get_strength_modifiers(self.strength, self.strength_percentile)
+        return mods.get('damage', 0)
 
     def get_ac_bonus(self) -> int:
         """Calculate AC bonus from DEX (negative = better AC)"""
-        if self.dexterity >= 18:
-            return -4
-        elif self.dexterity >= 17:
-            return -3
-        elif self.dexterity >= 16:
-            return -2
-        elif self.dexterity >= 15:
-            return -1
-        elif self.dexterity <= 5:
-            return 4
-        elif self.dexterity <= 6:
-            return 3
-        elif self.dexterity <= 7:
-            return 2
-        elif self.dexterity <= 8:
-            return 1
-        return 0
+        system = _get_ability_system()
+        mods = system.get_dexterity_modifiers(self.dexterity)
+        return mods.get('defensive_adj', 0)
 
     def get_hp_bonus_per_level(self) -> int:
         """Calculate HP bonus per level from CON"""
-        if self.constitution >= 17:
-            return 3
-        elif self.constitution >= 16:
-            return 2
-        elif self.constitution >= 15:
-            return 1
-        elif self.constitution <= 6:
-            return -1
-        elif self.constitution <= 3:
-            return -2
-        return 0
+        system = _get_ability_system()
+        is_fighter = self.char_class in ['Fighter', 'Paladin', 'Ranger']
+        mods = system.get_constitution_modifiers(self.constitution, is_fighter)
+        return mods.get('hp_adjustment', 0)
 
     def take_damage(self, amount: int) -> bool:
         """Apply damage, return True if character died"""
@@ -170,3 +139,34 @@ class Character:
         """Get XP needed for next level"""
         # This will be calculated by the experience system
         return None  # Placeholder
+
+    # Property accessors for standard abbreviations
+    @property
+    def str(self) -> int:
+        """Strength (standard abbreviation)"""
+        return self.strength
+
+    @property
+    def dex(self) -> int:
+        """Dexterity (standard abbreviation)"""
+        return self.dexterity
+
+    @property
+    def con(self) -> int:
+        """Constitution (standard abbreviation)"""
+        return self.constitution
+
+    @property
+    def int(self) -> int:
+        """Intelligence (standard abbreviation)"""
+        return self.intelligence
+
+    @property
+    def wis(self) -> int:
+        """Wisdom (standard abbreviation)"""
+        return self.wisdom
+
+    @property
+    def cha(self) -> int:
+        """Charisma (standard abbreviation)"""
+        return self.charisma
