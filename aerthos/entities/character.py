@@ -16,6 +16,7 @@ class Character:
     race: str
     char_class: str
     level: int = 1
+    title: str = "Adventurer"  # Level title (e.g., "Veteran", "Hero")
 
     # Core Attributes (3-18 range, 3d6 each)
     strength: int = 10
@@ -28,11 +29,16 @@ class Character:
     # Exceptional strength (18/xx for fighters)
     strength_percentile: int = 0
 
+    # Experience Points
+    xp: int = 0
+    xp_bonus_percent: int = 0  # Prime requisite bonus (usually 10% for 16+)
+
     # Combat Stats
     hp_current: int = 1
     hp_max: int = 1
     ac: int = 10  # Descending AC (10 = unarmored, 0 = plate+shield)
     thac0: int = 20  # To Hit AC 0
+    attacks_per_round: float = 1.0  # Can be 1, 1.5, or 2
 
     # Size for damage calculations
     size: str = 'M'  # S, M, L
@@ -151,3 +157,16 @@ class Character:
                 self.has_condition('sleeping') or
                 self.has_condition('paralyzed') or
                 self.has_condition('unconscious'))
+
+    def award_xp(self, xp_amount: int):
+        """Award experience points (with prime requisite bonus)"""
+        if self.xp_bonus_percent > 0:
+            bonus = int(xp_amount * (self.xp_bonus_percent / 100.0))
+            self.xp += xp_amount + bonus
+        else:
+            self.xp += xp_amount
+
+    def get_xp_to_next_level(self) -> Optional[int]:
+        """Get XP needed for next level"""
+        # This will be calculated by the experience system
+        return None  # Placeholder

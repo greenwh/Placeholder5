@@ -1,0 +1,516 @@
+{
+  "strength": {
+    "3": {
+      "hit_prob": -3,
+      "damage": -1,
+      "weight_allowance": -350,
+      "open_doors": "1-2",
+      "bend_bars": 1
+    },
+    "4-5": {
+      "hit_prob": -2,
+      "damage": -1,
+      "weight_allowance": -250,
+      "open_doors": "1-2",
+      "bend_bars": 2
+    },
+    "6-7": {
+      "hit_prob": -1,
+      "damage": 0,
+      "weight_allowance": -150,
+      "open_doors": "1-2",
+      "bend_bars": 4
+    },
+    "8": {
+      "hit_prob": 0,
+      "damage": 0,
+      "weight_allowance": 0,
+      "open_doors": "1-2",
+      "bend_bars": 7
+    },
+    "9-12": {
+      "hit_prob": 0,
+      "damage": 0,
+      "weight_allowance": 0,
+      "open_doors": "1-2",
+      "bend_bars": 13
+    },
+    "13": {
+      "hit_prob": 0,
+      "damage": 0,
+      "weight_allowance": 100,
+      "open_doors": "1-3",
+      "bend_bars": 16
+    },
+    "14": {
+      "hit_prob": 0,
+      "damage": 0,
+      "weight_allowance": 200,
+      "open_doors": "1-3",
+      "bend_bars": 20
+    },
+    "15": {
+      "hit_prob": 0,
+      "damage": 0,
+      "weight_allowance": 350,
+      "open_doors": "1-3",
+      "bend_bars": 25
+    },
+    "16": {
+      "hit_prob": 1,
+      "damage": 1,
+      "weight_allowance": 500,
+      "open_doors": "1-3",
+      "bend_bars": 30,
+      "xp_bonus": 10
+    },
+    "17": {
+      "hit_prob": 1,
+      "damage": 2,
+      "weight_allowance": 750,
+      "open_doors": "1-4",
+      "bend_bars": 35
+    },
+    "18": {
+      "hit_prob": 2,
+      "damage": 3,
+      "weight_allowance": 1000,
+      "open_doors": "1-4",
+      "bend_bars": 40,
+      "xp_bonus": 10,
+      "exceptional_allowed": true
+    },
+    "18/01-50": {
+      "hit_prob": 1,
+      "damage": 3,
+      "weight_allowance": 1000,
+      "open_doors": "2(1)",
+      "bend_bars": 40
+    },
+    "18/51-75": {
+      "hit_prob": 2,
+      "damage": 3,
+      "weight_allowance": 1250,
+      "open_doors": "3(1)",
+      "bend_bars": 45
+    },
+    "18/76-90": {
+      "hit_prob": 2,
+      "damage": 4,
+      "weight_allowance": 1500,
+      "open_doors": "3(2)",
+      "bend_bars": 50
+    },
+    "18/91-99": {
+      "hit_prob": 2,
+      "damage": 5,
+      "weight_allowance": 2000,
+      "open_doors": "4(1)",
+      "bend_bars": 60
+    },
+    "18/00": {
+      "hit_prob": 3,
+      "damage": 6,
+      "weight_allowance": 2500,
+      "open_doors": "4(2)",
+      "bend_bars": 70
+    }
+  },
+  "intelligence": {
+    "3-7": {
+      "languages": 0,
+      "spell_chance": 0,
+      "min_spells": 0,
+      "max_spells": 0
+    },
+    "8": {
+      "languages": 0,
+      "spell_chance": 0,
+      "min_spells": 0,
+      "max_spells": 0
+    },
+    "9": {
+      "languages": 1,
+      "spell_chance": 35,
+      "min_spells": 4,
+      "max_spells": 6
+    },
+    "10": {
+      "languages": 1,
+      "spell_chance": 45,
+      "min_spells": 5,
+      "max_spells": 7
+    },
+    "11": {
+      "languages": 2,
+      "spell_chance": 45,
+      "min_spells": 5,
+      "max_spells": 7
+    },
+    "12": {
+      "languages": 2,
+      "spell_chance": 45,
+      "min_spells": 5,
+      "max_spells": 7
+    },
+    "13": {
+      "languages": 3,
+      "spell_chance": 55,
+      "min_spells": 6,
+      "max_spells": 9
+    },
+    "14": {
+      "languages": 3,
+      "spell_chance": 55,
+      "min_spells": 6,
+      "max_spells": 9
+    },
+    "15": {
+      "languages": 4,
+      "spell_chance": 65,
+      "min_spells": 7,
+      "max_spells": 11
+    },
+    "16": {
+      "languages": 5,
+      "spell_chance": 75,
+      "min_spells": 7,
+      "max_spells": 14,
+      "xp_bonus": 10
+    },
+    "17": {
+      "languages": 6,
+      "spell_chance": 85,
+      "min_spells": 9,
+      "max_spells": 18
+    },
+    "18": {
+      "languages": 7,
+      "spell_chance": 95,
+      "min_spells": 10,
+      "max_spells": 99,
+      "xp_bonus": 10
+    }
+  },
+  "wisdom": {
+    "3": {
+      "magic_defense": -3,
+      "bonus_spells": {},
+      "spell_failure": 40
+    },
+    "4-5": {
+      "magic_defense": -2,
+      "bonus_spells": {},
+      "spell_failure": 20
+    },
+    "6-7": {
+      "magic_defense": -1,
+      "bonus_spells": {},
+      "spell_failure": 15
+    },
+    "8": {
+      "magic_defense": -1,
+      "bonus_spells": {},
+      "spell_failure": 10
+    },
+    "9-12": {
+      "magic_defense": 0,
+      "bonus_spells": {},
+      "spell_failure": 0
+    },
+    "13": {
+      "magic_defense": 0,
+      "bonus_spells": {"1": 1},
+      "spell_failure": 0
+    },
+    "14": {
+      "magic_defense": 0,
+      "bonus_spells": {"1": 1},
+      "spell_failure": 0
+    },
+    "15": {
+      "magic_defense": 0,
+      "bonus_spells": {"1": 2},
+      "spell_failure": 0
+    },
+    "16": {
+      "magic_defense": 1,
+      "bonus_spells": {"1": 2, "2": 1},
+      "spell_failure": 0,
+      "xp_bonus": 10
+    },
+    "17": {
+      "magic_defense": 2,
+      "bonus_spells": {"1": 2, "2": 1, "3": 1},
+      "spell_failure": 0,
+      "xp_bonus": 10
+    },
+    "18": {
+      "magic_defense": 3,
+      "bonus_spells": {"1": 2, "2": 1, "3": 1, "4": 1},
+      "spell_failure": 0,
+      "xp_bonus": 10
+    },
+    "19": {
+      "magic_defense": 4,
+      "bonus_spells": {"1": 2, "2": 2, "3": 1, "4": 1},
+      "spell_failure": 0
+    }
+  },
+  "dexterity": {
+    "3": {
+      "reaction": -3,
+      "ac_bonus": 4,
+      "pick_pockets": -15,
+      "open_locks": -10,
+      "find_traps": -10,
+      "move_silently": -20,
+      "hide_shadows": -10,
+      "hear_noise": -10,
+      "climb_walls": -10,
+      "read_languages": -10
+    },
+    "4-6": {
+      "reaction": -2,
+      "ac_bonus": 3,
+      "pick_pockets": -10,
+      "open_locks": -5,
+      "find_traps": -10,
+      "move_silently": -15,
+      "hide_shadows": -5,
+      "hear_noise": -5,
+      "climb_walls": -5,
+      "read_languages": -5
+    },
+    "7": {
+      "reaction": -1,
+      "ac_bonus": 2,
+      "pick_pockets": -5,
+      "open_locks": 0,
+      "find_traps": -5,
+      "move_silently": -10,
+      "hide_shadows": 0,
+      "hear_noise": 0,
+      "climb_walls": 0,
+      "read_languages": 0
+    },
+    "8": {
+      "reaction": -1,
+      "ac_bonus": 1,
+      "pick_pockets": 0,
+      "open_locks": 0,
+      "find_traps": 0,
+      "move_silently": 0,
+      "hide_shadows": 0,
+      "hear_noise": 0,
+      "climb_walls": 0,
+      "read_languages": 0
+    },
+    "9-12": {
+      "reaction": 0,
+      "ac_bonus": 0,
+      "pick_pockets": 0,
+      "open_locks": 0,
+      "find_traps": 0,
+      "move_silently": 0,
+      "hide_shadows": 0,
+      "hear_noise": 0,
+      "climb_walls": 0,
+      "read_languages": 0
+    },
+    "13-14": {
+      "reaction": 0,
+      "ac_bonus": 0,
+      "pick_pockets": 0,
+      "open_locks": 0,
+      "find_traps": 0,
+      "move_silently": 0,
+      "hide_shadows": 0,
+      "hear_noise": 0,
+      "climb_walls": 0,
+      "read_languages": 0
+    },
+    "15": {
+      "reaction": 0,
+      "ac_bonus": 0,
+      "pick_pockets": 0,
+      "open_locks": 0,
+      "find_traps": 0,
+      "move_silently": 0,
+      "hide_shadows": 0,
+      "hear_noise": 0,
+      "climb_walls": 0,
+      "read_languages": 0
+    },
+    "16": {
+      "reaction": 1,
+      "ac_bonus": -1,
+      "pick_pockets": 0,
+      "open_locks": 5,
+      "find_traps": 0,
+      "move_silently": 0,
+      "hide_shadows": 0,
+      "hear_noise": 0,
+      "climb_walls": 5,
+      "read_languages": 0,
+      "xp_bonus": 10
+    },
+    "17": {
+      "reaction": 2,
+      "ac_bonus": -2,
+      "pick_pockets": 5,
+      "open_locks": 10,
+      "find_traps": 0,
+      "move_silently": 5,
+      "hide_shadows": 5,
+      "hear_noise": 5,
+      "climb_walls": 5,
+      "read_languages": 5,
+      "xp_bonus": 10
+    },
+    "18": {
+      "reaction": 3,
+      "ac_bonus": -4,
+      "pick_pockets": 10,
+      "open_locks": 15,
+      "find_traps": 5,
+      "move_silently": 10,
+      "hide_shadows": 10,
+      "hear_noise": 10,
+      "climb_walls": 10,
+      "read_languages": 10,
+      "xp_bonus": 10
+    }
+  },
+  "constitution": {
+    "3": {
+      "hp_adj": -2,
+      "system_shock": 35,
+      "resurrection": 40
+    },
+    "4-5": {
+      "hp_adj": -1,
+      "system_shock": 40,
+      "resurrection": 45
+    },
+    "6": {
+      "hp_adj": -1,
+      "system_shock": 45,
+      "resurrection": 50
+    },
+    "7": {
+      "hp_adj": -1,
+      "system_shock": 50,
+      "resurrection": 55
+    },
+    "8": {
+      "hp_adj": 0,
+      "system_shock": 55,
+      "resurrection": 60
+    },
+    "9-12": {
+      "hp_adj": 0,
+      "system_shock": 65,
+      "resurrection": 70
+    },
+    "13": {
+      "hp_adj": 0,
+      "system_shock": 80,
+      "resurrection": 85
+    },
+    "14": {
+      "hp_adj": 0,
+      "system_shock": 85,
+      "resurrection": 90
+    },
+    "15": {
+      "hp_adj": 1,
+      "system_shock": 88,
+      "resurrection": 92
+    },
+    "16": {
+      "hp_adj": 2,
+      "system_shock": 90,
+      "resurrection": 94
+    },
+    "17": {
+      "hp_adj": 2,
+      "hp_adj_fighter": 3,
+      "system_shock": 95,
+      "resurrection": 98
+    },
+    "18": {
+      "hp_adj": 2,
+      "hp_adj_fighter": 4,
+      "system_shock": 99,
+      "resurrection": 100
+    }
+  },
+  "charisma": {
+    "3": {
+      "max_henchmen": 1,
+      "loyalty": -30,
+      "reaction": -25
+    },
+    "4": {
+      "max_henchmen": 1,
+      "loyalty": -25,
+      "reaction": -20
+    },
+    "5": {
+      "max_henchmen": 2,
+      "loyalty": -20,
+      "reaction": -15
+    },
+    "6": {
+      "max_henchmen": 2,
+      "loyalty": -15,
+      "reaction": -10
+    },
+    "7": {
+      "max_henchmen": 3,
+      "loyalty": -10,
+      "reaction": -5
+    },
+    "8": {
+      "max_henchmen": 3,
+      "loyalty": -5,
+      "reaction": 0
+    },
+    "9-12": {
+      "max_henchmen": 4,
+      "loyalty": 0,
+      "reaction": 0
+    },
+    "13": {
+      "max_henchmen": 4,
+      "loyalty": 0,
+      "reaction": 5
+    },
+    "14": {
+      "max_henchmen": 6,
+      "loyalty": 5,
+      "reaction": 10
+    },
+    "15": {
+      "max_henchmen": 7,
+      "loyalty": 10,
+      "reaction": 15
+    },
+    "16": {
+      "max_henchmen": 8,
+      "loyalty": 15,
+      "reaction": 20
+    },
+    "17": {
+      "max_henchmen": 10,
+      "loyalty": 20,
+      "reaction": 25
+    },
+    "18": {
+      "max_henchmen": 15,
+      "loyalty": 30,
+      "reaction": 35
+    }
+  }
+}

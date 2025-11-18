@@ -3,7 +3,9 @@ Saving Throw system for AD&D 1e
 5 categories: Poison, Rod/Staff/Wand, Petrify/Paralyze, Breath, Spell
 """
 
+import json
 import random
+from pathlib import Path
 from typing import Dict
 from ..entities.character import Character
 
@@ -34,6 +36,56 @@ class SavingThrowResolver:
         'spell': 'save_spell',
         'magic': 'save_spell'
     }
+
+    def __init__(self):
+        """Load saving throw progression tables"""
+        data_path = Path(__file__).parent.parent / 'data' / 'saving_throw_tables.json'
+        with open(data_path, 'r') as f:
+            self.tables = json.load(f)
+
+    def get_saves_for_level(self, char_class: str, level: int, race_bonus: int = 0) -> Dict[str, int]:
+        """
+        Get all saving throws for a character of given class and level
+
+        Args:
+            char_class: Character class name
+            level: Character level (1-based)
+            race_bonus: Racial bonus (Dwarf/Halfling/Gnome get +1 per 3.5 CON)
+
+        Returns:
+            Dictionary with all five saving throw values
+        """
+        if char_class not in self.tables:
+            # Default to Fighter if class not found
+            char_class = 'Fighter'
+
+        class_table = self.tables[char_class]
+
+        # Level is 1-based, arrays are 0-based
+        index = max(0, min(level - 1, len(class_table['poison_death']) - 1))
+
+        return {
+            'save_poison': class_table['poison_death'][index] - race_bonus,
+            'save_rod_staff_wand': class_table['rod_staff_wand'][index] - race_bonus,
+            'save_petrify_paralyze': class_table['petrify_paralyze'][index] - race_bonus,
+            'save_breath': class_table['breath'][index] - race_bonus,
+            'save_spell': class_table['spell'][index] - race_bonus
+        }
+
+    def update_character_saves(self, character: Character, race_bonus: int = 0):
+        """
+        Update a character's saving throws based on their class and level
+
+        Args:
+            character: Character to update
+            race_bonus: Racial saving throw bonus
+        """
+        saves = self.get_saves_for_level(character.char_class, character.level, race_bonus)
+        character.save_poison = saves['save_poison']
+        character.save_rod_staff_wand = saves['save_rod_staff_wand']
+        character.save_petrify_paralyze = saves['save_petrify_paralyze']
+        character.save_breath = saves['save_breath']
+        character.save_spell = saves['save_spell']
 
     def make_save(self, character: Character, category: str,
                   modifier: int = 0) -> Dict:

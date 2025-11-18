@@ -1,0 +1,230 @@
+{
+  "Fighter": {
+    "xp_table": [0, 2000, 4000, 8000, 18000, 35000, 70000, 125000, 250000, 500000, 750000, 1000000, 1250000, 1500000, 1750000, 2000000, 2250000, 2500000, 2750000, 3000000],
+    "xp_per_level_after_max": 250000,
+    "hit_die": "d10",
+    "max_hd_level": 9,
+    "hp_after_max": 3,
+    "thac0_table": [20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
+    "level_titles": ["Veteran", "Warrior", "Swordsman", "Hero", "Swashbuckler", "Myrmidon", "Champion", "Superhero", "Lord (9th)", "Lord (10th)", "Lord (11th level)", "Baron", "Count", "Duke", "Prince"],
+    "attacks_per_round": {
+      "1-6": 1,
+      "7-12": 1.5,
+      "13-20": 2
+    }
+  },
+  "Ranger": {
+    "xp_table": [0, 2250, 4500, 10000, 20000, 40000, 90000, 150000, 225000, 325000, 650000, 975000, 1300000, 1625000, 1950000, 2275000, 2600000, 2925000, 3250000, 3575000],
+    "xp_per_level_after_max": 325000,
+    "hit_die": "d8",
+    "max_hd_level": 9,
+    "hp_after_max": 2,
+    "thac0_table": [20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
+    "level_titles": ["Runner", "Strider", "Scout", "Courser", "Tracker", "Guide", "Pathfinder", "Ranger", "Ranger Knight", "Ranger Lord"],
+    "attacks_per_round": {
+      "1-6": 1,
+      "7-12": 1.5,
+      "13-20": 2
+    }
+  },
+  "Paladin": {
+    "xp_table": [0, 2750, 5500, 12000, 24000, 45000, 95000, 175000, 350000, 700000, 1050000, 1400000, 1750000, 2100000, 2450000, 2800000, 3150000, 3500000, 3850000, 4200000],
+    "xp_per_level_after_max": 350000,
+    "hit_die": "d10",
+    "max_hd_level": 9,
+    "hp_after_max": 3,
+    "thac0_table": [20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
+    "level_titles": ["Gallant", "Keeper", "Protector", "Defender", "Warder", "Guardian", "Chevalier", "Paladin", "Paladin (9th)", "Paladin (10th)"],
+    "attacks_per_round": {
+      "1-6": 1,
+      "7-12": 1.5,
+      "13-20": 2
+    }
+  },
+  "Cleric": {
+    "xp_table": [0, 1500, 3000, 6000, 13000, 27500, 55000, 110000, 225000, 450000, 675000, 900000, 1125000, 1350000, 1575000, 1800000, 2025000, 2250000, 2475000, 2700000],
+    "xp_per_level_after_max": 225000,
+    "hit_die": "d8",
+    "max_hd_level": 9,
+    "hp_after_max": 2,
+    "thac0_table": [20, 20, 20, 18, 18, 18, 16, 16, 16, 14, 14, 14, 12, 12, 12, 10, 10, 10, 8, 8],
+    "level_titles": ["Acolyte", "Adept", "Priest", "Curate", "Prefect", "Canon", "Lama", "Patriarch", "Patriarch (9th)", "High Priest"],
+    "spell_slots": {
+      "1": [1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 9],
+      "2": [0, 0, 1, 2, 2, 3, 3, 3, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 8, 8],
+      "3": [0, 0, 0, 0, 1, 2, 2, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7],
+      "4": [0, 0, 0, 0, 0, 0, 1, 2, 3, 3, 4, 4, 5, 5, 6, 6, 6, 7, 7, 8],
+      "5": [0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 3, 3, 4, 4, 4, 5, 5, 5, 6],
+      "6": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 3, 3, 3, 4, 4, 5],
+      "7": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3]
+    },
+    "attacks_per_round": {
+      "1-20": 1
+    }
+  },
+  "Druid": {
+    "xp_table": [0, 2000, 4000, 7500, 12500, 20000, 35000, 60000, 90000, 125000, 200000, 300000, 750000, 1500000, 3000000],
+    "xp_per_level_after_max": 500000,
+    "hit_die": "d8",
+    "max_hd_level": 14,
+    "hp_after_max": 0,
+    "thac0_table": [20, 20, 20, 18, 18, 18, 16, 16, 16, 14, 14, 14, 12, 12, 10],
+    "level_titles": ["Aspirant", "Ovate", "Initiate (1st Circle)", "Initiate (2nd Circle)", "Initiate (3rd Circle)", "Initiate (4th Circle)", "Initiate (5th Circle)", "Initiate (6th Circle)", "Initiate (7th Circle)", "Initiate (8th Circle)", "Initiate (9th Circle)", "Druid", "Archdruid", "The Great Druid", "The Grand Druid"],
+    "spell_slots": {
+      "1": [2, 2, 3, 4, 4, 5, 5, 5, 6, 6, 7, 7, 8, 8, 9],
+      "2": [0, 1, 2, 3, 3, 4, 4, 5, 5, 5, 6, 6, 7, 7, 8],
+      "3": [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5, 6, 7],
+      "4": [0, 0, 0, 0, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6],
+      "5": [0, 0, 0, 0, 0, 0, 1, 2, 3, 3, 4, 4, 5, 5, 6],
+      "6": [0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 3, 3, 4, 4],
+      "7": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 2, 3]
+    },
+    "attacks_per_round": {
+      "1-15": 1
+    }
+  },
+  "Magic-User": {
+    "xp_table": [0, 2500, 5000, 10000, 22500, 40000, 60000, 90000, 135000, 250000, 375000, 750000, 1125000, 1500000, 1875000, 2250000, 2625000, 3000000, 3375000, 3750000],
+    "xp_per_level_after_max": 375000,
+    "hit_die": "d4",
+    "max_hd_level": 11,
+    "hp_after_max": 1,
+    "thac0_table": [20, 20, 20, 19, 19, 19, 18, 18, 18, 17, 17, 17, 16, 16, 16, 15, 15, 15, 14, 14],
+    "level_titles": ["Prestidigitator", "Evoker", "Conjurer", "Theurgist", "Thaumaturgist", "Magician", "Enchanter", "Warlock", "Sorcerer", "Necromancer", "Wizard", "Wizard (12th)", "Wizard (13th)", "Wizard (14th)", "Wizard (15th)", "Wizard (16th)", "Wizard (17th)", "Wizard (18th)", "Archmage", "Archmage (20th)"],
+    "spell_slots": {
+      "1": [1, 2, 2, 3, 4, 4, 4, 5, 5, 6, 6, 6, 6, 6, 6, 7, 7, 7, 8, 8],
+      "2": [0, 0, 1, 2, 2, 3, 3, 3, 4, 4, 5, 5, 6, 6, 6, 6, 7, 7, 7, 8],
+      "3": [0, 0, 0, 0, 1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 6, 6, 6, 7, 7],
+      "4": [0, 0, 0, 0, 0, 0, 1, 2, 2, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 7],
+      "5": [0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5],
+      "6": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 3, 3, 4, 4, 4, 5],
+      "7": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 3],
+      "8": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 3],
+      "9": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2]
+    },
+    "attacks_per_round": {
+      "1-20": 1
+    }
+  },
+  "Illusionist": {
+    "xp_table": [0, 2250, 4500, 9000, 18000, 35000, 60000, 95000, 145000, 220000, 440000, 660000, 880000, 1100000, 1320000, 1540000, 1760000, 1980000, 2200000, 2420000],
+    "xp_per_level_after_max": 220000,
+    "hit_die": "d4",
+    "max_hd_level": 10,
+    "hp_after_max": 1,
+    "thac0_table": [20, 20, 20, 19, 19, 19, 18, 18, 18, 17, 17, 17, 16, 16, 16, 15, 15, 15, 14, 14],
+    "level_titles": ["Prestidigitator", "Minor Trickster", "Trickster", "Master Trickster", "Illusionist", "Illusionist", "Illusionist", "Illusionist", "Illusionist", "Illusionist"],
+    "spell_slots": {
+      "1": [1, 2, 2, 3, 4, 4, 4, 5, 5, 6, 6, 6, 6, 6, 7],
+      "2": [0, 0, 1, 2, 2, 3, 3, 3, 4, 4, 5, 5, 6, 6, 6],
+      "3": [0, 0, 0, 0, 1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5],
+      "4": [0, 0, 0, 0, 0, 0, 1, 2, 2, 3, 3, 4, 4, 4, 5],
+      "5": [0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 3, 3, 3],
+      "6": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 3],
+      "7": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1]
+    },
+    "attacks_per_round": {
+      "1-20": 1
+    }
+  },
+  "Thief": {
+    "xp_table": [0, 1250, 2500, 5000, 10000, 20000, 42500, 70000, 110000, 160000, 220000, 440000, 660000, 880000, 1100000, 1320000, 1540000, 1760000, 1980000, 2200000],
+    "xp_per_level_after_max": 220000,
+    "hit_die": "d6",
+    "max_hd_level": 10,
+    "hp_after_max": 2,
+    "thac0_table": [20, 20, 19, 19, 18, 18, 17, 17, 16, 16, 15, 15, 14, 14, 13, 13, 12, 12, 11, 11],
+    "level_titles": ["Apprentice", "Footpad", "Robber", "Burglar", "Cutpurse", "Sharper", "Pilferer", "Thief", "Master Thief", "Master Thief (10th)"],
+    "backstab_multiplier": {
+      "1-4": 2,
+      "5-8": 3,
+      "9-12": 4,
+      "13-20": 5
+    },
+    "attacks_per_round": {
+      "1-20": 1
+    }
+  },
+  "Assassin": {
+    "xp_table": [0, 1500, 3000, 6000, 12000, 25000, 50000, 99000, 200000, 300000, 425000, 575000, 750000, 1000000, 1500000],
+    "xp_per_level_after_max": 500000,
+    "hit_die": "d6",
+    "max_hd_level": 15,
+    "hp_after_max": 0,
+    "thac0_table": [20, 20, 19, 19, 18, 18, 17, 17, 16, 16, 15, 15, 14, 14, 13],
+    "level_titles": ["Bravo", "Rutterkin", "Waghalter", "Murderer", "Thug", "Killer", "Cutthroat", "Executioner", "Assassin", "Expert Assassin", "Senior Assassin", "Chief Assassin", "Prime Assassin", "Guildmaster Assassin", "Grandfather of Assassins"],
+    "backstab_multiplier": {
+      "1-4": 2,
+      "5-8": 3,
+      "9-12": 4,
+      "13-20": 5
+    },
+    "attacks_per_round": {
+      "1-15": 1
+    }
+  },
+  "Monk": {
+    "xp_table": [0, 2250, 4750, 10000, 22500, 47500, 98000, 200000, 350000, 500000, 700000, 950000, 1250000, 1750000, 2250000, 2750000, 3250000],
+    "xp_per_level_after_max": 500000,
+    "hit_die": "d4",
+    "max_hd_level": 17,
+    "hp_after_max": 0,
+    "thac0_table": [20, 20, 19, 19, 18, 18, 17, 17, 16, 16, 15, 15, 14, 14, 13, 13, 12],
+    "level_titles": ["Novice", "Initiate", "Brother", "Disciple", "Immaculate", "Master", "Superior Master", "Master of Dragons", "Master of the North Wind", "Master of the West Wind", "Master of the South Wind", "Master of the East Wind", "Master of Winter", "Master of Autumn", "Master of Summer", "Master of Spring", "Grand Master of Flowers"],
+    "open_hand_damage_sm": {
+      "1-2": "1d3",
+      "3-4": "1d4",
+      "5-6": "1d6",
+      "7-8": "1d8",
+      "9-10": "1d10",
+      "11-12": "1d12",
+      "13-14": "2d6",
+      "15-16": "2d8",
+      "17": "3d6"
+    },
+    "ac_progression": {
+      "1": 10,
+      "2": 9,
+      "3": 8,
+      "4": 7,
+      "5": 6,
+      "6": 5,
+      "7": 4,
+      "8": 3,
+      "9": 2,
+      "10": 1,
+      "11": 0,
+      "12": -1,
+      "13": -2,
+      "14": -3,
+      "15": -4,
+      "16": -5,
+      "17": -6
+    },
+    "attacks_per_round": {
+      "1-6": 1,
+      "7-12": 1.5,
+      "13-17": 2
+    }
+  },
+  "Bard": {
+    "xp_table": [0, 2000, 4000, 8000, 16000, 25000, 40000, 60000, 85000, 110000, 150000, 200000, 400000, 600000, 800000, 1000000, 1200000, 1400000, 1600000, 1800000, 2000000, 2200000, 2400000],
+    "xp_per_level_after_max": 200000,
+    "hit_die": "d6",
+    "max_hd_level": 10,
+    "hp_after_max": 2,
+    "thac0_table": [20, 20, 20, 18, 18, 18, 16, 16, 16, 14, 14, 14, 12, 12, 12, 10, 10, 10, 8, 8, 8, 6, 6],
+    "level_titles": ["Rhymer", "Lyrist", "Sonnateer", "Skald", "Racaraire", "Jongleur", "Troubadour", "Minstrel", "Bard", "Master Bard"],
+    "spell_slots": {
+      "1": [0, 1, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6],
+      "2": [0, 0, 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6],
+      "3": [0, 0, 0, 0, 0, 0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6],
+      "4": [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5],
+      "5": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4],
+      "6": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 2, 2, 3, 3, 3]
+    },
+    "attacks_per_round": {
+      "1-23": 1
+    }
+  }
+}
