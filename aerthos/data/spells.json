@@ -10,7 +10,9 @@
     "saving_throw": "None",
     "components": "standard",
     "description": "Puts 2d4 HD of creatures to sleep. Affects lowest HD creatures first.",
-    "class_availability": ["Magic-User"]
+    "class_availability": [
+      "Magic-User"
+    ]
   },
   "magic_missile": {
     "name": "Magic Missile",
@@ -23,7 +25,9 @@
     "saving_throw": "None",
     "components": "standard",
     "description": "Fires 1 missile (+1 per 2 levels after 1st). Each missile does 1d4+1 damage. Never misses.",
-    "class_availability": ["Magic-User"]
+    "class_availability": [
+      "Magic-User"
+    ]
   },
   "cure_light_wounds": {
     "name": "Cure Light Wounds",
@@ -36,7 +40,9 @@
     "saving_throw": "None",
     "components": "standard",
     "description": "Heals 1d8 points of damage.",
-    "class_availability": ["Cleric"]
+    "class_availability": [
+      "Cleric"
+    ]
   },
   "protection_from_evil": {
     "name": "Protection from Evil",
@@ -49,7 +55,10 @@
     "saving_throw": "None",
     "components": "standard",
     "description": "Grants +2 to AC and saves against evil creatures. Prevents possession.",
-    "class_availability": ["Cleric", "Magic-User"]
+    "class_availability": [
+      "Cleric",
+      "Magic-User"
+    ]
   },
   "detect_magic": {
     "name": "Detect Magic",
@@ -62,7 +71,10 @@
     "saving_throw": "None",
     "components": "standard",
     "description": "Detects magical auras on objects and creatures.",
-    "class_availability": ["Magic-User", "Cleric"]
+    "class_availability": [
+      "Magic-User",
+      "Cleric"
+    ]
   },
   "burning_hands": {
     "name": "Burning Hands",
@@ -75,7 +87,9 @@
     "saving_throw": "Half damage",
     "components": "standard",
     "description": "A cone of flame erupts from the caster's hands, dealing 1d3+1 damage per level of the caster.",
-    "class_availability": ["Magic-User"]
+    "class_availability": [
+      "Magic-User"
+    ]
   },
   "charm_person": {
     "name": "Charm Person",
@@ -88,7 +102,9 @@
     "saving_throw": "Negates",
     "components": "standard",
     "description": "Makes one person regard the caster as a trusted friend. Only works on humanoids.",
-    "class_availability": ["Magic-User"]
+    "class_availability": [
+      "Magic-User"
+    ]
   },
   "shield": {
     "name": "Shield",
@@ -101,7 +117,9 @@
     "saving_throw": "None",
     "components": "standard",
     "description": "Creates an invisible barrier that grants AC 2 vs missiles, AC 4 vs other attacks.",
-    "class_availability": ["Magic-User"]
+    "class_availability": [
+      "Magic-User"
+    ]
   },
   "light": {
     "name": "Light",
@@ -114,7 +132,10 @@
     "saving_throw": "None",
     "components": "standard",
     "description": "Creates a bright light like a torch. Can be cast on objects.",
-    "class_availability": ["Magic-User", "Cleric"]
+    "class_availability": [
+      "Magic-User",
+      "Cleric"
+    ]
   },
   "read_magic": {
     "name": "Read Magic",
@@ -127,7 +148,9 @@
     "saving_throw": "None",
     "components": "standard",
     "description": "Allows caster to read magical writings and scrolls.",
-    "class_availability": ["Magic-User"]
+    "class_availability": [
+      "Magic-User"
+    ]
   },
   "bless": {
     "name": "Bless",
@@ -140,7 +163,9 @@
     "saving_throw": "None",
     "components": "standard",
     "description": "Allies gain +1 to attack rolls and morale saves.",
-    "class_availability": ["Cleric"]
+    "class_availability": [
+      "Cleric"
+    ]
   },
   "command": {
     "name": "Command",
@@ -153,7 +178,9 @@
     "saving_throw": "Negates",
     "components": "standard",
     "description": "Give a one-word command that the target must obey (flee, halt, drop, etc).",
-    "class_availability": ["Cleric"]
+    "class_availability": [
+      "Cleric"
+    ]
   },
   "detect_evil": {
     "name": "Detect Evil",
@@ -166,7 +193,9 @@
     "saving_throw": "None",
     "components": "standard",
     "description": "Detects evil intentions and evil creatures.",
-    "class_availability": ["Cleric"]
+    "class_availability": [
+      "Cleric"
+    ]
   },
   "invisibility": {
     "name": "Invisibility",
@@ -179,7 +208,10 @@
     "saving_throw": "None",
     "components": "standard",
     "description": "Target becomes invisible until they attack. Grants +4 to AC and surprise.",
-    "class_availability": ["Magic-User", "Illusionist"]
+    "class_availability": [
+      "Magic-User",
+      "Illusionist"
+    ]
   },
   "web": {
     "name": "Web",
@@ -192,7 +224,9 @@
     "saving_throw": "Negates",
     "components": "standard",
     "description": "Creates sticky webs that trap creatures. STR check to break free.",
-    "class_availability": ["Magic-User"]
+    "class_availability": [
+      "Magic-User"
+    ]
   },
   "mirror_image": {
     "name": "Mirror Image",
@@ -205,7 +239,10 @@
     "saving_throw": "None",
     "components": "standard",
     "description": "Creates 1d4+1 illusory duplicates that confuse attackers.",
-    "class_availability": ["Magic-User", "Illusionist"]
+    "class_availability": [
+      "Magic-User",
+      "Illusionist"
+    ]
   },
   "knock": {
     "name": "Knock",
@@ -218,7 +255,9 @@
     "saving_throw": "None",
     "components": "standard",
     "description": "Opens locked, barred, or wizard-locked doors.",
-    "class_availability": ["Magic-User"]
+    "class_availability": [
+      "Magic-User"
+    ]
   },
   "levitate": {
     "name": "Levitate",
@@ -231,7 +270,9 @@
     "saving_throw": "Negates",
     "components": "standard",
     "description": "Target levitates up or down at 20 feet per round.",
-    "class_availability": ["Magic-User"]
+    "class_availability": [
+      "Magic-User"
+    ]
   },
   "hold_person": {
     "name": "Hold Person",
@@ -244,7 +285,10 @@
     "saving_throw": "Negates",
     "components": "standard",
     "description": "Paralyzes 1-4 human-sized creatures.",
-    "class_availability": ["Cleric", "Magic-User"]
+    "class_availability": [
+      "Cleric",
+      "Magic-User"
+    ]
   },
   "silence_15_radius": {
     "name": "Silence 15' Radius",
@@ -257,7 +301,9 @@
     "saving_throw": "None",
     "components": "standard",
     "description": "No sound can be made in the area. Prevents spellcasting.",
-    "class_availability": ["Cleric"]
+    "class_availability": [
+      "Cleric"
+    ]
   },
   "spiritual_hammer": {
     "name": "Spiritual Hammer",
@@ -270,7 +316,9 @@
     "saving_throw": "None",
     "components": "standard",
     "description": "Creates a magical hammer that attacks enemies, dealing 1d4+1 damage.",
-    "class_availability": ["Cleric"]
+    "class_availability": [
+      "Cleric"
+    ]
   },
   "find_traps": {
     "name": "Find Traps",
@@ -283,7 +331,9 @@
     "saving_throw": "None",
     "components": "standard",
     "description": "Reveals the presence of traps within range.",
-    "class_availability": ["Cleric"]
+    "class_availability": [
+      "Cleric"
+    ]
   },
   "fireball": {
     "name": "Fireball",
@@ -296,7 +346,9 @@
     "saving_throw": "Half damage",
     "components": "standard",
     "description": "Explodes for 1d6 damage per caster level (max 10d6). Save for half.",
-    "class_availability": ["Magic-User"]
+    "class_availability": [
+      "Magic-User"
+    ]
   },
   "lightning_bolt": {
     "name": "Lightning Bolt",
@@ -309,7 +361,9 @@
     "saving_throw": "Half damage",
     "components": "standard",
     "description": "A bolt of lightning strikes for 1d6 damage per caster level (max 10d6).",
-    "class_availability": ["Magic-User"]
+    "class_availability": [
+      "Magic-User"
+    ]
   },
   "haste": {
     "name": "Haste",
@@ -322,7 +376,9 @@
     "saving_throw": "None",
     "components": "standard",
     "description": "Targets move and attack at double speed.",
-    "class_availability": ["Magic-User"]
+    "class_availability": [
+      "Magic-User"
+    ]
   },
   "fly": {
     "name": "Fly",
@@ -335,7 +391,9 @@
     "saving_throw": "None",
     "components": "standard",
     "description": "Target can fly at 120 feet per round with good maneuverability.",
-    "class_availability": ["Magic-User"]
+    "class_availability": [
+      "Magic-User"
+    ]
   },
   "dispel_magic": {
     "name": "Dispel Magic",
@@ -348,7 +406,10 @@
     "saving_throw": "None",
     "components": "standard",
     "description": "Negates magical effects. Chance based on caster level.",
-    "class_availability": ["Magic-User", "Cleric"]
+    "class_availability": [
+      "Magic-User",
+      "Cleric"
+    ]
   },
   "slow": {
     "name": "Slow",
@@ -361,7 +422,9 @@
     "saving_throw": "Negates",
     "components": "standard",
     "description": "Targets move and attack at half speed.",
-    "class_availability": ["Magic-User"]
+    "class_availability": [
+      "Magic-User"
+    ]
   },
   "cure_serious_wounds": {
     "name": "Cure Serious Wounds",
@@ -374,7 +437,9 @@
     "saving_throw": "None",
     "components": "standard",
     "description": "Heals 2d8+1 points of damage.",
-    "class_availability": ["Cleric"]
+    "class_availability": [
+      "Cleric"
+    ]
   },
   "neutralize_poison": {
     "name": "Neutralize Poison",
@@ -387,7 +452,9 @@
     "saving_throw": "None",
     "components": "standard",
     "description": "Removes poison from creature or object. Can revive recently poisoned creature.",
-    "class_availability": ["Cleric"]
+    "class_availability": [
+      "Cleric"
+    ]
   },
   "cure_disease": {
     "name": "Cure Disease",
@@ -400,7 +467,10 @@
     "saving_throw": "None",
     "components": "standard",
     "description": "Cures any disease afflicting the target.",
-    "class_availability": ["Cleric", "Druid"]
+    "class_availability": [
+      "Cleric",
+      "Druid"
+    ]
   },
   "prayer": {
     "name": "Prayer",
@@ -413,7 +483,9 @@
     "saving_throw": "None",
     "components": "standard",
     "description": "Allies gain +1 to attack, damage, and saves. Enemies get -1.",
-    "class_availability": ["Cleric"]
+    "class_availability": [
+      "Cleric"
+    ]
   },
   "remove_curse": {
     "name": "Remove Curse",
@@ -426,7 +498,10 @@
     "saving_throw": "Special",
     "components": "standard",
     "description": "Removes one curse from creature or object.",
-    "class_availability": ["Cleric", "Magic-User"]
+    "class_availability": [
+      "Cleric",
+      "Magic-User"
+    ]
   },
   "protection_from_evil_10_radius": {
     "name": "Protection from Evil 10' Radius",
@@ -439,6 +514,1662 @@
     "saving_throw": "None",
     "components": "standard",
     "description": "As Protection from Evil, but affects all within 10 feet of caster.",
-    "class_availability": ["Cleric"]
+    "class_availability": [
+      "Cleric",
+      "Magic-User"
+    ]
+  },
+  "create_water": {
+    "name": "Create Water",
+    "level": 1,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Generates 4 gallons of clean water per level of the caster. **Reverse:** *Destroy Water* obliterates a like quantity of water.",
+    "class_availability": [
+      "Cleric"
+    ],
+    "reversible": true
+  },
+  "purify_food_drink": {
+    "name": "Purify Food & Drink",
+    "level": 1,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Makes up to 1 cubic foot of spoiled/poisoned food or water safe to consume. **Reverse:** *Putrefy Food & Drink* spoils safe food/water.",
+    "class_availability": [
+      "Cleric"
+    ],
+    "reversible": true
+  },
+  "remove_fear": {
+    "name": "Remove Fear",
+    "level": 1,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Instills courage, granting a +4 bonus to saving throws against magical fear for 1 turn. If affected by fear, grants another save with a +1/level bonus. **Reverse:** *Cause Fear* causes a victim to flee in panic.",
+    "class_availability": [
+      "Cleric"
+    ],
+    "reversible": true
+  },
+  "resist_cold": {
+    "name": "Resist Cold",
+    "level": 1,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Creature touched is inured to cold, receiving a +3 bonus to saving throws and taking half (or quarter on successful save) damage from greater cold attacks (e.g., *ice storm*, dragon breath).",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "sanctuary": {
+    "name": "Sanctuary",
+    "level": 1,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Opponents must make a saving throw vs. magic to strike or attack the protected cleric. Cleric cannot take offensive action while protected.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "augury": {
+    "name": "Augury",
+    "level": 2,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Seeks to divine whether a future action (within 3 turns) will be beneficial or harmful. Base chance of 70% success + 1%/level.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "chant": {
+    "name": "Chant",
+    "level": 2,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Gives a +1 bonus to attack rolls, damage, and saving throws for friendly creatures within a 3\" radius for as long as the cleric chants. Enemy rolls are penalized by -1.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "detect_charm": {
+    "name": "Detect Charm",
+    "level": 2,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Detects if a creature is under the influence of a *charm* spell (up to 10 creatures). **Reverse:** *Obscure Charm* protects a single creature from such detection.",
+    "class_availability": [
+      "Cleric"
+    ],
+    "reversible": true
+  },
+  "know_alignment": {
+    "name": "Know Alignment",
+    "level": 2,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Reveals the exact alignment of up to 10 persons. **Reverse:** *Obscure Alignment* totally obscures the alignment of a single person for 1 turn.",
+    "class_availability": [
+      "Cleric"
+    ],
+    "reversible": true
+  },
+  "resist_fire": {
+    "name": "Resist Fire",
+    "level": 2,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Creature touched is toughened to withstand heat, taking half (or quarter on successful save) damage from magical fires (e.g., *fireball*, dragon breath) and gaining a +3 bonus to saving throws vs. fire attacks.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "slow_poison": {
+    "name": "Slow Poison",
+    "level": 2,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Greatly slows the effects of venom, temporarily saving a victim up to 10 turns previous to casting. Victim loses 1 HP per turn but never drops below 1 HP while the spell lasts.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "snake_charm": {
+    "name": "Snake Charm",
+    "level": 2,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Causes one or more snakes to cease activity and sway hypnotically. Total hit points of snakes affected cannot exceed the cleric's level.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "speak_with_animals": {
+    "name": "Speak With Animals",
+    "level": 2,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Enables the cleric to communicate with any warm or cold-blooded animal (not mindless). Lasts 2 rounds per level.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "animate_dead": {
+    "name": "Animate Dead",
+    "level": 3,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Creates skeletons or zombies from dead human remains to obey the cleric's commands (1 monster/level).",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "continual_light": {
+    "name": "Continual Light",
+    "level": 3,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Creates a bright, permanent light (daylight equivalent). **Reverse:** *Continual Darkness* creates a permanent, impenetrable darkness.",
+    "class_availability": [
+      "Cleric"
+    ],
+    "reversible": true
+  },
+  "create_food_water": {
+    "name": "Create Food & Water",
+    "level": 3,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Creates 1 cubic foot of nourishing food and/or water per level, sustaining three human-sized creatures for a full day.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "cure_blindness": {
+    "name": "Cure Blindness",
+    "level": 3,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Permanently cures most forms of blindness by touch. **Reverse:** *Cause Blindness*.",
+    "class_availability": [
+      "Cleric"
+    ],
+    "reversible": true
+  },
+  "feign_death": {
+    "name": "Feign Death",
+    "level": 3,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Puts the touched creature into a cataleptic state, appearing dead.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "glyph_of_warding": {
+    "name": "Glyph of Warding",
+    "level": 3,
+    "school": "evoc.",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Inscribes a magical rune to guard an area (25 sq. ft. per level) which, when triggered, releases a stored effect (e.g., electrical damage, fire damage, paralyze).",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "locate_object": {
+    "name": "Locate Object",
+    "level": 3,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Aids in locating a known or familiar object by direction. **Reverse:** *Obscure Object* hides an object from location spells.",
+    "class_availability": [
+      "Cleric",
+      "Magic-User"
+    ],
+    "reversible": true
+  },
+  "speak_with_dead": {
+    "name": "Speak With Dead",
+    "level": 3,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Allows the cleric to ask several questions of a dead creature (body or remains must be present). Limits on questions and maximum time dead depend on cleric level.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "word_of_recall": {
+    "name": "Word of Recall",
+    "level": 3,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Instantly teleports the cleric back to his or her previously designated sanctuary, carrying additional weight (250 gp/level) in equipment, treasure, or persons.",
+    "class_availability": [
+      "Cleric"
+    ]
+  },
+  "animal_friendship": {
+    "name": "Animal Friendship",
+    "level": 1,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Charms one animal (non-semi-intelligent) to be a trusted friend and ally of the druid (subject to save). Allows druid to teach it 3 \"tricks\"/INT point.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "detect_snares_pits": {
+    "name": "Detect Snares & Pits",
+    "level": 1,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Detects hidden snares and pits (simple traps only underground, all traps outdoors) in a 1\" path up to 4\" long.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "entangle": {
+    "name": "Entangle",
+    "level": 1,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Causes plants (*grasses, weeds, trees*) in a 4\" diameter area to wrap, twist, and entwine creatures, holding them fast or slowing movement by 50% (subject to save).",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "faerie_fire": {
+    "name": "Faerie Fire",
+    "level": 1,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Outlines an object or creature with a pale glowing light, making it visible (even if invisible) and giving a +2 penalty to opponents' AC (\"to hit\" bonus).",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "invisibility_to_animals": {
+    "name": "Invisibility To Animals",
+    "level": 1,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Makes the recipient totally undetectable by normal animals (INT under 6).",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "locate_animals": {
+    "name": "Locate Animals",
+    "level": 1,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Determines the direction and distance of any desired type of animal within range.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "pass_without_trace": {
+    "name": "Pass Without Trace",
+    "level": 1,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Recipient moves through any terrain without leaving footprint or scent, making tracking impossible.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "predict_weather": {
+    "name": "Predict Weather",
+    "level": 1,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Gains 100% accurate knowledge of the weather trend (sky, temperature, precipitation) for 2 hours in advance per level of the caster in a 9 square mile area.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "shillelagh": {
+    "name": "Shillelagh",
+    "level": 1,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Changes a normal oaken club into a magical +1 weapon, inflicting 2-8 HP (man-sized) or 2-5 HP (larger).",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "barkskin": {
+    "name": "Barkskin",
+    "level": 2,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Improves the recipient creature's Armor Class by 1 point and grants a +1 bonus to saving throws versus all attack forms except magic.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "charm_person_or_mammal": {
+    "name": "Charm Person Or Mammal",
+    "level": 2,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Charms one person or mammal (not monster) to regard the druid as a trusted friend and ally (subject to save). Duration depends on the charmed creature's intelligence.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "fire_trap": {
+    "name": "Fire Trap",
+    "level": 2,
+    "school": "evoc.",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Traps a closable object (e.g., door, chest) to explode with fire damage (1-4 HP, half with save) when opened/touched by an unauthorized creature.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "heat_metal": {
+    "name": "Heat Metal",
+    "level": 2,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Causes ferrous metal (iron, steel) in a mass of 500 gp/level to become searing hot over 7 rounds, causing damage and disability to exposed flesh. **Reverse:** *Chill Metal* causes metal to become freezing, causing damage and amputation.",
+    "class_availability": [
+      "Druid"
+    ],
+    "reversible": true
+  },
+  "obscurement": {
+    "name": "Obscurement",
+    "level": 2,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Causes a misty vapor to arise around the druid, reducing visibility to 2' to 8' (2d4) for 4 rounds per level.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "produce_flame": {
+    "name": "Produce Flame",
+    "level": 2,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Creates a bright, hot flame in the druid's palm. Lasts 2 rounds/level. Can be hurled as a missile (range 4\"), igniting combustibles.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "trip": {
+    "name": "Trip",
+    "level": 2,
+    "school": "charm",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Causes a stick, vine, or rope object to rise and trip creatures crossing it (subject to save). Creatures running take damage and are stunned.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "warp_wood": {
+    "name": "Warp Wood",
+    "level": 2,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Permanently bends and warps wood in a 1\" range/level, destroying its straightness, form, and strength.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "call_lightning": {
+    "name": "Call Lightning",
+    "level": 3,
+    "school": "evoc.",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Calls down bolts of lightning from the sky (must be a storm) that inflict 2d8+1d8/level HP damage (half with save) to creatures within a 1\" radius of the strike.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "hold_animal": {
+    "name": "Hold Animal",
+    "level": 3,
+    "school": "charm",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Holds 1-4 animals rigid (mammals, birds, or reptiles, not monsters) for 2 rounds/level. Saving throw is penalized based on the number of targets.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "plant_growth": {
+    "name": "Plant Growth",
+    "level": 3,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Causes normal vegetation (brush, trees, vines) in a 2\" X 2\" square area/level to become a dense barrier.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "protection_from_fire": {
+    "name": "Protection From Fire",
+    "level": 3,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Grants invulnerability to normal fires and 50% damage reduction (+4 save bonus) against magical fires for 1 turn/level.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "pyrotechnics": {
+    "name": "Pyrotechnics",
+    "level": 3,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Causes a fire source to produce either a flashing burst of fireworks (blinding creatures) or a thick stream of smoke (obscuring vision).",
+    "class_availability": [
+      "Druid",
+      "Magic-User"
+    ]
+  },
+  "snare": {
+    "name": "Snare",
+    "level": 3,
+    "school": "charm",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Creates a 90% undetectable snare from a flexible object (vine, rope) that contracts to bind or strangle a creature (1-6 HP damage) when triggered.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "stone_shape": {
+    "name": "Stone Shape",
+    "level": 3,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Permanently forms an existing piece of stone (3 cubic feet/level) into a desired shape (e.g., weapon, trapdoor, idol).",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "summon_insects": {
+    "name": "Summon Insects",
+    "level": 3,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Attracts a cloud of flying or crawling insects (70% chance of flying) that swarm and attack a target, dealing 2 HP damage/round, and forcing the victim to fend them off.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "tree": {
+    "name": "Tree",
+    "level": 3,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Allows the druid to assume the form of a small living tree or shrub, or a large dead tree trunk, and observe their surroundings while in the form.",
+    "class_availability": [
+      "Druid"
+    ]
+  },
+  "water_breathing": {
+    "name": "Water Breathing",
+    "level": 3,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Allows the recipient to freely breathe underwater for 6 turns/level. **Reverse:** *Air Breathing* allows water-breathing creatures to survive in the atmosphere.",
+    "class_availability": [
+      "Druid",
+      "Magic-User"
+    ],
+    "reversible": true
+  },
+  "affect_normal_fires": {
+    "name": "Affect Normal Fires",
+    "level": 1,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Causes small fires (up to 3' diameter) to reduce in size/light (half consumption) or increase in size/light (double consumption). Heat output is unchanged.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "comprehend_languages": {
+    "name": "Comprehend Languages",
+    "level": 1,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Allows the caster to read any incomprehensible written message (not magical writing) or understand the language of a speaking creature by touch.",
+    "class_availability": [
+      "Magic-User"
+    ],
+    "reversible": true
+  },
+  "dancing_lights": {
+    "name": "Dancing Lights",
+    "level": 1,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Creates 1-4 lights resembling torches, spheres, or a vague man-like shape, that move as the caster desires.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "enlarge": {
+    "name": "Enlarge",
+    "level": 1,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Increases a living creature (up to 200% max) or object (up to 100% max) size and weight by 20% per level. **Reverse:** *Reduce* decreases size.",
+    "class_availability": [
+      "Magic-User"
+    ],
+    "reversible": true
+  },
+  "erase": {
+    "name": "Erase",
+    "level": 1,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Removes writings (magical or mundane) from a scroll or two facing pages (50% base chance + 2%/level for magical, +4%/level for mundane).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "feather_fall": {
+    "name": "Feather Fall",
+    "level": 1,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Instantly changes the rate of fall for creature(s)/objects to 2' per second (12' per segment), preventing damage on landing.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "find_familiar": {
+    "name": "Find Familiar",
+    "level": 1,
+    "school": "conj.",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Summons an abnormally intelligent animal familiar (e.g., cat, hawk, owl) to aid the magic-user.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "friends": {
+    "name": "Friends",
+    "level": 1,
+    "school": "charm",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Causes the magic-user to gain a temporary increase of 2-8 points in Charisma, or a temporary lowering of 1-4 points (subject to save by creatures in the area).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "hold_portal": {
+    "name": "Hold Portal",
+    "level": 1,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Magically bars a door, gate, or valve for 1 round/level. Cannot be used on *wizard locked* doors.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "identify": {
+    "name": "Identify",
+    "level": 1,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Reveals 1 property of a touched magical item (requires pearl/owl feather component, and Constitution check upon use).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "jump": {
+    "name": "Jump",
+    "level": 1,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Empowers the recipient to leap up to 30' forward, 10' backward, or straight upward.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "mending": {
+    "name": "Mending",
+    "level": 1,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Repairs small breaks in non-magical objects (broken ring, hole in leather sack, etc.).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "message": {
+    "name": "Message",
+    "level": 1,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Whispers a message to a pointed creature that can reply in a straight line.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "nystul_s_magic_aura": {
+    "name": "Nystul's Magic Aura",
+    "level": 1,
+    "school": "phantasm",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Gives one item a false magical aura to fool *detect magic*.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "push": {
+    "name": "Push",
+    "level": 1,
+    "school": "conj.",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Causes an invisible force (1 foot-pound/level) to strike an object, moving small objects or causing a creature to lose its balance.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "shocking_grasp": {
+    "name": "Shocking Grasp",
+    "level": 1,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Develops a powerful electrical charge in the caster's hand, inflicting 1-8 HP damage + 1 HP/level to the creature touched.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "spider_climb": {
+    "name": "Spider Climb",
+    "level": 1,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Enables the recipient to climb and travel on vertical surfaces or ceilings at 3\" movement rate.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "tenser_s_floating_disc": {
+    "name": "Tenser's Floating Disc",
+    "level": 1,
+    "school": "evoc.",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Creates a 3' diameter, circular plane of null-gravity that holds 1,000 gp weight/level and follows the caster.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "ventriloquism": {
+    "name": "Ventriloquism",
+    "level": 1,
+    "school": "phantasm",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Makes the caster's voice (or similar sound) appear to issue from someplace else (another creature, statue, behind a door).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "darkness_15_radius": {
+    "name": "Darkness, 15' Radius",
+    "level": 2,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Creates a total, impenetrable darkness in a 15' radius sphere.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "detect_invisibility": {
+    "name": "Detect Invisibility",
+    "level": 2,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Clearly sees any objects or creatures that are invisible (or astral, ethereal, hidden, or out of phase).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "esp": {
+    "name": "ESP",
+    "level": 2,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Detects the surface thoughts of any creature in range (except undead and those with no mind). Range and number of probes increase with level.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "fools_gold": {
+    "name": "Fools Gold",
+    "level": 2,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Temporarily changes copper coins to gold pieces, or brass items to solid gold. Chance of cold-wrought iron dispelling the dweomer (25-30% base chance).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "forget": {
+    "name": "Forget",
+    "level": 2,
+    "school": "charm",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Causes 1-4 individual creatures within a 2\" X 2\" area to forget the events of the previous round.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "leomund_s_trap": {
+    "name": "Leomund's Trap",
+    "level": 2,
+    "school": "phantasm",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Places a false trap illusion upon a small mechanism (lock, hinge) designed to fool dwarves and thieves (80% likely to be seen).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "magic_mouth": {
+    "name": "Magic Mouth",
+    "level": 2,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Empowers an object (not living/intelligent) with an enchanted mouth that speaks a 25-word message when a specified event occurs.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "misdirection": {
+    "name": "Misdirection",
+    "level": 2,
+    "school": "phantasm",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Misdirects the information from a detection-type spell (e.g., *detect magic, detect evil*) about a specific creature or item.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "phantasmal_force": {
+    "name": "Phantasmal Force",
+    "level": 2,
+    "school": "phantasm",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Creates a visual illusion of an object, creature, or force (4 square\" + 1 square\"/level). Creatures believe it and can suffer damage until they successfully disbelieve.",
+    "class_availability": [
+      "Magic-User",
+      "Illusionist"
+    ]
+  },
+  "ray_of_enfeeblement": {
+    "name": "Ray Of Enfeeblement",
+    "level": 2,
+    "school": "charm",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Weakens an opponent, reducing Strength by 25% + 2%/level (subject to save).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "rope_trick": {
+    "name": "Rope Trick",
+    "level": 2,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Causes one end of a 5'-30' rope to rise into the air and anchor in an extra-dimensional space, allowing the caster and up to five others to climb to safety.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "scare": {
+    "name": "Scare",
+    "level": 2,
+    "school": "charm",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Causes a creature with < 6+1 HD/levels to fall into a fit of trembling and shaking (subject to save).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "shatter": {
+    "name": "Shatter",
+    "level": 2,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Shivers non-magical objects of crystal, glass, ceramic, or porcelain (up to 100 gp/level) into dozens of pieces.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "stinking_cloud": {
+    "name": "Stinking Cloud",
+    "level": 2,
+    "school": "evoc.",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Creates a billowing cloud of nauseous vapors (2\" X 2\" X 2\" cloud) that causes creatures to be helpless due to nausea (or half helpless on successful save).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "strength": {
+    "name": "Strength",
+    "level": 2,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Increases a creature's Strength ability score (1-6 points or 1-8 tenths of 18) for 6 turns/level.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "blink": {
+    "name": "Blink",
+    "level": 3,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Causes the caster's material form to \"blink\" out and back to the plane in a random period/direction each round. Caster is only 75% likely to perform other actions during this spell.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "clairaudience": {
+    "name": "Clairaudience",
+    "level": 3,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Allows the caster to concentrate on a known locale and hear in their mind whatever noise is within a 6\" radius of that locale center.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "clairvoyance": {
+    "name": "Clairvoyance",
+    "level": 3,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Allows the caster to see in their mind whatever is within sight range (normal or infrared/ultraviolet) of a known locale.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "explosive_runes": {
+    "name": "Explosive Runes",
+    "level": 3,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Traces mystic runes on a book/map/scroll that prevent unauthorized reading. When read, the runes detonate, dealing 12-30 (6d4+6) HP damage (no save).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "flame_arrow": {
+    "name": "Flame Arrow",
+    "level": 3,
+    "school": "conj.",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Touches one arrow or crossbow bolt (quarrel) per segment, making it magical and causing +1 HP additional fire damage on a successful hit.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "gust_of_wind": {
+    "name": "Gust Of Wind",
+    "level": 3,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Creates a strong puff of air (1\" wide path, 1\"/level long) that extinguishes small flames, fans large fires, forces back small flying creatures, and slows large flying creatures by 50%.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "infravision": {
+    "name": "Infravision",
+    "level": 3,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Enables the recipient to see in the infrared spectrum up to 60' (lasts 12 turns + 6 turns/level).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "invisibility_10_radius": {
+    "name": "Invisibility, 10' Radius",
+    "level": 3,
+    "school": "phantasm",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Makes the creature touched and all its gear within a 10' radius invisible.",
+    "class_availability": [
+      "Magic-User",
+      "Illusionist"
+    ]
+  },
+  "leomund_s_tiny_hut": {
+    "name": "Leomund's Tiny Hut",
+    "level": 3,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Creates an opaque sphere of force (10' diameter, half above/half below ground) that maintains 70\u00b0F inside temperature and withstands up to 50 mph winds.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "monster_summoning_i": {
+    "name": "Monster Summoning I",
+    "level": 3,
+    "school": "conj.",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Summons 1-4 first level monsters to attack the caster's opponents (lasts 2 rounds + 1 round/level).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "protection_from_normal_missiles": {
+    "name": "Protection From Normal Missiles",
+    "level": 3,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Bestows total invulnerability to hurled and projected missiles (arrows, axes, darts, etc.) and reduces damage from large/magical missiles.",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "suggestion": {
+    "name": "Suggestion",
+    "level": 3,
+    "school": "charm",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Influences the actions of one creature by uttering a few words suggesting a reasonable course of action (lasts 6 turns + 6 turns/level).",
+    "class_availability": [
+      "Magic-User"
+    ]
+  },
+  "tongues": {
+    "name": "Tongues",
+    "level": 3,
+    "school": "unknown",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Enables the caster to speak the language of any creature (same as Cleric 4th Level).",
+    "class_availability": [
+      "Magic-User"
+    ],
+    "reversible": true
+  },
+  "audible_glamer": {
+    "name": "Audible Glamer",
+    "level": 1,
+    "school": "phantasm",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Creates a volume of sound (talking, singing, roaring, etc.) at whatever range the caster desires (up to a dragon's roar).",
+    "class_availability": [
+      "Illusionist"
+    ]
+  },
+  "change_self": {
+    "name": "Change Self",
+    "level": 1,
+    "school": "phantasm",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Alters the appearance of the illusionist's form, including clothing and equipment, to any generally man-shaped bipedal creature.",
+    "class_availability": [
+      "Illusionist"
+    ]
+  },
+  "color_spray": {
+    "name": "Color Spray",
+    "level": 1,
+    "school": "alt.",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Causes a vivid, fan-shaped spray of colors that affects 1-6 creatures, potentially rendering them unconscious, blinded, or stunned, based on their HD/level.",
+    "class_availability": [
+      "Illusionist"
+    ]
+  },
+  "gaze_reflection": {
+    "name": "Gaze Reflection",
+    "level": 1,
+    "school": "alt.",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Creates a mirror-like area of air that reflects back any gaze attack (e.g., basilisk, medusa) upon the gazer.",
+    "class_availability": [
+      "Illusionist"
+    ]
+  },
+  "wall_of_fog": {
+    "name": "Wall Of Fog",
+    "level": 1,
+    "school": "alt.",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Creates a wall of misty vapors that obscures all sight (normal or infravision) beyond 2'.",
+    "class_availability": [
+      "Illusionist"
+    ]
+  },
+  "blindness": {
+    "name": "Blindness",
+    "level": 2,
+    "school": "phantasm",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Causes the recipient creature to become totally blind (no cure except *dispel magic* or caster's will).",
+    "class_availability": [
+      "Illusionist"
+    ]
+  },
+  "blur": {
+    "name": "Blur",
+    "level": 2,
+    "school": "phantasm",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Causes the outline of the illusionist's form to become blurred, shifting, and wavery, penalizing missile and melee attacks against them.",
+    "class_availability": [
+      "Illusionist"
+    ]
+  },
+  "hypnotic_pattern": {
+    "name": "Hypnotic Pattern",
+    "level": 2,
+    "school": "phantasm",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Creates a weaving, turning pattern of subtle colors that causes creatures looking at it to become fascinated and entranced (up to 24 HD/levels total).",
+    "class_availability": [
+      "Illusionist"
+    ]
+  },
+  "improved_phantasmal_force": {
+    "name": "Improved Phantasmal Force",
+    "level": 2,
+    "school": "phantasm",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "A phantasmal force illusion that can be maintained with minimal concentration (lasts 2 rounds after concentration ceases).",
+    "class_availability": [
+      "Illusionist"
+    ]
+  },
+  "dispel_illusion": {
+    "name": "Dispel Illusion",
+    "level": 3,
+    "school": "abj.",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Dispels any *phantasmal force* (with or without audible glamer) cast by a non-illusionist, and has a chance to dispel other illusionist spells.",
+    "class_availability": [
+      "Illusionist"
+    ]
+  },
+  "illusionary_script": {
+    "name": "Illusionary Script",
+    "level": 3,
+    "school": "phantasm",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Creates illusionary script on paper/parchment that can only be read by the person(s) the illusionist desires (others become confused).",
+    "class_availability": [
+      "Illusionist"
+    ]
+  },
+  "paralyzation": {
+    "name": "Paralyzation",
+    "level": 3,
+    "school": "phantasm",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Creates illusionary muscle slowdown that paralyzes creatures whose total HD do not exceed twice the illusionist's level.",
+    "class_availability": [
+      "Illusionist"
+    ]
+  },
+  "spectral_force": {
+    "name": "Spectral Force",
+    "level": 3,
+    "school": "phantasm",
+    "casting_time": "Varies",
+    "range": "Varies",
+    "duration": "Varies",
+    "area": "Varies",
+    "saving_throw": "Varies",
+    "components": "standard",
+    "description": "Creates an illusion that includes sound, smell, and thermal illusions.",
+    "class_availability": [
+      "Illusionist"
+    ]
   }
 }
