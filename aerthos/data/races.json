@@ -11,9 +11,14 @@
     "ability_minimums": {},
     "ability_maximums": {},
     "class_restrictions": [],
+    "level_limits": {},
     "size": "M",
     "movement": 12,
     "special_abilities": [],
+    "special_abilities_details": {
+      "unlimited_advancement": true,
+      "no_racial_modifiers": true
+    },
     "description": "Versatile and ambitious, humans are the most common race"
   },
   "Elf": {
@@ -34,10 +39,39 @@
       "constitution": 17
     },
     "class_restrictions": ["Cleric", "Druid", "Monk", "Paladin"],
+    "level_limits": {
+      "Cleric": 9,
+      "Fighter": 7,
+      "Magic-User": 11,
+      "Thief": 999,
+      "Assassin": 10
+    },
+    "level_limit_bonuses": {
+      "Fighter": {"strength": {"17": 1, "18": 2}},
+      "Magic-User": {"intelligence": {"17": 1, "18": 2}}
+    },
     "multi_class_options": ["Fighter/Magic-User", "Fighter/Thief", "Magic-User/Thief", "Fighter/Magic-User/Thief"],
     "size": "M",
     "movement": 12,
-    "special_abilities": ["infravision_60", "resist_sleep_charm", "detect_secret_doors", "bonus_longsword_bow"],
+    "special_abilities": ["infravision_60", "resist_sleep_charm", "detect_secret_doors", "bonus_longsword_bow", "surprise_bonus"],
+    "special_abilities_details": {
+      "infravision": 60,
+      "sleep_charm_resistance": 90,
+      "secret_door_detection": {
+        "passive": 17,
+        "searching": 33,
+        "concealed": 50
+      },
+      "combat_bonus": {
+        "weapons": ["bow", "short_sword", "long_sword"],
+        "to_hit_bonus": 1
+      },
+      "surprise": {
+        "alone_no_metal": 67,
+        "advance_party_no_metal": 67,
+        "with_door": 33
+      }
+    },
     "description": "Graceful and long-lived, elves are skilled with magic and bow"
   },
   "Dwarf": {
@@ -53,13 +87,46 @@
       "constitution": 11
     },
     "ability_maximums": {
-      "dexterity": 17
+      "dexterity": 17,
+      "charisma": 16
     },
     "class_restrictions": ["Magic-User", "Illusionist", "Ranger", "Paladin", "Druid", "Monk", "Bard"],
+    "level_limits": {
+      "Fighter": 9,
+      "Thief": 999,
+      "Assassin": 10
+    },
+    "level_limit_bonuses": {
+      "Fighter": {"strength": {"17": 1, "18": 2}}
+    },
     "multi_class_options": ["Fighter/Thief"],
     "size": "M",
     "movement": 9,
-    "special_abilities": ["infravision_60", "resist_poison", "resist_magic", "detect_stone_traps", "bonus_vs_giants"],
+    "special_abilities": ["infravision_60", "saving_throw_bonus", "mining_detection", "combat_bonus_vs_goblinoids", "ac_bonus_vs_giants"],
+    "special_abilities_details": {
+      "infravision": 60,
+      "saving_throw_bonus": {
+        "formula": "1 per 3.5 CON (rounded down)",
+        "max": 5,
+        "applies_to": ["magic", "wands", "staves", "rods", "spells", "poison"]
+      },
+      "mining_detection": {
+        "range": 10,
+        "slope": 75,
+        "new_construction": 75,
+        "sliding_walls": 67,
+        "stone_traps": 50,
+        "depth": 50
+      },
+      "combat_bonus": {
+        "targets": ["half_orc", "goblin", "hobgoblin", "orc"],
+        "to_hit_bonus": 1
+      },
+      "ac_bonus_vs_giants": {
+        "targets": ["ogre", "troll", "ogre_magi", "giant", "titan"],
+        "ac_bonus": -4
+      }
+    },
     "description": "Stout and sturdy, dwarves are master craftsmen and warriors"
   },
   "Halfling": {
@@ -79,10 +146,43 @@
       "strength": 17
     },
     "class_restrictions": ["Magic-User", "Illusionist", "Cleric", "Druid", "Ranger", "Paladin", "Monk", "Bard"],
+    "level_limits": {
+      "Fighter": 6,
+      "Thief": 999
+    },
+    "level_limit_bonuses": {
+      "Fighter": {"strength": {"17": 1, "18": 2}}
+    },
     "multi_class_options": ["Fighter/Thief"],
     "size": "S",
     "movement": 9,
-    "special_abilities": ["resist_magic", "bonus_missile_attack", "hard_to_spot"],
+    "special_abilities": ["infravision_mixed", "saving_throw_bonus", "detection_abilities", "silent_movement", "missile_bonus", "ac_bonus_vs_large"],
+    "special_abilities_details": {
+      "infravision": {
+        "stoutish": 60,
+        "mixed": 30
+      },
+      "saving_throw_bonus": {
+        "formula": "1 per 3.5 CON (rounded down)",
+        "max": 5,
+        "applies_to": ["magic", "wands", "staves", "rods", "spells", "poison"]
+      },
+      "detection": {
+        "range": 10,
+        "grade": 75,
+        "direction": 50
+      },
+      "silent_movement": {
+        "alone": 67,
+        "advance_party": 67,
+        "with_door": 33
+      },
+      "missile_attack_bonus": 3,
+      "ac_bonus_vs_large": {
+        "targets": ["large_creatures"],
+        "ac_bonus": -2
+      }
+    },
     "description": "Small and nimble, halflings are peaceful folk who avoid danger"
   },
   "Half-Elf": {
@@ -103,10 +203,32 @@
       "constitution": 18
     },
     "class_restrictions": ["Monk", "Paladin"],
+    "level_limits": {
+      "Cleric": 5,
+      "Druid": 999,
+      "Fighter": 8,
+      "Ranger": 8,
+      "Magic-User": 8,
+      "Thief": 999,
+      "Assassin": 11
+    },
+    "level_limit_bonuses": {
+      "Fighter": {"strength": {"17": 1, "18": 2}},
+      "Magic-User": {"intelligence": {"17": 1, "18": 2}}
+    },
     "multi_class_options": ["Cleric/Fighter", "Cleric/Ranger", "Cleric/Magic-User", "Fighter/Magic-User", "Fighter/Thief", "Magic-User/Thief", "Cleric/Fighter/Magic-User", "Fighter/Magic-User/Thief"],
     "size": "M",
     "movement": 12,
     "special_abilities": ["infravision_60", "resist_sleep_charm", "detect_secret_doors"],
+    "special_abilities_details": {
+      "infravision": 60,
+      "sleep_charm_resistance": 30,
+      "secret_door_detection": {
+        "passive": 17,
+        "searching": 33,
+        "concealed": 50
+      }
+    },
     "description": "Children of both human and elven heritage, combining traits of both races"
   },
   "Half-Orc": {
@@ -127,10 +249,27 @@
       "charisma": 12
     },
     "class_restrictions": ["Magic-User", "Illusionist", "Ranger", "Paladin", "Druid", "Monk", "Bard"],
+    "level_limits": {
+      "Cleric": 4,
+      "Fighter": 10,
+      "Thief": 999,
+      "Assassin": 999
+    },
+    "level_limit_bonuses": {
+      "Fighter": {"strength": {"17": 1, "18": 2}},
+      "Thief": {"dexterity": {"17": 1, "18": 2}}
+    },
     "multi_class_options": ["Cleric/Fighter", "Cleric/Thief", "Cleric/Assassin", "Fighter/Thief", "Fighter/Assassin"],
     "size": "M",
     "movement": 12,
-    "special_abilities": ["infravision_60"],
+    "special_abilities": ["infravision_60", "charisma_penalty_non_orc"],
+    "special_abilities_details": {
+      "infravision": 60,
+      "charisma_penalty": {
+        "applies_to": "non_orc_henchmen",
+        "penalty": -2
+      }
+    },
     "description": "Strong and hardy, half-orcs combine orcish strength with human adaptability"
   },
   "Gnome": {
@@ -150,10 +289,47 @@
       "strength": 18
     },
     "class_restrictions": ["Cleric", "Druid", "Magic-User", "Ranger", "Paladin", "Monk", "Bard"],
+    "level_limits": {
+      "Fighter": 6,
+      "Illusionist": 7,
+      "Thief": 999,
+      "Assassin": 8
+    },
+    "level_limit_bonuses": {
+      "Fighter": {"strength": {"17": 1, "18": 2}},
+      "Illusionist": {
+        "intelligence": {"17": 1, "18": 2},
+        "dexterity": {"17": 1, "18": 2}
+      }
+    },
     "multi_class_options": ["Fighter/Illusionist", "Illusionist/Thief"],
     "size": "S",
     "movement": 6,
-    "special_abilities": ["infravision_60", "detect_slope", "detect_unsafe_walls", "determine_depth", "speak_with_burrowing_animals"],
+    "special_abilities": ["infravision_60", "saving_throw_bonus", "mining_detection", "speak_with_burrowing_animals", "combat_bonus_vs_goblinoids", "ac_bonus_vs_giants"],
+    "special_abilities_details": {
+      "infravision": 60,
+      "saving_throw_bonus": {
+        "formula": "1 per 3.5 CON (rounded down)",
+        "max": 5,
+        "applies_to": ["magic", "wands", "staves", "rods", "spells"]
+      },
+      "mining_detection": {
+        "range": 10,
+        "slope": 80,
+        "unsafe_walls": 70,
+        "depth": 60,
+        "direction": 50
+      },
+      "speak_with_burrowing_animals": true,
+      "combat_bonus": {
+        "targets": ["kobold", "goblin"],
+        "to_hit_bonus": 1
+      },
+      "ac_bonus_vs_giants": {
+        "targets": ["gnoll", "bugbear", "ogre", "troll", "ogre_magi", "giant", "titan"],
+        "ac_bonus": -4
+      }
+    },
     "description": "Clever and curious, gnomes are skilled tinkers and illusionists"
   }
 }

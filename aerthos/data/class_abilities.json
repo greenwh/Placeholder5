@@ -1,0 +1,362 @@
+{
+  "Cleric": {
+    "turn_undead": {
+      "start_level": 1,
+      "description": "Can turn or command undead (and certain demons/devils)"
+    },
+    "followers": {
+      "level": 8,
+      "count": "20-200",
+      "description": "Attracts followers and can establish place of worship"
+    }
+  },
+  "Druid": {
+    "nature_identification": {
+      "level": 3,
+      "description": "Identify plant/animal type and pure water; pass through overgrown areas without leaving a trail"
+    },
+    "woodland_charm_immunity": {
+      "level": 7,
+      "description": "Immunity from woodland charm spells (dryads, nixies, etc.)"
+    },
+    "change_form": {
+      "level": 7,
+      "uses_per_day": 3,
+      "description": "Can change form into mammal, reptile, or bird of similar size"
+    },
+    "saving_throw_bonus": {
+      "applies_to": ["fire", "lightning"],
+      "bonus": 2,
+      "description": "+2 bonus to saves against fire and lightning"
+    }
+  },
+  "Fighter": {
+    "multiple_attacks": {
+      "7-12": 1.5,
+      "13-20": 2.0,
+      "description": "Fighters attack multiple times per round at higher levels"
+    },
+    "stronghold": {
+      "level": 9,
+      "description": "Can establish a freehold and attract men-at-arms"
+    }
+  },
+  "Paladin": {
+    "detect_evil": {
+      "level": 1,
+      "range": 60,
+      "frequency": "unlimited",
+      "description": "Detect evil up to 60' at will"
+    },
+    "saving_throw_bonus": {
+      "level": 1,
+      "bonus": 2,
+      "description": "+2 on all saving throws"
+    },
+    "disease_immunity": {
+      "level": 1,
+      "description": "Immune to all forms of disease"
+    },
+    "lay_on_hands": {
+      "level": 1,
+      "hp_per_level": 2,
+      "frequency": "once_per_day",
+      "description": "Cure 2 HP per level once per day"
+    },
+    "cure_disease": {
+      "level": 1,
+      "uses_per_week_formula": "level / 5",
+      "description": "Cure 1 disease per week for each 5 levels"
+    },
+    "protection_aura": {
+      "level": 1,
+      "radius": 10,
+      "description": "Continuous protection from evil in 1\" radius"
+    },
+    "turn_undead": {
+      "level": 3,
+      "cleric_level_equivalent": "level - 2",
+      "description": "Turn undead and certain devils/demons as cleric of 2 levels lower"
+    },
+    "warhorse": {
+      "level": 4,
+      "description": "Can magically call for intelligent heavy warhorse"
+    },
+    "holy_sword": {
+      "description": "Projects dispel magic circle when holding holy sword"
+    },
+    "spells": {
+      "start_level": 9,
+      "type": "clerical",
+      "max_spell_level": 4,
+      "description": "Gains clerical spell ability starting at 9th level"
+    }
+  },
+  "Ranger": {
+    "surprise": {
+      "level": 1,
+      "surprise_opponents": 50,
+      "surprised_self": 17,
+      "description": "50% chance to surprise opponents, only 16 2/3% to be surprised"
+    },
+    "tracking": {
+      "level": 1,
+      "base_outdoor": 90,
+      "base_underground": 65,
+      "modifier_time": -10,
+      "modifier_precipitation": -25,
+      "description": "90% outdoors, 65% underground, -10% per 24h, -25% per hour rain"
+    },
+    "giant_damage_bonus": {
+      "level": 1,
+      "bonus_per_level": 1,
+      "targets": ["bugbear", "giant", "ogre", "troll"],
+      "description": "+1 HP damage per level against giant-class creatures"
+    },
+    "druid_spells": {
+      "start_level": 8,
+      "max_spell_level": 3,
+      "description": "Gains druidic spell ability up to 3rd level"
+    },
+    "magic_user_spells": {
+      "start_level": 9,
+      "max_spell_level": 2,
+      "description": "Gains magic-user spell ability up to 2nd level"
+    },
+    "magic_item_use": {
+      "level": 10,
+      "types": ["clairaudience", "clairvoyance", "ESP", "telepathy"],
+      "description": "Can employ mental magic items"
+    },
+    "followers": {
+      "level": 10,
+      "count": "2-24",
+      "description": "Attracts 2-24 followers (cannot be replaced if lost)"
+    },
+    "multiple_attacks": {
+      "8-14": 1.5,
+      "15-20": 2.0,
+      "description": "Rangers attack multiple times per round at higher levels"
+    }
+  },
+  "Magic-User": {
+    "item_creation": {
+      "level": 11,
+      "description": "Can enchant items or scribe magic scrolls"
+    },
+    "stronghold": {
+      "level": 12,
+      "description": "Can construct a stronghold and rule territory"
+    }
+  },
+  "Illusionist": {
+    "item_creation": {
+      "level": 10,
+      "description": "Can manufacture magical items that create or sustain illusions"
+    }
+  },
+  "Thief": {
+    "backstab": {
+      "1-4": 2,
+      "5-8": 3,
+      "9-12": 4,
+      "13-16": 5,
+      "17-20": 5,
+      "to_hit_bonus": 2,
+      "description": "Backstab damage multiplier with +2 to hit when surprising"
+    },
+    "read_languages": {
+      "level": 4,
+      "base_chance": 20,
+      "per_level_bonus": 5,
+      "description": "20% chance at level 4, +5% per level"
+    },
+    "read_magic": {
+      "level": 10,
+      "description": "Can decipher magical writings and use certain scrolls"
+    },
+    "thieves_cant": {
+      "level": 1,
+      "description": "Speaks thieves' cant language"
+    },
+    "stronghold": {
+      "level": 10,
+      "description": "Can build headquarters and attract 4-24 thieves"
+    }
+  },
+  "Assassin": {
+    "backstab": {
+      "1-4": 2,
+      "5-8": 3,
+      "9-12": 4,
+      "13-16": 5,
+      "17-20": 5,
+      "to_hit_bonus": 2,
+      "description": "Backstab damage multiplier with +2 to hit"
+    },
+    "assassination_table": {
+      "level": 1,
+      "description": "Can use assassination table for ~50% instant death on surprised victims"
+    },
+    "disguise": {
+      "level": 1,
+      "detection_chance_per_day": 2,
+      "description": "Can disguise as any human/humanoid or character class"
+    },
+    "thief_abilities": {
+      "level_offset": -2,
+      "description": "Performs thief functions 2 levels below assassin level"
+    },
+    "poison_use": {
+      "level": 1,
+      "description": "Can use poison (ingested or weapon-applied)"
+    },
+    "read_languages": {
+      "level": 4,
+      "base_chance": 20,
+      "per_level_bonus": 5,
+      "description": "20% chance at level 4, +5% per level"
+    },
+    "guildmaster": {
+      "level": 14,
+      "followers": "7-28",
+      "description": "Must defeat current guildmaster to take title"
+    }
+  },
+  "Monk": {
+    "ac_progression": {
+      "1": 10, "2": 9, "3": 8, "4": 7, "5": 7,
+      "6": 6, "7": 6, "8": 5, "9": 4, "10": 3,
+      "11": 2, "12": 1, "13": 0, "14": -1, "15": -2,
+      "16": -2, "17": -3,
+      "description": "AC improves as monk gains levels (no armor worn)"
+    },
+    "movement_progression": {
+      "1": 15, "2": 16, "3": 17, "4": 18, "5": 19,
+      "6": 20, "7": 21, "8": 22, "9": 23, "10": 24,
+      "11": 25, "12": 26, "13": 27, "14": 28, "15": 29,
+      "16": 30, "17": 32,
+      "description": "Movement rate increases with level (in inches)"
+    },
+    "open_hand_damage_sm": {
+      "1-2": "1d3",
+      "3-4": "1d4",
+      "5-6": "1d6",
+      "7-8": "1d8",
+      "9-10": "1d10",
+      "11-12": "1d12",
+      "13-14": "2d6",
+      "15-16": "2d8",
+      "17": "3d6",
+      "description": "Open hand damage vs small/medium creatures"
+    },
+    "open_hand_damage_l": {
+      "1-2": "1d2",
+      "3-4": "1d3",
+      "5-6": "1d6",
+      "7": "1d8",
+      "8": "2d6",
+      "9-10": "2d8",
+      "11-12": "3d6",
+      "13-14": "3d8",
+      "15-16": "4d8",
+      "17": "6d6",
+      "description": "Open hand damage vs large creatures"
+    },
+    "attacks_per_round": {
+      "1-2": 1,
+      "3": 1.33,
+      "4-5": 1.25,
+      "6-8": 1.5,
+      "9-10": 2,
+      "11-12": 2.5,
+      "13": 2.5,
+      "14": 3,
+      "15": 3,
+      "16-17": 4,
+      "description": "Number of attacks per round with open hand"
+    },
+    "special_abilities": {
+      "A": {
+        "level": 3,
+        "name": "Speak with Animals",
+        "description": "As druid 3rd level spell"
+      },
+      "B": {
+        "level": 4,
+        "name": "ESP Resistance & Slow Fall",
+        "description": "30% ESP resistance, fall 20' without damage within 1' of wall"
+      },
+      "C": {
+        "level": 5,
+        "name": "Disease/Haste/Slow Immunity",
+        "description": "Immune to disease, haste, and slow effects"
+      },
+      "D": {
+        "level": 6,
+        "name": "Catalepsy",
+        "description": "Can feign death"
+      },
+      "E": {
+        "level": 7,
+        "name": "Self Healing",
+        "description": "Heal 1d4+1 HP per day on self"
+      },
+      "F": {
+        "level": 8,
+        "name": "Speak with Plants",
+        "description": "As druid 3rd level spell"
+      },
+      "G": {
+        "level": 9,
+        "name": "Mental Resistance",
+        "description": "50% resistance to beguiling, charms, hypnosis, suggestion"
+      },
+      "H": {
+        "level": 10,
+        "name": "Mind Blast Resistance",
+        "description": "Telepathic/mind blast attacks vs monk treated as if monk had 18 INT"
+      },
+      "I": {
+        "level": 11,
+        "name": "Advanced Abilities",
+        "description": "Additional mystical abilities"
+      },
+      "J": {
+        "level": 12,
+        "name": "Master Abilities",
+        "description": "Additional mystical abilities"
+      },
+      "K": {
+        "level": 13,
+        "name": "Elemental Mastery",
+        "description": "Additional mystical abilities"
+      },
+      "L": {
+        "level": 14,
+        "name": "Seasonal Mastery",
+        "description": "Additional mystical abilities"
+      }
+    },
+    "quivering_palm": {
+      "level": 13,
+      "description": "Can use quivering palm attack (delayed death strike)"
+    }
+  },
+  "Bard": {
+    "charm": {
+      "level": 1,
+      "description": "Can attempt to charm person with performance"
+    },
+    "legend_lore": {
+      "level": 10,
+      "description": "Can identify properties of magic items and recall legends"
+    },
+    "read_languages": {
+      "level": 5,
+      "base_chance": 20,
+      "per_level_bonus": 5,
+      "description": "20% chance at level 5, +5% per level"
+    }
+  }
+}
