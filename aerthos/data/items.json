@@ -85,7 +85,7 @@
     "name": "Leather Armor",
     "type": "armor",
     "weight": 15,
-    "ac_bonus": 2,
+    "ac": 8,
     "cost_gp": 5,
     "description": "Soft leather armor. AC 8."
   },
@@ -93,7 +93,7 @@
     "name": "Chain Mail",
     "type": "armor",
     "weight": 30,
-    "ac_bonus": 5,
+    "ac": 5,
     "cost_gp": 75,
     "description": "Interlocking metal rings. AC 5."
   },
@@ -101,13 +101,13 @@
     "name": "Plate Mail",
     "type": "armor",
     "weight": 45,
-    "ac_bonus": 7,
+    "ac": 3,
     "cost_gp": 400,
     "description": "Full plate armor. AC 3."
   },
   "shield": {
     "name": "Shield",
-    "type": "armor",
+    "type": "shield",
     "weight": 10,
     "ac_bonus": 1,
     "cost_gp": 10,
@@ -191,7 +191,7 @@
     "name": "Leather Armor +1",
     "type": "armor",
     "weight": 15,
-    "ac_bonus": 2,
+    "ac": 8,
     "magic_bonus": 1,
     "cost_gp": 1200,
     "description": "Soft leather armor enchanted for extra protection. AC 7 (8 -1 magic)."
@@ -200,7 +200,7 @@
     "name": "Chain Mail +1",
     "type": "armor",
     "weight": 30,
-    "ac_bonus": 5,
+    "ac": 5,
     "magic_bonus": 1,
     "cost_gp": 2500,
     "description": "Enchanted chain mail that moves like silk. AC 4 (5 -1 magic)."
@@ -209,7 +209,7 @@
     "name": "Chain Mail +2",
     "type": "armor",
     "weight": 30,
-    "ac_bonus": 5,
+    "ac": 5,
     "magic_bonus": 2,
     "cost_gp": 5000,
     "description": "Masterwork chain mail glowing with protective magic. AC 3 (5 -2 magic)."
@@ -218,7 +218,7 @@
     "name": "Plate Mail +1",
     "type": "armor",
     "weight": 45,
-    "ac_bonus": 7,
+    "ac": 3,
     "magic_bonus": 1,
     "cost_gp": 6000,
     "description": "Full plate armor forged by master smiths and enchanted. AC 2 (3 -1 magic)."
@@ -227,7 +227,7 @@
     "name": "Plate Mail +2",
     "type": "armor",
     "weight": 45,
-    "ac_bonus": 7,
+    "ac": 3,
     "magic_bonus": 2,
     "cost_gp": 12000,
     "description": "Legendary plate armor that has turned aside countless blows. AC 1 (3 -2 magic)."

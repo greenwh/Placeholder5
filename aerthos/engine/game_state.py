@@ -1070,16 +1070,25 @@ class GameState:
                 description=item_data.get('description', '')
             )
         elif item_data['type'] == 'armor':
-            # Convert old ac_bonus to new ac format (ac = 10 - ac_bonus)
-            ac_bonus = item_data.get('ac_bonus', 0)
-            base_ac = 10 - ac_bonus
-
             return Armor(
                 name=item_data['name'],
                 weight=item_data['weight'],
-                ac=base_ac,
+                ac=item_data['ac'],
                 magic_bonus=item_data.get('magic_bonus', 0),
                 properties={'cost_gp': item_data.get('cost_gp', 0)},
+                description=item_data.get('description', '')
+            )
+        elif item_data['type'] == 'shield':
+            # Shields modify AC rather than setting it
+            return Item(
+                name=item_data['name'],
+                item_type='shield',
+                weight=item_data['weight'],
+                properties={
+                    'ac_bonus': item_data.get('ac_bonus', 1),
+                    'magic_bonus': item_data.get('magic_bonus', 0),
+                    'cost_gp': item_data.get('cost_gp', 0)
+                },
                 description=item_data.get('description', '')
             )
         elif item_data['type'] == 'light_source':
