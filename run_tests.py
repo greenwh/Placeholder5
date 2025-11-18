@@ -169,7 +169,8 @@ def main():
             ('Game State Tests', 'test_game_state.py'),
             ('Storage Tests', 'test_storage.py'),
             ('Ability Modifiers Tests', 'test_ability_modifiers.py'),
-            ('Armor System Tests', 'test_armor_system.py')
+            ('Armor System Tests', 'test_armor_system.py'),
+            ('Thief Skills Tests', 'test_thief_skills.py')
         ]
 
         for suite_name, pattern in unit_tests:

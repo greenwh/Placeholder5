@@ -547,8 +547,18 @@ class PlayerCharacter(Character):
 
     def can_use_thief_skill(self, skill_name: str) -> bool:
         """Check if character has a thief skill"""
+        # Support both find_traps and find_remove_traps
+        if skill_name == 'find_traps':
+            skill_name = 'find_remove_traps'
         return skill_name in self.thief_skills
 
     def get_thief_skill_value(self, skill_name: str) -> int:
-        """Get percentage value for thief skill"""
+        """
+        Get percentage value for thief skill
+        Note: This returns base value only. For full calculation with
+        racial/DEX/armor modifiers, use SkillResolver.calculate_thief_skill()
+        """
+        # Support both find_traps and find_remove_traps
+        if skill_name == 'find_traps':
+            skill_name = 'find_remove_traps'
         return self.thief_skills.get(skill_name, 0)

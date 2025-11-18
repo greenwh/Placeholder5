@@ -167,17 +167,17 @@
     "skills": {
       "pick_pockets": 30,
       "open_locks": 25,
-      "find_traps": 20,
+      "find_remove_traps": 20,
       "move_silently": 15,
       "hide_in_shadows": 10,
       "hear_noise": 10,
-      "climb_walls": 80,
+      "climb_walls": 85,
       "read_languages": 0
     },
     "skill_progression_per_level": {
       "pick_pockets": 5,
       "open_locks": 5,
-      "find_traps": 5,
+      "find_remove_traps": 5,
       "move_silently": 5,
       "hide_in_shadows": 5,
       "hear_noise": 5,
@@ -218,7 +218,7 @@
     "skill_progression_per_level": {
       "pick_pockets": 5,
       "open_locks": 5,
-      "find_traps": 5,
+      "find_remove_traps": 5,
       "move_silently": 5,
       "hide_in_shadows": 5,
       "hear_noise": 5,
