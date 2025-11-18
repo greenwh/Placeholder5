@@ -43,7 +43,16 @@
 - Max hirelings and loyalty from CHA
 - **Files:** `aerthos/data/ability_score_tables.json`, `aerthos/systems/ability_modifiers.py`, `aerthos/entities/character.py` (modified), `tests/test_ability_modifiers.py`
 
-**All Tests Passing:** 128/128 tests ✅ (19 new ability modifier tests)
+### ✅ Phase 1.2: Complete Armor System (COMPLETED 2025-11-18)
+- Comprehensive armor database (9 armor types, 4 shields, 2 helmets)
+- Class armor/shield restrictions for all 11 classes
+- AC calculations with armor, shields, DEX modifiers
+- Movement rates by armor type (light 12", heavy 9", very_heavy 6")
+- Magic armor bonuses (AC reduction, weight negation)
+- Shield attack blocking limits (small=1, medium=2, large=3)
+- **Files:** `aerthos/data/armor.json`, `aerthos/systems/armor_system.py`, `aerthos/entities/player.py` (modified), `tests/test_armor_system.py`
+
+**All Tests Passing:** 154/154 tests ✅ (109 original + 19 ability modifiers + 26 armor system)
 
 ---
 
@@ -180,7 +189,19 @@ Implement all six ability score modifier tables with comprehensive lookups for b
 
 ---
 
-### Task 1.2: Complete Armor System
+### Task 1.2: Complete Armor System ✅ COMPLETED
+
+**Status:** ✅ COMPLETED (2025-11-18)
+**Actual Effort:** ~4 hours
+**Commit:** `572fa9c` - "Implement Task 1.2: Complete Armor System with Class Restrictions"
+**Files Created:**
+- `aerthos/data/armor.json` (213 lines added)
+- `aerthos/systems/armor_system.py` (289 lines)
+- `tests/test_armor_system.py` (26 tests, all passing)
+**Files Modified:**
+- `aerthos/entities/player.py` (added Shield dataclass, updated Armor and Equipment classes)
+- `aerthos/ui/character_creation.py` (updated to use ArmorSystem)
+- `run_tests.py` (added new test files to test suite)
 
 **Priority:** HIGH
 **Estimated Effort:** 3-4 hours
@@ -291,6 +312,18 @@ Create comprehensive armor database with proper AC values, costs, weights, and r
 - ✅ Class restrictions enforced
 - ✅ Magic armor properly reduces AC and negates weight
 - ✅ Tests passing for all armor combinations
+
+**Completion Notes:**
+- Created comprehensive armor.json with 9 armor types, 4 shields, 2 helmets, and all 11 class restrictions
+- Modified Armor dataclass to include AC, armor_type, movement_rate (light 12", heavy 9", very_heavy 6")
+- Created separate Shield dataclass with ac_bonus and max_attacks_blocked
+- Updated Equipment class with improved get_total_ac(), get_movement_rate(), get_total_weight()
+- Created ArmorSystem for armor creation, restriction validation, best armor lookups
+- Updated character_creation.py to use ArmorSystem instead of direct Armor instantiation
+- All 26 armor tests passing, total test count increased to 154
+- Magic armor bonus system implemented (reduces AC, negates weight penalty)
+- Shield attack blocking limits implemented (small=1, medium=2, large=3)
+- Ready for integration with combat system to enforce movement rates by armor type
 
 ---
 
