@@ -1,0 +1,212 @@
+{
+  "armor": {
+    "padded": {
+      "name": "Padded Armor",
+      "ac": 8,
+      "cost_gp": 4,
+      "weight_gp": 40,
+      "armor_type": "light",
+      "movement_rate": 12,
+      "allowed_classes": ["Fighter", "Ranger", "Paladin", "Cleric", "Druid", "Thief", "Assassin", "Bard"],
+      "description": "Quilted cloth armor, provides minimal protection"
+    },
+    "leather": {
+      "name": "Leather Armor",
+      "ac": 8,
+      "cost_gp": 5,
+      "weight_gp": 50,
+      "armor_type": "light",
+      "movement_rate": 12,
+      "allowed_classes": ["Fighter", "Ranger", "Paladin", "Cleric", "Druid", "Thief", "Assassin", "Bard", "Monk"],
+      "description": "Boiled and treated leather, flexible and quiet"
+    },
+    "studded_leather": {
+      "name": "Studded Leather",
+      "ac": 7,
+      "cost_gp": 15,
+      "weight_gp": 150,
+      "armor_type": "light",
+      "movement_rate": 12,
+      "allowed_classes": ["Fighter", "Ranger", "Paladin", "Cleric", "Assassin", "Bard"],
+      "description": "Leather armor reinforced with metal studs"
+    },
+    "ring_mail": {
+      "name": "Ring Mail",
+      "ac": 7,
+      "cost_gp": 30,
+      "weight_gp": 300,
+      "armor_type": "light",
+      "movement_rate": 12,
+      "allowed_classes": ["Fighter", "Ranger", "Paladin", "Cleric", "Assassin", "Bard"],
+      "description": "Leather armor with metal rings sewn onto it"
+    },
+    "scale_mail": {
+      "name": "Scale Mail",
+      "ac": 6,
+      "cost_gp": 45,
+      "weight_gp": 450,
+      "armor_type": "heavy",
+      "movement_rate": 9,
+      "allowed_classes": ["Fighter", "Ranger", "Paladin", "Cleric", "Assassin"],
+      "description": "Metal scales attached to a leather backing"
+    },
+    "chain_mail": {
+      "name": "Chain Mail",
+      "ac": 5,
+      "cost_gp": 75,
+      "weight_gp": 750,
+      "armor_type": "heavy",
+      "movement_rate": 9,
+      "allowed_classes": ["Fighter", "Ranger", "Paladin", "Cleric", "Assassin"],
+      "description": "Interlocking metal rings, flexible but heavy"
+    },
+    "splint_mail": {
+      "name": "Splint Mail",
+      "ac": 4,
+      "cost_gp": 80,
+      "weight_gp": 800,
+      "armor_type": "heavy",
+      "movement_rate": 9,
+      "allowed_classes": ["Fighter", "Ranger", "Paladin", "Cleric", "Assassin"],
+      "description": "Metal strips riveted to leather backing"
+    },
+    "banded_mail": {
+      "name": "Banded Mail",
+      "ac": 4,
+      "cost_gp": 90,
+      "weight_gp": 900,
+      "armor_type": "heavy",
+      "movement_rate": 9,
+      "allowed_classes": ["Fighter", "Ranger", "Paladin", "Cleric", "Assassin"],
+      "description": "Overlapping metal bands on chain mail backing"
+    },
+    "plate_mail": {
+      "name": "Plate Mail",
+      "ac": 3,
+      "cost_gp": 400,
+      "weight_gp": 4000,
+      "armor_type": "very_heavy",
+      "movement_rate": 6,
+      "allowed_classes": ["Fighter", "Ranger", "Paladin", "Cleric", "Assassin"],
+      "description": "Full suit of shaped and fitted metal plates"
+    }
+  },
+  "shields": {
+    "shield_small_wood": {
+      "name": "Small Wooden Shield",
+      "ac_bonus": 1,
+      "cost_gp": 1,
+      "weight_gp": 10,
+      "max_attacks_blocked": 1,
+      "allowed_classes": ["Fighter", "Ranger", "Paladin", "Cleric", "Druid", "Assassin", "Bard"],
+      "description": "Simple wooden shield, blocks 1 attack per round"
+    },
+    "shield_small": {
+      "name": "Small Shield",
+      "ac_bonus": 1,
+      "cost_gp": 10,
+      "weight_gp": 100,
+      "max_attacks_blocked": 1,
+      "allowed_classes": ["Fighter", "Ranger", "Paladin", "Cleric", "Druid", "Assassin", "Bard"],
+      "description": "Metal-rimmed shield, blocks 1 attack per round"
+    },
+    "shield_medium": {
+      "name": "Medium Shield",
+      "ac_bonus": 1,
+      "cost_gp": 10,
+      "weight_gp": 100,
+      "max_attacks_blocked": 2,
+      "allowed_classes": ["Fighter", "Ranger", "Paladin", "Cleric", "Druid", "Assassin", "Bard"],
+      "description": "Standard shield, blocks 2 attacks per round"
+    },
+    "shield_large": {
+      "name": "Large Shield",
+      "ac_bonus": 1,
+      "cost_gp": 15,
+      "weight_gp": 150,
+      "max_attacks_blocked": 3,
+      "allowed_classes": ["Fighter", "Ranger", "Paladin", "Cleric", "Assassin", "Bard"],
+      "description": "Large shield, blocks 3 attacks per round (not usable by Druids - too heavy/metal)"
+    }
+  },
+  "helmets": {
+    "helmet_small": {
+      "name": "Small Helmet",
+      "ac_bonus": 0,
+      "cost_gp": 0.5,
+      "weight_gp": 5,
+      "allowed_classes": ["Fighter", "Ranger", "Paladin", "Cleric", "Druid", "Thief", "Assassin", "Bard"],
+      "description": "Small leather cap or coif"
+    },
+    "helmet_great": {
+      "name": "Great Helmet",
+      "ac_bonus": 0,
+      "cost_gp": 15,
+      "weight_gp": 150,
+      "allowed_classes": ["Fighter", "Ranger", "Paladin", "Cleric", "Assassin"],
+      "description": "Full metal helmet with face protection"
+    }
+  },
+  "class_restrictions": {
+    "Fighter": {
+      "armor": "any",
+      "shields": "any",
+      "description": "Can wear any armor and use any shield"
+    },
+    "Ranger": {
+      "armor": "any",
+      "shields": "any",
+      "description": "Can wear any armor and use any shield"
+    },
+    "Paladin": {
+      "armor": "any",
+      "shields": "any",
+      "description": "Can wear any armor and use any shield"
+    },
+    "Cleric": {
+      "armor": "any",
+      "shields": "any",
+      "description": "Can wear any armor and use any shield"
+    },
+    "Druid": {
+      "armor": ["leather", "padded"],
+      "shields": ["shield_small_wood", "shield_small", "shield_medium"],
+      "description": "Can only wear leather armor and use wooden/light shields (metal armor spoils magical powers)"
+    },
+    "Magic-User": {
+      "armor": "none",
+      "shields": "none",
+      "description": "Cannot wear armor or use shields"
+    },
+    "Illusionist": {
+      "armor": "none",
+      "shields": "none",
+      "description": "Cannot wear armor or use shields"
+    },
+    "Thief": {
+      "armor": ["leather", "padded"],
+      "shields": "none",
+      "description": "Can only wear leather armor, cannot use shields"
+    },
+    "Assassin": {
+      "armor": "any",
+      "shields": "any",
+      "description": "Can wear any armor and use any shield"
+    },
+    "Monk": {
+      "armor": "none",
+      "shields": "none",
+      "description": "Cannot wear armor or use shields (AC improves with level)"
+    },
+    "Bard": {
+      "armor": ["leather", "padded", "studded_leather", "ring_mail"],
+      "shields": ["shield_small_wood", "shield_small", "shield_medium"],
+      "description": "Limited to light armor and light shields"
+    }
+  },
+  "magic_armor_notes": {
+    "weight_negation": "Magic armor negates weight for movement purposes - movement rate is not reduced",
+    "ac_improvement": "Each +1 of magic improves AC by 1 (e.g., Plate Mail +3 = AC 0 instead of AC 3)",
+    "stacking": "Magic bonuses from armor and shields stack (Plate Mail +2 and Shield +1 = AC 0)"
+  }
+}
