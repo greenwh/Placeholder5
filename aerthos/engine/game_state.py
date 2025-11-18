@@ -417,8 +417,6 @@ class GameState:
         if not command.target:
             return {'success': False, 'message': "Cast what spell?"}
 
-        print(f"[DEBUG] _handle_cast received command.target: '{command.target}'")
-
         # Parse spell name and optional target from command
         # Examples: "cast cure" or "cast cure thorin" or "cast cure light wounds on thorin" or "cast magic missile goblin"
         full_command = command.target
@@ -433,7 +431,6 @@ class GameState:
                 parts = full_command.lower().split(prep, 1)
                 spell_name = parts[0].strip()
                 target_name = parts[1].strip() if len(parts) > 1 else None
-                print(f"[DEBUG] Preposition '{prep}' found - spell_name: '{spell_name}', target_name: '{target_name}'")
                 break
 
         # If no preposition found, check if last word is a party member name (for beneficial spells)
@@ -463,22 +460,16 @@ class GameState:
             for keyword in beneficial_spells
         )
 
-        # DEBUG: Log spell detection
-        print(f"[DEBUG] Spell: '{spell_name}', Target: '{target_name}', Beneficial: {is_beneficial}")
-
         # Build targets list
         if is_beneficial:
             # Beneficial spells should ONLY target party members (or caster if no target specified)
             # They should NEVER target monsters, even in combat
             if target_name and hasattr(self, 'party') and self.party:
                 # Find party member by name
-                print(f"[DEBUG] Looking for party member matching '{target_name}'")
-                print(f"[DEBUG] Party members: {[m.name for m in self.party.members]}")
                 target_char = None
                 for member in self.party.members:
                     if target_name.lower() in member.name.lower():
                         target_char = member
-                        print(f"[DEBUG] Found match: {member.name}")
                         break
                 if target_char:
                     targets = [target_char]
@@ -487,7 +478,6 @@ class GameState:
             else:
                 # No specific target, use caster (self.player is the active character who is casting)
                 targets = [self.player]
-                print(f"[DEBUG] Setting targets to caster: {self.player.name}")
         else:
             # Harmful spells target monsters, or fail if no monsters in combat
             if self.active_monsters:
@@ -495,9 +485,7 @@ class GameState:
             else:
                 return {'success': False, 'message': "There are no enemies to target!"}
 
-        print(f"[DEBUG] Before cast_spell - targets: {[t.name for t in targets]}")
         result = self.magic_system.cast_spell(self.player, spell_name, targets)
-        print(f"[DEBUG] After cast_spell - result narrative: {result.get('narrative', 'N/A')}")
 
         messages = [result['narrative']]
 
