@@ -42,12 +42,35 @@ class Weapon(Item):
 
 @dataclass
 class Armor(Item):
-    """Armor with AC bonus"""
-    ac_bonus: int = 0  # How much it improves AC
+    """Armor with AC rating and properties"""
+    ac: int = 10  # Base AC when wearing this armor
+    armor_type: str = "light"  # light, heavy, very_heavy
+    movement_rate: int = 12  # Movement rate in inches (dungeon)
     magic_bonus: int = 0  # +1, +2, etc. for magic armor (improves AC further)
+    allowed_classes: List[str] = field(default_factory=list)
 
     def __post_init__(self):
         self.item_type = 'armor'
+
+    def get_effective_ac(self) -> int:
+        """Get effective AC including magic bonus"""
+        return self.ac - self.magic_bonus
+
+
+@dataclass
+class Shield(Item):
+    """Shield with AC bonus"""
+    ac_bonus: int = 1  # How much it improves AC (usually 1)
+    max_attacks_blocked: int = 1  # How many attacks can be blocked per round
+    magic_bonus: int = 0  # +1, +2, etc. for magic shields
+    allowed_classes: List[str] = field(default_factory=list)
+
+    def __post_init__(self):
+        self.item_type = 'shield'
+
+    def get_effective_bonus(self) -> int:
+        """Get effective AC bonus including magic"""
+        return self.ac_bonus + self.magic_bonus
 
 
 @dataclass
@@ -165,23 +188,66 @@ class Equipment:
     def __init__(self):
         self.weapon: Optional[Weapon] = None
         self.armor: Optional[Armor] = None
-        self.shield: Optional[Armor] = None
+        self.shield: Optional[Shield] = None
         self.light_source: Optional[LightSource] = None
+        self.helmet: Optional[Item] = None
 
-    def get_total_ac(self, base_ac: int = 10) -> int:
-        """Calculate total AC from equipment (including magic bonuses)"""
-        ac = base_ac
+    def get_total_ac(self, base_ac: int = 10, dex_modifier: int = 0) -> int:
+        """
+        Calculate total AC from equipment
+
+        Args:
+            base_ac: Character's base AC (10 for unarmored)
+            dex_modifier: DEX defensive adjustment (negative improves AC)
+
+        Returns:
+            Final AC (lower is better)
+        """
+        # Start with armor AC if worn, otherwise base AC
         if self.armor:
-            ac -= self.armor.ac_bonus
-            # Magic bonus further improves AC (lower is better)
-            if hasattr(self.armor, 'magic_bonus'):
-                ac -= self.armor.magic_bonus
+            ac = self.armor.get_effective_ac()
+        else:
+            ac = base_ac
+
+        # Add shield bonus (reduces AC, so we subtract)
         if self.shield:
-            ac -= self.shield.ac_bonus
-            # Magic bonus further improves AC
-            if hasattr(self.shield, 'magic_bonus'):
-                ac -= self.shield.magic_bonus
+            ac -= self.shield.get_effective_bonus()
+
+        # Apply DEX modifier (negative improves AC)
+        ac += dex_modifier
+
         return ac
+
+    def get_movement_rate(self, base_movement: int = 12, is_magic_armor: bool = False) -> int:
+        """
+        Get movement rate based on armor
+
+        Args:
+            base_movement: Character's base movement rate
+            is_magic_armor: Whether the armor is magical (negates weight penalty)
+
+        Returns:
+            Movement rate in inches
+        """
+        if not self.armor or is_magic_armor:
+            return base_movement
+
+        return self.armor.movement_rate
+
+    def get_total_weight(self) -> float:
+        """Get total weight of equipped items in GP"""
+        weight = 0.0
+        if self.weapon:
+            weight += self.weapon.weight
+        if self.armor:
+            weight += self.armor.weight
+        if self.shield:
+            weight += self.shield.weight
+        if self.helmet:
+            weight += self.helmet.weight
+        if self.light_source:
+            weight += self.light_source.weight
+        return weight
 
 
 @dataclass
@@ -199,6 +265,9 @@ class PlayerCharacter(Character):
 
     # Thief Skills (if thief class)
     thief_skills: Dict[str, int] = field(default_factory=dict)
+
+    # Weapon Proficiencies
+    weapon_proficiencies: List[str] = field(default_factory=list)
 
     # Experience
     xp: int = 0
@@ -481,8 +550,18 @@ class PlayerCharacter(Character):
 
     def can_use_thief_skill(self, skill_name: str) -> bool:
         """Check if character has a thief skill"""
+        # Support both find_traps and find_remove_traps
+        if skill_name == 'find_traps':
+            skill_name = 'find_remove_traps'
         return skill_name in self.thief_skills
 
     def get_thief_skill_value(self, skill_name: str) -> int:
-        """Get percentage value for thief skill"""
+        """
+        Get percentage value for thief skill
+        Note: This returns base value only. For full calculation with
+        racial/DEX/armor modifiers, use SkillResolver.calculate_thief_skill()
+        """
+        # Support both find_traps and find_remove_traps
+        if skill_name == 'find_traps':
+            skill_name = 'find_remove_traps'
         return self.thief_skills.get(skill_name, 0)

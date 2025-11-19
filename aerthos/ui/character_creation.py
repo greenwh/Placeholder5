@@ -4,8 +4,9 @@ Character creation system - AD&D 1e style
 
 import random
 from typing import Dict, List
-from ..entities.player import PlayerCharacter, Weapon, Armor, Item, LightSource, Spell, SpellSlot, XP_TABLES
+from ..entities.player import PlayerCharacter, Weapon, Armor, Shield, Item, LightSource, Spell, SpellSlot, XP_TABLES
 from ..engine.combat import DiceRoller
+from ..systems.armor_system import ArmorSystem
 
 
 class CharacterCreator:
@@ -13,6 +14,7 @@ class CharacterCreator:
 
     def __init__(self, game_data):
         self.game_data = game_data
+        self.armor_system = ArmorSystem()
 
     def create_character(self) -> PlayerCharacter:
         """
@@ -406,8 +408,8 @@ class CharacterCreator:
         # Class-specific equipment
         if char_class in ['Fighter', 'Ranger', 'Paladin']:
             longsword = Weapon(name="Longsword", weight=4, damage_sm="1d8", damage_l="1d12", speed_factor=5)
-            chain = Armor(name="Chain Mail", weight=30, ac_bonus=5)
-            shield = Armor(name="Shield", weight=10, ac_bonus=1)
+            chain = self.armor_system.create_armor('chain_mail')
+            shield = self.armor_system.create_shield('shield_small')
 
             player.inventory.add_item(longsword)
             player.inventory.add_item(chain)
@@ -419,8 +421,8 @@ class CharacterCreator:
 
         elif char_class in ['Cleric', 'Druid']:
             mace = Weapon(name="Mace", weight=8, damage_sm="1d6", damage_l="1d6", speed_factor=7)
-            chain = Armor(name="Chain Mail", weight=30, ac_bonus=5)
-            shield = Armor(name="Shield", weight=10, ac_bonus=1)
+            chain = self.armor_system.create_armor('chain_mail')
+            shield = self.armor_system.create_shield('shield_small')
 
             player.inventory.add_item(mace)
             player.inventory.add_item(chain)
@@ -441,7 +443,7 @@ class CharacterCreator:
 
         elif char_class in ['Thief', 'Assassin', 'Bard']:
             shortsword = Weapon(name="Shortsword", weight=3, damage_sm="1d6", damage_l="1d8", speed_factor=3)
-            leather = Armor(name="Leather Armor", weight=15, ac_bonus=2)
+            leather = self.armor_system.create_armor('leather')
 
             player.inventory.add_item(shortsword)
             player.inventory.add_item(leather)

@@ -150,6 +150,15 @@ class CombatResolver:
         if weapon and hasattr(weapon, 'magic_bonus'):
             to_hit_bonus += weapon.magic_bonus
 
+        # Check weapon proficiency and apply non-proficiency penalty
+        if hasattr(attacker, 'weapon_proficiencies') and weapon:
+            from ..systems.weapon_proficiency import WeaponProficiencySystem
+            prof_system = WeaponProficiencySystem()
+
+            if not prof_system.is_proficient(attacker.weapon_proficiencies, weapon.name):
+                penalty = prof_system.get_non_proficiency_penalty(attacker.char_class)
+                to_hit_bonus += penalty  # Add penalty (it's negative)
+
         # Handle special weapon to-hit bonuses
         if weapon and hasattr(weapon, 'properties'):
             props = weapon.properties
@@ -275,9 +284,12 @@ class CombatResolver:
     def resolve_combat_round(self, party: List[Character],
                             monsters: List[Character]) -> Dict:
         """
-        Resolve a full combat round (side-based initiative)
+        Resolve a full combat round with individual initiative
 
-        In AD&D 1e, initiative is rolled per side, not per character
+        In AD&D 1e, initiative can be:
+        - Side-based (d6 per side)
+        - Individual (d6 + weapon speed factor + dexterity modifier)
+        This implementation uses individual initiative for more tactical depth
 
         Args:
             party: List of party members (PCs)
@@ -287,41 +299,146 @@ class CombatResolver:
             Dict with round results
         """
 
-        # Roll initiative (d6 for each side, lower goes first)
-        party_init = random.randint(1, 6)
-        monster_init = random.randint(1, 6)
+        # Build initiative order for all combatants
+        all_combatants = []
+
+        for character in party:
+            if character.is_alive and not character.is_incapacitated():
+                init_value = self._calculate_initiative(character)
+                all_combatants.append({
+                    'character': character,
+                    'initiative': init_value,
+                    'side': 'party',
+                    'attacks_remaining': getattr(character, 'attacks_per_round', 1.0)
+                })
+
+        for monster in monsters:
+            if monster.is_alive:
+                init_value = self._calculate_initiative(monster)
+                all_combatants.append({
+                    'character': monster,
+                    'initiative': init_value,
+                    'side': 'monster',
+                    'attacks_remaining': getattr(monster, 'attacks_per_round', 1.0)
+                })
+
+        # Sort by initiative (lower is better in AD&D 1e)
+        all_combatants.sort(key=lambda x: x['initiative'])
 
         results = {
-            'party_initiative': party_init,
-            'monster_initiative': monster_init,
             'actions': [],
             'party_won': False,
             'monsters_won': False
         }
 
-        # Determine order
-        if party_init <= monster_init:
-            # Party goes first
-            self._process_side_actions(party, monsters, results['actions'])
-            if all(not m.is_alive for m in monsters):
-                results['party_won'] = True
-                return results
+        # Process attacks in initiative order
+        # Handle fractional attacks (1.5, 2.0, etc.)
+        attack_segments = [1, 2]  # Two attack segments per round
 
-            self._process_side_actions(monsters, party, results['actions'])
-            if all(not p.is_alive for p in party):
-                results['monsters_won'] = True
-        else:
-            # Monsters go first
-            self._process_side_actions(monsters, party, results['actions'])
-            if all(not p.is_alive for p in party):
-                results['monsters_won'] = True
-                return results
+        for segment in attack_segments:
+            for combatant in all_combatants:
+                char = combatant['character']
 
-            self._process_side_actions(party, monsters, results['actions'])
-            if all(not m.is_alive for m in monsters):
-                results['party_won'] = True
+                # Skip if dead or incapacitated
+                if not char.is_alive or char.is_incapacitated():
+                    continue
+
+                # Determine if this character attacks this segment
+                attacks_per_round = combatant['attacks_remaining']
+
+                # 1 attack per round = attack on first segment only
+                # 1.5 attacks per round = attack both segments alternately (every other round)
+                # 2 attacks per round = attack both segments
+
+                should_attack = False
+                if attacks_per_round >= 2.0:
+                    should_attack = True
+                elif attacks_per_round >= 1.5:
+                    # 1.5 attacks = 3 attacks per 2 rounds
+                    # Implement as: attack first segment always, second segment alternately
+                    should_attack = (segment == 1) or (random.random() < 0.5)
+                elif segment == 1:
+                    # 1 attack per round = first segment only
+                    should_attack = True
+
+                if not should_attack:
+                    continue
+
+                # Find target
+                if combatant['side'] == 'party':
+                    targets = [m for m in monsters if m.is_alive]
+                else:
+                    targets = [p for p in party if p.is_alive and not p.is_incapacitated()]
+
+                if not targets:
+                    break
+
+                target = random.choice(targets)
+
+                # Get weapon
+                weapon = None
+                if hasattr(char, 'equipment') and hasattr(char.equipment, 'weapon'):
+                    weapon = char.equipment.weapon
+
+                # Make attack
+                result = self.attack_roll(char, target, weapon)
+                results['actions'].append(result['narrative'])
+
+                # Check for combat end
+                if all(not m.is_alive for m in monsters):
+                    results['party_won'] = True
+                    return results
+
+                if all(not p.is_alive for p in party):
+                    results['monsters_won'] = True
+                    return results
 
         return results
+
+    def _calculate_initiative(self, character: Character) -> int:
+        """
+        Calculate individual initiative value
+
+        Initiative = d6 + weapon speed factor + dexterity modifier
+
+        Args:
+            character: Character rolling initiative
+
+        Returns:
+            Initiative value (lower is better)
+        """
+        # Base d6 roll
+        base_roll = random.randint(1, 6)
+
+        # Weapon speed factor (higher = slower)
+        weapon_speed = 0
+        if hasattr(character, 'equipment') and hasattr(character.equipment, 'weapon'):
+            weapon = character.equipment.weapon
+            if hasattr(weapon, 'speed_factor'):
+                weapon_speed = weapon.speed_factor
+            else:
+                # Default speed factor by weapon type if not specified
+                weapon_speed = 5  # Average
+        else:
+            # Unarmed/natural weapons are fast
+            weapon_speed = 2
+
+        # Dexterity modifier (reaction/defense adjustment)
+        # In AD&D 1e, high DEX improves initiative
+        dex_mod = 0
+        if hasattr(character, 'dex'):
+            dex = character.dex
+            if dex >= 18:
+                dex_mod = -2  # Very fast
+            elif dex >= 16:
+                dex_mod = -1  # Fast
+            elif dex <= 5:
+                dex_mod = 2   # Very slow
+            elif dex <= 8:
+                dex_mod = 1   # Slow
+
+        # Total initiative (lower is better)
+        return base_roll + weapon_speed + dex_mod
 
     def _process_side_actions(self, attackers: List[Character],
                               defenders: List[Character],
