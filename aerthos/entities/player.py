@@ -350,18 +350,18 @@ class PlayerCharacter(Character):
         # Unknown class - allow by default
         return (True, "")
 
-    def equip_weapon(self, weapon: Weapon):
+    def equip_weapon(self, weapon: Weapon) -> None:
         """Equip a weapon"""
         self.equipment.weapon = weapon
 
-    def equip_armor(self, armor: Armor):
+    def equip_armor(self, armor: Armor) -> None:
         """Equip armor or shield"""
         if armor.name.lower().find('shield') != -1:
             self.equipment.shield = armor
         else:
             self.equipment.armor = armor
 
-    def equip_light(self, light: LightSource):
+    def equip_light(self, light: LightSource) -> None:
         """Equip a light source"""
         self.equipment.light_source = light
 
@@ -373,7 +373,7 @@ class PlayerCharacter(Character):
             return True
         return False
 
-    def add_spell_slot(self, level: int):
+    def add_spell_slot(self, level: int) -> None:
         """Add an empty spell slot"""
         self.spells_memorized.append(SpellSlot(level=level))
 
@@ -432,7 +432,7 @@ class PlayerCharacter(Character):
 
         return None
 
-    def restore_spells(self):
+    def restore_spells(self) -> None:
         """Restore all spell slots (after rest)"""
         for slot in self.spells_memorized:
             slot.is_used = False

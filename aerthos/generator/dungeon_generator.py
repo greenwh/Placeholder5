@@ -8,6 +8,7 @@ Supports fixed (seeded) and random generation.
 import random
 from typing import List, Dict, Set, Tuple, Optional
 from .config import DungeonConfig
+from ..systems.narrator import DMNarrator, NarrativeContext
 
 
 class DungeonGenerator:
@@ -19,15 +20,18 @@ class DungeonGenerator:
     reproducible dungeons.
     """
 
-    def __init__(self, game_data=None):
+    def __init__(self, game_data=None, use_narrator=True):
         """
         Initialize generator
 
         Args:
             game_data: GameData instance with monsters/items (optional)
+            use_narrator: If True, use DMNarrator for atmospheric descriptions
         """
         self.game_data = game_data
         self.rng = random.Random()
+        self.use_narrator = use_narrator
+        self.narrator = DMNarrator() if use_narrator else None
 
         # Theme-based description templates
         self.themes = {
@@ -558,11 +562,66 @@ class DungeonGenerator:
             # First room gets special treatment
             if room_id == 'room_001':
                 rooms[room_id]['title'] = f"{theme.capitalize()} Entrance"
-                rooms[room_id]['description'] = f"The entrance to a dark {theme}. " + \
-                    self.rng.choice(descriptions)
+
+                if self.use_narrator and self.narrator:
+                    # Use DMNarrator for atmospheric entrance description
+                    context = NarrativeContext(
+                        location_type="dungeon",
+                        atmosphere=[theme, "dark", "ancient"],
+                        light_level="torch"
+                    )
+                    base_desc = self.narrator.describe_room_entrance(
+                        room_type=f"{theme} entrance",
+                        size="",
+                        primary_features=[self.rng.choice(descriptions)],
+                        context=context
+                    )
+                    rooms[room_id]['description'] = base_desc
+                else:
+                    # Fall back to original simple description
+                    rooms[room_id]['description'] = f"The entrance to a dark {theme}. " + \
+                        self.rng.choice(descriptions)
             else:
                 rooms[room_id]['title'] = titles[i % len(titles)]
-                rooms[room_id]['description'] = descriptions[i % len(descriptions)]
+
+                if self.use_narrator and self.narrator:
+                    # Use DMNarrator for atmospheric room descriptions
+                    # Determine room size from title
+                    title_lower = titles[i % len(titles)].lower()
+                    if any(word in title_lower for word in ['vast', 'huge', 'grand']):
+                        size = "vast"
+                    elif any(word in title_lower for word in ['large', 'great']):
+                        size = "large"
+                    else:
+                        size = ""
+
+                    # Determine atmosphere
+                    atmosphere = [theme]
+                    if 'abandoned' in title_lower or 'ruined' in title_lower:
+                        atmosphere.append('abandoned')
+                    if 'dark' in title_lower or 'shadow' in title_lower:
+                        atmosphere.append('dark')
+                    if 'ancient' in title_lower or 'old' in title_lower:
+                        atmosphere.append('ancient')
+
+                    context = NarrativeContext(
+                        location_type="dungeon",
+                        atmosphere=atmosphere,
+                        light_level="torch"
+                    )
+
+                    # Extract room type from title
+                    room_type = titles[i % len(titles)].lower()
+
+                    rooms[room_id]['description'] = self.narrator.describe_room_entrance(
+                        room_type=room_type,
+                        size=size,
+                        primary_features=[descriptions[i % len(descriptions)]],
+                        context=context
+                    )
+                else:
+                    # Fall back to original simple description
+                    rooms[room_id]['description'] = descriptions[i % len(descriptions)]
 
                 # Add encounter hints
                 if rooms[room_id]['encounters']:

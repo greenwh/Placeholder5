@@ -102,7 +102,7 @@ class Character:
             return True
         return False
 
-    def heal(self, amount: int):
+    def heal(self, amount: int) -> None:
         """Heal damage, cannot exceed max HP"""
         self.hp_current = min(self.hp_current + amount, self.hp_max)
 
@@ -110,12 +110,12 @@ class Character:
         """Check if character has a specific condition"""
         return condition in self.conditions
 
-    def add_condition(self, condition: str):
+    def add_condition(self, condition: str) -> None:
         """Add a condition if not already present"""
         if condition not in self.conditions:
             self.conditions.append(condition)
 
-    def remove_condition(self, condition: str):
+    def remove_condition(self, condition: str) -> None:
         """Remove a condition if present"""
         if condition in self.conditions:
             self.conditions.remove(condition)
@@ -127,7 +127,7 @@ class Character:
                 self.has_condition('paralyzed') or
                 self.has_condition('unconscious'))
 
-    def award_xp(self, xp_amount: int):
+    def award_xp(self, xp_amount: int) -> None:
         """Award experience points (with prime requisite bonus)"""
         if self.xp_bonus_percent > 0:
             bonus = int(xp_amount * (self.xp_bonus_percent / 100.0))

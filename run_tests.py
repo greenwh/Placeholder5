@@ -173,7 +173,14 @@ def main():
             ('Thief Skills Tests', 'test_thief_skills.py'),
             ('Movement System Tests', 'test_movement.py'),
             ('Weapon Proficiency Tests', 'test_weapon_proficiency.py'),
-            ('Saving Throw Tests', 'test_saving_throws.py')
+            ('Saving Throw Tests', 'test_saving_throws.py'),
+            ('Spell Targeting Tests', 'test_spell_targeting.py'),
+            ('Narrator Integration Tests', 'test_narrator_integration.py'),
+            ('Monster Abilities Integration Tests', 'test_monster_abilities_integration.py'),
+            ('Treasure Generation Tests', 'test_treasure_generation.py'),
+            ('Magic Functionality Tests', 'test_magic_functionality.py'),
+            ('Phase 3 Integration Tests', 'test_phase3_integration.py'),
+            ('Village System Tests', 'test_village_system.py')
         ]
 
         for suite_name, pattern in unit_tests:

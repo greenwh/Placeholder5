@@ -262,7 +262,7 @@ class TestMovementCalculation(unittest.TestCase):
             char_class="Fighter",
             race="Human",
             level=1,
-            strength=10,  # STR 10 = 500 GP base capacity
+            strength=10,  # STR 10 = 350 GP base capacity (35 lbs)
             dexterity=10,
             constitution=10,
             intelligence=10,
@@ -270,12 +270,12 @@ class TestMovementCalculation(unittest.TestCase):
             charisma=10
         )
 
-        # Add heavy weight (heavily encumbered: 150-200% = 750-1000 GP)
-        heavy_pack = Item(name="Heavy Pack", weight=875)  # 875 GP
+        # Add heavy weight (heavily encumbered: 150-200% = 525-700 GP)
+        heavy_pack = Item(name="Heavy Pack", weight=600)  # 600 GP (171% of capacity)
         human.inventory.add_item(heavy_pack)
 
         rate = self.movement.calculate_movement_rate(human)
-        # Heavily encumbered = 1/2 movement, so 12 * 0.5 = 6
+        # Heavily encumbered (150-200%) = 1/2 movement, so 12 * 0.5 = 6
         self.assertEqual(rate, 6, "Heavily encumbered human should move 6 inches")
 
     def test_magic_armor_negates_weight_full_test(self):

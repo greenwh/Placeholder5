@@ -69,7 +69,7 @@ class MonsterSpecialAbilities:
         elif "drain" in ability_name.lower() and "level" in ability_name.lower():
             return self._level_drain(monster, targets)
 
-        elif "paralyz" in ability_name.lower() or "paralyze" in ability_name.lower():
+        elif any(word in ability_name.lower() for word in ["paralyz", "paralyze", "paralysis"]):
             return self._paralysis(monster, targets)
 
         elif "gaze" in ability_name.lower():

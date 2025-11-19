@@ -47,6 +47,7 @@ class CommandParser:
         'memorize': ['memorize', 'prepare', 'pray'],
         'map': ['map', 'm', 'automap'],
         'directions': ['directions', 'dirs', 'exits'],
+        'formation': ['formation', 'form', 'lineup', 'position'],
         'save': ['save'],
         'load': ['load'],
         'help': ['help', '?', 'commands'],

@@ -82,6 +82,49 @@ class Display:
         print()
 
     @staticmethod
+    def show_party_formation(party):
+        """
+        Display party formation at start of combat
+
+        Args:
+            party: Party object with formation data
+        """
+        from ..entities.party import Party
+
+        if not isinstance(party, Party):
+            return
+
+        print()
+        print("═" * 70)
+        print("COMBAT - PARTY FORMATION")
+        print("═" * 70)
+
+        # Get front and back lines
+        front_line = party.get_front_line()
+        back_line = party.get_back_line()
+
+        # Display front line
+        if front_line:
+            print("\nFRONT LINE:")
+            for member in front_line:
+                status = "ALIVE" if member.is_alive else "DEAD"
+                hp_str = f"HP: {member.hp_current}/{member.hp_max}"
+                ac_str = f"AC: {member.ac}"
+                print(f"  • {member.name} ({member.char_class}) [{status}] {hp_str}, {ac_str}")
+
+        # Display back line
+        if back_line:
+            print("\nBACK LINE:")
+            for member in back_line:
+                status = "ALIVE" if member.is_alive else "DEAD"
+                hp_str = f"HP: {member.hp_current}/{member.hp_max}"
+                ac_str = f"AC: {member.ac}"
+                print(f"  • {member.name} ({member.char_class}) [{status}] {hp_str}, {ac_str}")
+
+        print("═" * 70)
+        print()
+
+    @staticmethod
     def show_death_screen(player_name: str):
         """
         Display death screen

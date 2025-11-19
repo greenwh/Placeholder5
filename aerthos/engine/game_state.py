@@ -17,6 +17,8 @@ from ..engine.time_tracker import TimeTracker, RestSystem
 from ..systems.magic import MagicSystem
 from ..systems.skills import SkillResolver
 from ..systems.saving_throws import SavingThrowResolver
+from ..systems.monster_abilities import MonsterSpecialAbilities
+from ..systems.narrator import DMNarrator, NarrativeContext
 from ..engine.parser import Command
 
 
@@ -72,6 +74,8 @@ class GameState:
         self.skill_resolver = SkillResolver()
         self.save_resolver = SavingThrowResolver()
         self.encounter_manager = EncounterManager()
+        self.monster_abilities = MonsterSpecialAbilities()
+        self.narrator = DMNarrator()
 
         # Combat state
         self.active_monsters: List[Monster] = []
@@ -81,7 +85,7 @@ class GameState:
         # Game data
         self.game_data: Optional[GameData] = None
 
-    def load_game_data(self, data_dir: str = "aerthos/data"):
+    def load_game_data(self, data_dir: str = "aerthos/data") -> None:
         """Load all game data"""
         self.game_data = GameData.load_all(data_dir)
 
@@ -115,6 +119,7 @@ class GameState:
             'memorize': self._handle_memorize,
             'map': self._handle_map,
             'directions': self._handle_directions,
+            'formation': self._handle_formation,
             'help': self._handle_help,
             'save': self._handle_save,
             'load': self._handle_load,
@@ -252,13 +257,55 @@ class GameState:
         # Monsters counter-attack
         for monster in self.active_monsters:
             if monster.is_alive:
-                monster_result = self.combat_resolver.attack_roll(monster, self.player)
-                messages.append(monster_result['narrative'])
+                # Check if monster has special abilities and randomly uses them (30% chance)
+                used_special = False
+                if hasattr(monster, 'special_abilities') and monster.special_abilities:
+                    if random.random() < 0.3:  # 30% chance to use special ability
+                        ability = random.choice(monster.special_abilities)
+                        try:
+                            ability_result = self.monster_abilities.use_ability(
+                                monster, ability, [self.player]
+                            )
+                            messages.append(ability_result.message)
 
-                if monster_result['defender_died']:
-                    messages.append("\n═══ YOU HAVE DIED ═══")
-                    self.is_active = False
-                    return {'success': False, 'message': '\n'.join(messages)}
+                            # Apply damage if any
+                            if ability_result.damage > 0:
+                                # Check for saving throw
+                                if ability_result.save_allowed:
+                                    save_result = self.save_resolver.make_save(
+                                        self.player,
+                                        ability_result.save_type
+                                    )
+                                    if save_result['success']:
+                                        # Save for half damage
+                                        damage = ability_result.damage // 2
+                                        messages.append(f"{self.player.name} makes their save! Damage reduced to {damage}.")
+                                    else:
+                                        damage = ability_result.damage
+                                        messages.append(f"{self.player.name} fails their save!")
+                                else:
+                                    damage = ability_result.damage
+
+                                died = self.player.take_damage(damage)
+                                if died:
+                                    messages.append("\n═══ YOU HAVE DIED ═══")
+                                    self.is_active = False
+                                    return {'success': False, 'message': '\n'.join(messages)}
+
+                            used_special = True
+                        except Exception:
+                            # If special ability fails, fall back to normal attack
+                            pass
+
+                # Normal attack if no special ability used
+                if not used_special:
+                    monster_result = self.combat_resolver.attack_roll(monster, self.player)
+                    messages.append(monster_result['narrative'])
+
+                    if monster_result['defender_died']:
+                        messages.append("\n═══ YOU HAVE DIED ═══")
+                        self.is_active = False
+                        return {'success': False, 'message': '\n'.join(messages)}
 
         # Show monster status after combat round
         if self.in_combat and self.active_monsters:
@@ -479,11 +526,26 @@ class GameState:
                 # No specific target, use caster (self.player is the active character who is casting)
                 targets = [self.player]
         else:
-            # Harmful spells target monsters, or fail if no monsters in combat
-            if self.active_monsters:
-                targets = self.active_monsters
-            else:
+            # Harmful spells target monsters
+            if not self.active_monsters:
                 return {'success': False, 'message': "There are no enemies to target!"}
+
+            # If specific target specified, find it by name
+            if target_name:
+                target_char = None
+                for monster in self.active_monsters:
+                    if target_name.lower() in monster.name.lower():
+                        target_char = monster
+                        break
+
+                if target_char:
+                    targets = [target_char]
+                else:
+                    return {'success': False, 'message': f"No enemy named '{target_name}' found."}
+            else:
+                # No specific target, use all monsters for area spells or first for single-target
+                # The spell handler will decide if it's area-effect or single-target
+                targets = self.active_monsters
 
         result = self.magic_system.cast_spell(self.player, spell_name, targets)
 
@@ -804,6 +866,98 @@ class GameState:
             msg = "There are no obvious exits from here."
 
         return {'success': True, 'message': msg}
+
+    def _handle_formation(self, command: Command) -> Dict:
+        """Handle formation commands (party-based gameplay)"""
+
+        # Check if party object exists
+        if not hasattr(self, 'party') or self.party is None:
+            return {
+                'success': False,
+                'message': "Formation commands are only available in party-based gameplay."
+            }
+
+        from ..entities.party import Party
+
+        # Ensure we have a Party object
+        if not isinstance(self.party, Party):
+            return {
+                'success': False,
+                'message': "Formation commands are only available in party-based gameplay."
+            }
+
+        # Parse formation command variations
+        # "formation" - show current formation
+        # "formation <name> front" - move character to front
+        # "formation <name> back" - move character to back
+        # "formation default" - auto-assign by class
+
+        if not command.target:
+            # Show current formation
+            from ..ui.character_sheet import CharacterSheet
+            roster = CharacterSheet.format_party_roster(self.party)
+            return {'success': True, 'message': roster}
+
+        target_lower = command.target.lower()
+
+        # Handle "formation default"
+        if target_lower == 'default':
+            # Auto-assign formation based on class
+            for i, member in enumerate(self.party.members):
+                # Fighters and Clerics in front, Magic-Users and Thieves in back
+                if member.char_class in ['Fighter', 'Cleric', 'Dwarf']:
+                    self.party.formation[i] = 'front'
+                else:  # Magic-User, Thief, Elf, Halfling
+                    self.party.formation[i] = 'back'
+
+            from ..ui.character_sheet import CharacterSheet
+            roster = CharacterSheet.format_party_roster(self.party)
+            return {
+                'success': True,
+                'message': "Formation reset to default positions.\n\n" + roster
+            }
+
+        # Handle "formation <name> <position>"
+        # Parse target to extract name and position
+        parts = target_lower.split()
+
+        if len(parts) < 2:
+            return {
+                'success': False,
+                'message': "Usage: formation <character name> <front|back>"
+            }
+
+        # Last word should be position, everything else is name
+        position = parts[-1]
+        name = ' '.join(parts[:-1])
+
+        if position not in ['front', 'back']:
+            return {
+                'success': False,
+                'message': "Position must be 'front' or 'back'."
+            }
+
+        # Find character by name (case-insensitive)
+        member_index = None
+        for i, member in enumerate(self.party.members):
+            if member.name.lower() == name:
+                member_index = i
+                break
+
+        if member_index is None:
+            return {
+                'success': False,
+                'message': f"No party member named '{name}' found."
+            }
+
+        # Update formation
+        self.party.formation[member_index] = position
+        member_name = self.party.members[member_index].name
+
+        return {
+            'success': True,
+            'message': f"{member_name} moved to {position} line."
+        }
 
     def _handle_help(self, command: Command) -> Dict:
         """Show help"""

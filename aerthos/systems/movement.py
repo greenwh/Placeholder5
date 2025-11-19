@@ -163,7 +163,7 @@ class MovementSystem:
 
             # Get STR weight allowance
             str_mods = self.ability_system.get_strength_modifiers(character.strength)
-            base_capacity = 500  # Base capacity in GP (50 lbs at 10 GP = 1 lb)
+            base_capacity = 350  # Base capacity in GP (35 lbs at 10 GP = 1 lb - "Normal Gear" from PH)
             max_weight = base_capacity + str_mods['weight_allowance']
 
             encumbrance_mod = self.get_encumbrance_modifier(current_weight, max_weight)

@@ -316,11 +316,11 @@ class TestEquipmentClass(unittest.TestCase):
 
         # Add armor
         equipment.armor = system.create_armor('plate_mail')
-        self.assertEqual(equipment.get_total_weight(), 4000.0)  # 4000 GP weight
+        self.assertEqual(equipment.get_total_weight(), 400.0)  # 400 GP weight (40 lbs)
 
         # Add shield
         equipment.shield = system.create_shield('shield_small')
-        self.assertEqual(equipment.get_total_weight(), 4100.0)  # 4000 + 100
+        self.assertEqual(equipment.get_total_weight(), 410.0)  # 400 + 10 (41 lbs)
 
 
 if __name__ == '__main__':

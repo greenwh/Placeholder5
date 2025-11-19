@@ -7,6 +7,8 @@ import re
 from typing import Dict, Optional, List
 from ..entities.character import Character
 from ..entities.player import Weapon
+from ..constants import D20_MAX, CRITICAL_HIT, CRITICAL_MISS, INITIATIVE_DIE
+from ..systems.monster_ai import MonsterTargetingAI
 
 
 class DiceRoller:
@@ -109,8 +111,8 @@ class CombatResolver:
         # Roll d20
         roll = self.dice_roller.roll_d20()
 
-        # Critical miss (natural 1)
-        if roll == 1:
+        # Critical miss
+        if roll == CRITICAL_MISS:
             return {
                 'hit': False,
                 'roll': 1,
@@ -120,8 +122,8 @@ class CombatResolver:
                 'critical': 'miss'
             }
 
-        # Critical hit (natural 20)
-        if roll == 20:
+        # Critical hit
+        if roll == CRITICAL_HIT:
             damage = self._calculate_damage(attacker, defender, weapon, critical=True)
             died = defender.take_damage(damage)
 
@@ -282,9 +284,15 @@ class CombatResolver:
         return max(1, total_damage)
 
     def resolve_combat_round(self, party: List[Character],
-                            monsters: List[Character]) -> Dict:
+                            monsters: List[Character],
+                            party_obj=None) -> Dict:
         """
         Resolve a full combat round with individual initiative
+
+        Args:
+            party: List of party member Characters
+            monsters: List of Monster Characters
+            party_obj: Optional Party object for formation-aware targeting
 
         In AD&D 1e, initiative can be:
         - Side-based (d6 per side)
@@ -373,7 +381,14 @@ class CombatResolver:
                 if not targets:
                     break
 
-                target = random.choice(targets)
+                # Select target using formation-aware AI for monsters
+                if combatant['side'] == 'monster' and party_obj is not None:
+                    # Use AI targeting for monsters attacking party
+                    ai = MonsterTargetingAI()
+                    target = ai.select_target(char, party_obj, targets)
+                else:
+                    # Random targeting for player attacks or solo play
+                    target = random.choice(targets)
 
                 # Get weapon
                 weapon = None
@@ -407,8 +422,8 @@ class CombatResolver:
         Returns:
             Initiative value (lower is better)
         """
-        # Base d6 roll
-        base_roll = random.randint(1, 6)
+        # Base initiative die roll
+        base_roll = random.randint(1, INITIATIVE_DIE)
 
         # Weapon speed factor (higher = slower)
         weapon_speed = 0

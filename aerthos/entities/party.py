@@ -96,6 +96,11 @@ class Party:
         """Get back-line party members (safe with list sync)"""
         return [member for member, pos in zip(self.members, self.formation) if pos == 'back']
 
+    def is_front_line_standing(self) -> bool:
+        """Check if any front-line members are alive"""
+        front_line = self.get_front_line()
+        return any(member.is_alive for member in front_line)
+
     def is_alive(self) -> bool:
         """Check if any party members are alive"""
         return any(m.is_alive for m in self.members)
@@ -115,7 +120,7 @@ class Party:
             return 0
         return sum(m.level for m in self.members) / len(self.members)
 
-    def distribute_xp(self, xp_amount: int):
+    def distribute_xp(self, xp_amount: int) -> None:
         """
         Distribute XP equally among living party members
 

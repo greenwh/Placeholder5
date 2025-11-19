@@ -105,3 +105,74 @@ class CharacterSheet:
 
         return (f"{player.name} | HP: {player.hp_current}/{player.hp_max} | "
                 f"AC: {player.get_effective_ac()} | Gold: {player.gold} gp")
+
+    @staticmethod
+    def format_party_roster(party) -> str:
+        """
+        Format party roster with formation positions
+
+        Args:
+            party: Party object
+
+        Returns:
+            Formatted party roster string
+        """
+        from ..entities.party import Party
+
+        if not isinstance(party, Party):
+            return "No party data available"
+
+        lines = []
+        lines.append("═" * 70)
+        lines.append("PARTY ROSTER")
+        lines.append("═" * 70)
+        lines.append(f"Party Size: {party.size()}/{party.max_size}")
+        lines.append(f"Average Level: {party.average_level:.1f}")
+        lines.append("")
+
+        # Get formation positions
+        front_line = party.get_front_line()
+        back_line = party.get_back_line()
+
+        # Display front line
+        if front_line:
+            lines.append("FRONT LINE:")
+            for member in front_line:
+                status = "✓" if member.is_alive else "✗"
+                hp_pct = int((member.hp_current / member.hp_max) * 100) if member.hp_max > 0 else 0
+                hp_bar = CharacterSheet._format_hp_bar(hp_pct)
+                lines.append(f"  {status} {member.name} ({member.char_class}-{member.level})")
+                lines.append(f"    HP: {member.hp_current}/{member.hp_max} {hp_bar} | AC: {member.ac} | THAC0: {member.thac0}")
+
+        # Display back line
+        if back_line:
+            lines.append("")
+            lines.append("BACK LINE:")
+            for member in back_line:
+                status = "✓" if member.is_alive else "✗"
+                hp_pct = int((member.hp_current / member.hp_max) * 100) if member.hp_max > 0 else 0
+                hp_bar = CharacterSheet._format_hp_bar(hp_pct)
+                lines.append(f"  {status} {member.name} ({member.char_class}-{member.level})")
+                lines.append(f"    HP: {member.hp_current}/{member.hp_max} {hp_bar} | AC: {member.ac} | THAC0: {member.thac0}")
+
+        lines.append("")
+        lines.append("═" * 70)
+
+        return '\n'.join(lines)
+
+    @staticmethod
+    def _format_hp_bar(percentage: int, width: int = 10) -> str:
+        """
+        Format HP bar visualization
+
+        Args:
+            percentage: HP percentage (0-100)
+            width: Bar width in characters
+
+        Returns:
+            HP bar string like [████░░░░░░]
+        """
+        filled = int((percentage / 100) * width)
+        empty = width - filled
+
+        return f"[{'█' * filled}{'░' * empty}]"

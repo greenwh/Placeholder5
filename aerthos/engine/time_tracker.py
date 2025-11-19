@@ -4,6 +4,9 @@ Time tracking system - manages turns, light sources, and resource consumption
 
 from typing import List, Optional, Dict
 from ..entities.player import PlayerCharacter, LightSource
+from ..constants import (
+    TURNS_PER_HOUR, REST_INTERRUPTION_CHANCE, SPELL_RESTORATION_HOURS
+)
 
 
 class TimeTracker:
@@ -37,8 +40,8 @@ class TimeTracker:
         if light_msg:
             messages.append(light_msg)
 
-        # Every 6 turns (1 hour)
-        if self.turns_elapsed % 6 == 0:
+        # Every TURNS_PER_HOUR turns (1 hour)
+        if self.turns_elapsed % TURNS_PER_HOUR == 0:
             self.total_hours += 1
 
             # Check hunger
@@ -165,9 +168,9 @@ class RestSystem:
                 'narrative': "You have no rations to eat! You need food to rest properly."
             }
 
-        # Random encounter check (15% chance of interruption)
+        # Random encounter check
         import random
-        if random.random() < 0.15:
+        if random.random() < REST_INTERRUPTION_CHANCE:
             return {
                 'success': False,
                 'hp_recovered': 0,
@@ -184,7 +187,7 @@ class RestSystem:
         if 'exhausted' in player.conditions:
             player.remove_condition('exhausted')
 
-        narrative = f"You rest for 8 hours and eat your rations.\n"
+        narrative = f"You rest for {SPELL_RESTORATION_HOURS} hours and eat your rations.\n"
         narrative += f"HP restored: {hp_recovered}\n"
         if player.spells_memorized:
             narrative += f"Spells memorized and ready.\n"
