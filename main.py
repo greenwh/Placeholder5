@@ -66,14 +66,15 @@ def choose_dungeon_type() -> str:
     print("2. Generate Random Dungeon (Easy - 8 rooms)")
     print("3. Generate Random Dungeon (Standard - 12 rooms)")
     print("4. Generate Random Dungeon (Hard - 15 rooms)")
-    print("5. Custom Generated Dungeon (Advanced)")
+    print("5. Party-Aware Dungeon (Tailored to your character)")
+    print("6. Custom Generated Dungeon (Advanced)")
     print()
 
     while True:
-        choice = input("Choose dungeon (1-5): ").strip()
-        if choice in ['1', '2', '3', '4', '5']:
+        choice = input("Choose dungeon (1-6): ").strip()
+        if choice in ['1', '2', '3', '4', '5', '6']:
             return choice
-        print("Invalid choice. Please enter 1-5.")
+        print("Invalid choice. Please enter 1-6.")
 
 
 def start_new_game(game_data: GameData) -> tuple:
@@ -112,7 +113,37 @@ def start_new_game(game_data: GameData) -> tuple:
             elif dungeon_choice == '4':
                 config = HARD_DUNGEON
                 print("✓ Generating Hard Dungeon...")
-            else:  # '5' - Custom
+            elif dungeon_choice == '5':
+                # Party-Aware Dungeon with Interview
+                from aerthos.ui.dungeon_interview import DungeonInterview
+                from aerthos.systems.party_analyzer import PartyAnalyzer
+
+                # Conduct interview (pass player for auto-detection)
+                interview = DungeonInterview()
+                interview_results = interview.conduct_interview(party=player)
+
+                # Show readiness warnings
+                analyzer = PartyAnalyzer()
+                analysis = analyzer.analyze_party(None)  # No party object for solo play
+                analysis.update(interview_results)  # Use interview results instead
+
+                # Create config from interview
+                config = DungeonConfig.from_interview(interview_results)
+
+                # Check readiness (warnings)
+                warnings = analyzer.check_party_readiness(analysis, config)
+                if warnings:
+                    print()
+                    for warning in warnings:
+                        print(warning)
+                    print()
+                    proceed = input("Proceed anyway? (yes/no): ").strip().lower()
+                    if proceed not in ['yes', 'y']:
+                        print("Returning to dungeon selection...")
+                        return start_new_game(game_data)  # Restart dungeon selection
+
+                print("✓ Generating Party-Aware Dungeon...")
+            else:  # '6' - Custom
                 config = create_custom_config()
                 print("✓ Generating Custom Dungeon...")
 

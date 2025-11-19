@@ -3,7 +3,7 @@ Dungeon Generator Configuration
 """
 
 from dataclasses import dataclass, field
-from typing import List, Optional
+from typing import List, Optional, Dict
 from .monster_scaling import MonsterScaler
 
 
@@ -141,6 +141,71 @@ class DungeonConfig:
         }
 
         return cls(**config_params)
+
+    @classmethod
+    def from_interview(cls, interview_results: Dict, **kwargs):
+        """
+        Create DungeonConfig from interview results
+
+        This method wraps for_party() to accept interview result format.
+        Uses party analyzer insights to adjust encounter types and difficulty.
+
+        Args:
+            interview_results: Dict from DungeonInterview with keys:
+                - apl: Average party level
+                - party_size: Number of characters
+                - composition: 'balanced', 'combat-heavy', 'magic-heavy', 'rogue-heavy'
+                - magic_level: 'none', 'low', 'medium', 'high'
+            **kwargs: Override any parameters
+
+        Returns:
+            DungeonConfig scaled to party via for_party()
+        """
+
+        # Extract interview data
+        apl = int(interview_results.get('apl', 1))
+        party_size = interview_results.get('party_size', 4)
+        composition = interview_results.get('composition', 'balanced')
+        magic_level = interview_results.get('magic_level', 'low')
+
+        # Start with standard difficulty
+        difficulty = 'standard'
+
+        # Adjust encounter frequencies based on composition
+        config_overrides = {}
+
+        if composition == 'combat-heavy':
+            # More combat, fewer traps (they can tank damage)
+            config_overrides['combat_frequency'] = 0.7
+            config_overrides['trap_frequency'] = 0.1
+        elif composition == 'magic-heavy':
+            # Fewer combats (conserve spells), standard traps
+            config_overrides['combat_frequency'] = 0.5
+            config_overrides['trap_frequency'] = 0.2
+        elif composition == 'rogue-heavy':
+            # More traps (they can handle them), moderate combat
+            config_overrides['trap_frequency'] = 0.3
+            config_overrides['combat_frequency'] = 0.5
+        # Balanced uses defaults from for_party
+
+        # Adjust lethality based on magic level and healing
+        if magic_level in ['medium', 'high']:
+            # Well-equipped party can handle more
+            config_overrides['lethality_factor'] = 1.2
+        elif magic_level == 'none':
+            # Low-magic party needs easier encounters
+            config_overrides['lethality_factor'] = 0.8
+
+        # Merge with any explicit kwargs
+        config_overrides.update(kwargs)
+
+        # Call for_party() internally with adjusted params
+        return cls.for_party(
+            party_level=apl,
+            party_size=party_size,
+            difficulty=difficulty,
+            **config_overrides
+        )
 
 
 # Preset configurations

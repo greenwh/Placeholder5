@@ -66,6 +66,27 @@ MONSTER_INT_LOW = 4   # Animal intelligence - always attack nearest
 MONSTER_INT_HIGH = 12  # Tactical intelligence - can prioritize spellcasters
 
 # ============================================================================
+# PARTY ANALYSIS & DUNGEON SCALING
+# ============================================================================
+
+# Magic item level classifications
+MAGIC_LEVEL_NONE = 'none'
+MAGIC_LEVEL_LOW = 'low'
+MAGIC_LEVEL_MEDIUM = 'medium'
+MAGIC_LEVEL_HIGH = 'high'
+
+# Magic boost to effective level
+MAGIC_BOOST_LOW = 0.5     # +0.5 effective levels for low magic
+MAGIC_BOOST_MEDIUM = 1.0  # +1.0 effective levels for medium magic
+MAGIC_BOOST_HIGH = 1.5    # +1.5 effective levels for high magic
+
+# Party composition types
+COMPOSITION_BALANCED = 'balanced'
+COMPOSITION_HEAVY_COMBAT = 'combat-heavy'
+COMPOSITION_MAGIC_HEAVY = 'magic-heavy'
+COMPOSITION_ROGUE_HEAVY = 'rogue-heavy'
+
+# ============================================================================
 # ABILITY SCORES
 # ============================================================================
 
