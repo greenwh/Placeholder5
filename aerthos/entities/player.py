@@ -266,6 +266,9 @@ class PlayerCharacter(Character):
     # Thief Skills (if thief class)
     thief_skills: Dict[str, int] = field(default_factory=dict)
 
+    # Weapon Proficiencies
+    weapon_proficiencies: List[str] = field(default_factory=list)
+
     # Experience
     xp: int = 0
     xp_to_next_level: int = 2000

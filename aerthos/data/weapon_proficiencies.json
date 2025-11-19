@@ -1,0 +1,107 @@
+{
+  "_comment": "Weapon proficiency slots and penalties by class from AD&D 1e Players Handbook",
+
+  "proficiency_by_class": {
+    "Fighter": {
+      "initial_slots": 4,
+      "additional_per_levels": 3,
+      "non_proficiency_penalty": -2
+    },
+    "Paladin": {
+      "initial_slots": 3,
+      "additional_per_levels": 3,
+      "non_proficiency_penalty": -2
+    },
+    "Ranger": {
+      "initial_slots": 3,
+      "additional_per_levels": 3,
+      "non_proficiency_penalty": -2
+    },
+    "Cleric": {
+      "initial_slots": 2,
+      "additional_per_levels": 4,
+      "non_proficiency_penalty": -3
+    },
+    "Druid": {
+      "initial_slots": 2,
+      "additional_per_levels": 4,
+      "non_proficiency_penalty": -4
+    },
+    "Thief": {
+      "initial_slots": 2,
+      "additional_per_levels": 4,
+      "non_proficiency_penalty": -3
+    },
+    "Assassin": {
+      "initial_slots": 3,
+      "additional_per_levels": 4,
+      "non_proficiency_penalty": -3
+    },
+    "Magic-User": {
+      "initial_slots": 1,
+      "additional_per_levels": 6,
+      "non_proficiency_penalty": -5
+    },
+    "Illusionist": {
+      "initial_slots": 1,
+      "additional_per_levels": 6,
+      "non_proficiency_penalty": -5
+    },
+    "Monk": {
+      "initial_slots": 1,
+      "additional_per_levels": 3,
+      "non_proficiency_penalty": -3
+    },
+    "Bard": {
+      "initial_slots": 2,
+      "additional_per_levels": 4,
+      "non_proficiency_penalty": -3
+    }
+  },
+
+  "weapon_groups": {
+    "axes": ["Hand Axe", "Battle Axe"],
+    "bows": ["Short Bow", "Long Bow", "Composite Bow"],
+    "crossbows": ["Light Crossbow", "Heavy Crossbow"],
+    "daggers": ["Dagger", "Knife"],
+    "flails": ["Flail", "Morning Star"],
+    "hammers": ["War Hammer", "Maul"],
+    "maces": ["Mace", "Footman's Mace"],
+    "polearms": ["Spear", "Pike", "Halberd", "Pole Arm"],
+    "swords": ["Short Sword", "Long Sword", "Broad Sword", "Bastard Sword", "Two-Handed Sword"],
+    "slings": ["Sling"],
+    "staves": ["Staff", "Quarter Staff"]
+  },
+
+  "weapon_categories": {
+    "_comment": "Maps individual weapons to their group for proficiency checks",
+    "Hand Axe": "axes",
+    "Battle Axe": "axes",
+    "Short Bow": "bows",
+    "Long Bow": "bows",
+    "Composite Bow": "bows",
+    "Light Crossbow": "crossbows",
+    "Heavy Crossbow": "crossbows",
+    "Dagger": "daggers",
+    "Knife": "daggers",
+    "Flail": "flails",
+    "Morning Star": "flails",
+    "War Hammer": "hammers",
+    "Maul": "hammers",
+    "Mace": "maces",
+    "Footman's Mace": "maces",
+    "Spear": "polearms",
+    "Pike": "polearms",
+    "Halberd": "polearms",
+    "Pole Arm": "polearms",
+    "Short Sword": "swords",
+    "Long Sword": "swords",
+    "Broad Sword": "swords",
+    "Bastard Sword": "swords",
+    "Two-Handed Sword": "swords",
+    "Sling": "slings",
+    "Staff": "staves",
+    "Quarter Staff": "staves",
+    "Club": "maces"
+  }
+}

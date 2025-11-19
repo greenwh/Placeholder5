@@ -150,6 +150,15 @@ class CombatResolver:
         if weapon and hasattr(weapon, 'magic_bonus'):
             to_hit_bonus += weapon.magic_bonus
 
+        # Check weapon proficiency and apply non-proficiency penalty
+        if hasattr(attacker, 'weapon_proficiencies') and weapon:
+            from ..systems.weapon_proficiency import WeaponProficiencySystem
+            prof_system = WeaponProficiencySystem()
+
+            if not prof_system.is_proficient(attacker.weapon_proficiencies, weapon.name):
+                penalty = prof_system.get_non_proficiency_penalty(attacker.char_class)
+                to_hit_bonus += penalty  # Add penalty (it's negative)
+
         # Handle special weapon to-hit bonuses
         if weapon and hasattr(weapon, 'properties'):
             props = weapon.properties
