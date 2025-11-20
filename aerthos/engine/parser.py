@@ -48,6 +48,8 @@ class CommandParser:
         'map': ['map', 'm', 'automap'],
         'directions': ['directions', 'dirs', 'exits'],
         'formation': ['formation', 'form', 'lineup', 'position'],
+        'stairs_up': ['ascend', 'climb'],
+        'stairs_down': ['descend'],
         'save': ['save'],
         'load': ['load'],
         'help': ['help', '?', 'commands'],
@@ -98,8 +100,8 @@ class CommandParser:
             direction = self._extract_direction(tokens)
             return Command('move', target=direction)
 
-        # Handle inventory/status/map/directions/spells/look commands (no target needed)
-        if action in ['inventory', 'status', 'map', 'directions', 'spells', 'look', 'help', 'save', 'load', 'quit']:
+        # Handle inventory/status/map/directions/spells/look/stairs commands (no target needed)
+        if action in ['inventory', 'status', 'map', 'directions', 'spells', 'look', 'stairs_up', 'stairs_down', 'help', 'save', 'load', 'quit']:
             return Command(action)
 
         # Extract target

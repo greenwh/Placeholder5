@@ -2,9 +2,12 @@
 Auto-mapping system - generates ASCII map as player explores
 """
 
-from typing import Dict, Set, Tuple, List
+from typing import Dict, Set, Tuple, List, Union, TYPE_CHECKING
 from .dungeon import Dungeon
 from .room import Room
+
+if TYPE_CHECKING:
+    from .multilevel_dungeon import MultiLevelDungeon
 
 
 class AutoMap:
@@ -25,32 +28,56 @@ class AutoMap:
     def __init__(self):
         self.room_positions: Dict[str, Tuple[int, int]] = {}
         self.position_calculated = False
+        self.cached_level: int = 1  # Track which level is cached
 
-    def generate_map(self, current_room_id: str, dungeon: Dungeon) -> str:
+    def generate_map(self, current_room_id: str, dungeon: Union[Dungeon, "MultiLevelDungeon"],
+                     current_level: int = 1) -> str:
         """
         Generate ASCII map showing explored areas
 
         Args:
             current_room_id: Current room ID
-            dungeon: Dungeon instance
+            dungeon: Dungeon or MultiLevelDungeon instance
+            current_level: Current level number (for multi-level dungeons)
 
         Returns:
             ASCII map string
         """
 
+        # Handle multi-level dungeons - show only current level
+        level_header = ""
+        actual_dungeon = dungeon
+
+        # Check if it's a MultiLevelDungeon by checking for get_current_dungeon method
+        if hasattr(dungeon, 'get_current_dungeon'):
+            # Multi-level dungeon
+            actual_dungeon = dungeon.get_current_dungeon()
+            level_header = f"Level {dungeon.current_level_number} of {dungeon.num_levels}\n"
+
+            # Clear cache if level changed
+            if dungeon.current_level_number != self.cached_level:
+                self.position_calculated = False
+                self.room_positions = {}
+                self.cached_level = dungeon.current_level_number
+
         # Build coordinate system if not already done
         if not self.position_calculated:
-            self._calculate_positions(dungeon)
+            self._calculate_positions(actual_dungeon)
             self.position_calculated = True
 
         # Build grid of explored rooms
-        grid = self._build_grid(current_room_id, dungeon)
+        grid = self._build_grid(current_room_id, actual_dungeon)
 
         if not grid:
             return "No map data available yet. Explore to reveal the map."
 
         # Render to ASCII
-        return self._render_ascii(grid, current_room_id, dungeon)
+        map_display = self._render_ascii(grid, current_room_id, actual_dungeon)
+
+        # Add level header for multi-level dungeons
+        if level_header:
+            return level_header + map_display
+        return map_display
 
     def _calculate_positions(self, dungeon: Dungeon):
         """

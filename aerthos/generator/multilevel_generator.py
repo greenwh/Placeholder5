@@ -13,13 +13,15 @@ from pathlib import Path
 
 # Handle both package import and standalone execution
 try:
-    from .appendix_a_generator import AppendixAGenerator
+    from .dungeon_generator import DungeonGenerator
+    from .config import DungeonConfig
     from ..world.dungeon import Dungeon
     from ..world.multilevel_dungeon import MultiLevelDungeon
 except ImportError:
     # Standalone execution
     sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-    from aerthos.generator.appendix_a_generator import AppendixAGenerator
+    from aerthos.generator.dungeon_generator import DungeonGenerator
+    from aerthos.generator.config import DungeonConfig
     from aerthos.world.dungeon import Dungeon
     from aerthos.world.multilevel_dungeon import MultiLevelDungeon
 
@@ -37,7 +39,7 @@ class MultiLevelGenerator:
 
     def __init__(self):
         """Initialize multi-level generator"""
-        self.generator = AppendixAGenerator()
+        self.generator = DungeonGenerator(use_narrator=False)
 
     def generate(
         self,
@@ -70,14 +72,17 @@ class MultiLevelGenerator:
             else:
                 level_name = self._generate_level_name(level_num, num_levels)
 
-            # Generate the level using Appendix A
-            # Note: Appendix A generator creates sparse dungeons (authentic DMG style)
-            # Request 3x target to get approximately the desired number of rooms
-            level_dict = self.generator.generate_dungeon(
-                target_rooms=rooms_per_level * 3,
-                dungeon_name=f"{dungeon_name} - {level_name}",
-                start_level=level_num
+            # Generate the level using DungeonGenerator for predictable room counts
+            config = DungeonConfig(
+                num_rooms=rooms_per_level,
+                party_level=level_num,
+                layout_type='branching',
+                dungeon_theme='ruins',
+                combat_frequency=0.4,
+                trap_frequency=0.2,
+                treasure_frequency=0.3
             )
+            level_dict = self.generator.generate(config)
 
             # Convert to Dungeon instance
             dungeon = Dungeon.load_from_generator(level_dict)

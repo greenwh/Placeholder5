@@ -312,6 +312,21 @@
         <div class="modal-content">
             <div class="modal-title">Generate New Scenario</div>
             <form id="createForm">
+                <!-- Dungeon Type Selection -->
+                <div class="form-group">
+                    <label class="form-label">Dungeon Type:</label>
+                    <select id="dungeonType" class="form-select" required onchange="updateFormFields()">
+                        <option value="2">Easy (Preset)</option>
+                        <option value="3" selected>Standard (Preset)</option>
+                        <option value="4">Hard (Preset)</option>
+                        <option value="5">Custom (Multi-level & Party-Aware)</option>
+                    </select>
+                    <small style="color: #0a0; font-size: 11px; display: block; margin-top: 5px;">
+                        Note: Fixed starter dungeon cannot be saved
+                    </small>
+                </div>
+
+                <!-- Scenario Metadata (Always Shown) -->
                 <div class="form-group">
                     <label class="form-label">Scenario Name:</label>
                     <input type="text" id="scenarioName" class="form-input" required>
@@ -320,45 +335,87 @@
                     <label class="form-label">Description:</label>
                     <textarea id="scenarioDesc" class="form-textarea" placeholder="Enter a description..."></textarea>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Difficulty:</label>
-                    <select id="scenarioDifficulty" class="form-select" required>
-                        <option value="easy">Easy</option>
-                        <option value="medium" selected>Medium</option>
-                        <option value="hard">Hard</option>
-                    </select>
+
+                <!-- Party Level (Shown for Presets 2-4) -->
+                <div id="partyLevelGroup" class="form-group">
+                    <label class="form-label">Party Level:</label>
+                    <input type="number" id="partyLevel" class="form-input" min="1" max="10" value="1">
+                    <small style="color: #0a0; font-size: 11px; display: block; margin-top: 5px;">
+                        Dungeon encounters will be scaled to this level (1-10)
+                    </small>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Layout Type:</label>
-                    <select id="scenarioLayout" class="form-select" required>
-                        <option value="linear">Linear (straight path)</option>
-                        <option value="branching" selected>Branching (multiple paths)</option>
-                        <option value="network">Network (interconnected, loops)</option>
-                    </select>
+
+                <!-- Custom Fields (Shown only for Type 5) -->
+                <div id="customFields" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">Number of Rooms per Level:</label>
+                        <input type="number" id="scenarioRooms" class="form-input" min="5" max="30" value="12">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Layout Type:</label>
+                        <select id="scenarioLayout" class="form-select">
+                            <option value="linear">Linear (straight path)</option>
+                            <option value="branching" selected>Branching (main path with side branches)</option>
+                            <option value="network">Network (complex with loops)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Number of Levels:</label>
+                        <input type="number" id="numLevels" class="form-input" min="1" max="5" value="1">
+                        <small style="color: #0a0; font-size: 11px; display: block; margin-top: 5px;">
+                            1 = single level, 2-5 = multi-level dungeon
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Dungeon Theme:</label>
+                        <select id="dungeonTheme" class="form-select">
+                            <option value="mine" selected>Mine</option>
+                            <option value="crypt">Crypt</option>
+                            <option value="cave">Cave</option>
+                            <option value="ruins">Ruins</option>
+                            <option value="sewer">Sewer</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Seed (Optional):</label>
+                        <input type="number" id="scenarioSeed" class="form-input" placeholder="Leave blank for random">
+                        <small style="color: #0a0; font-size: 11px; display: block; margin-top: 5px;">
+                            Use same seed to generate identical dungeons
+                        </small>
+                    </div>
+
+                    <!-- Party-Aware Interview Fields -->
+                    <div style="border-top: 2px solid #0a0; padding-top: 15px; margin-top: 15px;">
+                        <div class="form-label" style="font-size: 16px; margin-bottom: 10px;">Party-Aware Settings:</div>
+                        <div class="form-group">
+                            <label class="form-label">Average Party Level (APL):</label>
+                            <input type="number" id="apl" class="form-input" min="1" max="10" value="1">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Party Size:</label>
+                            <input type="number" id="partySize" class="form-input" min="1" max="6" value="4">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Party Composition:</label>
+                            <select id="composition" class="form-select">
+                                <option value="balanced" selected>Balanced</option>
+                                <option value="combat_heavy">Combat-Heavy</option>
+                                <option value="magic_heavy">Magic-Heavy</option>
+                                <option value="rogue_heavy">Rogue-Heavy</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Magic Item Level:</label>
+                            <select id="magicLevel" class="form-select">
+                                <option value="none">None</option>
+                                <option value="low" selected>Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Number of Rooms:</label>
-                    <input type="number" id="scenarioRooms" class="form-input" min="5" max="25" value="12">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Combat Frequency:</label>
-                    <select id="scenarioCombat" class="form-select" required>
-                        <option value="0.3">Low (30%)</option>
-                        <option value="0.5">Medium (50%)</option>
-                        <option value="0.6" selected>Standard (60%)</option>
-                        <option value="0.7">High (70%)</option>
-                        <option value="0.8">Very High (80%)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Trap Frequency:</label>
-                    <select id="scenarioTraps" class="form-select" required>
-                        <option value="0.1">Low (10%)</option>
-                        <option value="0.2" selected>Standard (20%)</option>
-                        <option value="0.3">High (30%)</option>
-                        <option value="0.4">Very High (40%)</option>
-                    </select>
-                </div>
+
                 <div id="generatingMessage" class="generating" style="display: none;">
                     <span class="blink">⚔ Generating dungeon... ⚔</span>
                 </div>
@@ -423,18 +480,53 @@
             document.getElementById('generatingMessage').style.display = 'none';
         }
 
+        function updateFormFields() {
+            const dungeonType = document.getElementById('dungeonType').value;
+            const partyLevelGroup = document.getElementById('partyLevelGroup');
+            const customFields = document.getElementById('customFields');
+
+            if (dungeonType === '5') {
+                // Custom - hide party level, show custom fields
+                partyLevelGroup.style.display = 'none';
+                customFields.style.display = 'block';
+            } else {
+                // Preset (2-4) - show party level, hide custom fields
+                partyLevelGroup.style.display = 'block';
+                customFields.style.display = 'none';
+            }
+        }
+
         document.getElementById('createForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
+            const dungeonType = document.getElementById('dungeonType').value;
             const data = {
+                dungeon_type: dungeonType,
                 name: document.getElementById('scenarioName').value,
-                description: document.getElementById('scenarioDesc').value,
-                difficulty: document.getElementById('scenarioDifficulty').value,
-                layout_type: document.getElementById('scenarioLayout').value,
-                num_rooms: parseInt(document.getElementById('scenarioRooms').value),
-                combat_frequency: parseFloat(document.getElementById('scenarioCombat').value),
-                trap_frequency: parseFloat(document.getElementById('scenarioTraps').value)
+                description: document.getElementById('scenarioDesc').value
             };
+
+            // Add type-specific parameters
+            if (dungeonType === '5') {
+                // Custom dungeon
+                const seedValue = document.getElementById('scenarioSeed').value;
+                data.num_rooms = parseInt(document.getElementById('scenarioRooms').value);
+                data.layout_type = document.getElementById('scenarioLayout').value;
+                data.num_levels = parseInt(document.getElementById('numLevels').value);
+                data.dungeon_theme = document.getElementById('dungeonTheme').value;
+                data.seed = seedValue ? parseInt(seedValue) : null;
+
+                // Party-aware interview results
+                data.party_aware = {
+                    apl: parseInt(document.getElementById('apl').value),
+                    party_size: parseInt(document.getElementById('partySize').value),
+                    composition: document.getElementById('composition').value,
+                    magic_level: document.getElementById('magicLevel').value
+                };
+            } else {
+                // Preset dungeon (2-4)
+                data.party_level = parseInt(document.getElementById('partyLevel').value);
+            }
 
             document.getElementById('generatingMessage').style.display = 'block';
 
@@ -458,6 +550,9 @@
                 document.getElementById('generatingMessage').style.display = 'none';
             });
         });
+
+        // Initialize form fields on page load
+        updateFormFields();
 
         function deleteScenario(scenarioId, scenarioName) {
             if (!confirm(`Delete scenario "${scenarioName}"? This cannot be undone.`)) {

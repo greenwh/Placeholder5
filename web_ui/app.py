@@ -828,100 +828,120 @@ def get_scenarios():
 
 @app.route('/api/scenarios', methods=['POST'])
 def create_scenario():
-    """Generate and save a new scenario"""
+    """
+    Generate and save a new scenario
+
+    Expected JSON parameters:
+    - dungeon_type: '1' (fixed - not saveable), '2' (easy), '3' (standard), '4' (hard), '5' (custom)
+    - party_level: Required for types 2-4 (default 1)
+    - name: Scenario name
+    - description: Scenario description
+
+    For custom (type 5):
+    - num_rooms: Rooms per level (5-30, default 12)
+    - layout_type: 'linear', 'branching', 'network' (default 'branching')
+    - num_levels: Number of levels (1-5, default 1)
+    - dungeon_theme: 'mine', 'crypt', 'cave', 'ruins', 'sewer' (default 'mine')
+    - seed: Optional seed for reproducibility
+    - party_aware: Interview results dict with apl, party_size, composition, magic_level
+    """
     try:
         data = request.json
         game_data = GameData.load_all()
+
+        dungeon_type = data.get('dungeon_type', '3')  # Default to standard
+
+        # Type 1 (fixed) cannot be saved
+        if dungeon_type == '1':
+            return jsonify({'success': False, 'error': 'Cannot save fixed starter dungeon'})
+
         generator = DungeonGenerator(game_data)
+        config = None
+        dungeon = None
+        difficulty = 'medium'
 
-        # Get parameters from request (with defaults)
-        difficulty = data.get('difficulty', 'medium')
-        layout_type = data.get('layout_type', 'branching')
-        num_rooms = data.get('num_rooms', 12)
-        combat_frequency = data.get('combat_frequency', 0.6)
-        trap_frequency = data.get('trap_frequency', 0.2)
-        dungeon_theme = data.get('dungeon_theme', 'mine')
-        seed = data.get('seed', None)
+        # Types 2-4: Preset dungeons (Easy/Standard/Hard)
+        if dungeon_type in ['2', '3', '4']:
+            from aerthos.generator.config import EASY_DUNGEON, STANDARD_DUNGEON, HARD_DUNGEON
 
-        # Check if party information is provided
-        party_id = data.get('party_id')
-        party_level = data.get('party_level')
-        party_size = data.get('party_size', 4)
+            party_level = data.get('party_level', 1)
 
-        # If party_id is provided, load party and calculate level
-        if party_id:
-            try:
-                party_mgr = PartyManager()
-                party_data = party_mgr.load_party(party_id=party_id)
-                if party_data:
-                    # Get party object
-                    party = party_data['party']
-                    # Calculate average level from party members
-                    from aerthos.generator.monster_scaling import MonsterScaler
-                    scaler = MonsterScaler()
-                    members_data = [{'level': m.level} for m in party.members]
-                    party_level = scaler.calculate_party_level(members_data)
-                    party_size = len(party.members)
-            except Exception as e:
-                print(f"Warning: Could not load party {party_id}: {e}")
+            if dungeon_type == '2':
+                config = EASY_DUNGEON
+                difficulty = 'easy'
+            elif dungeon_type == '3':
+                config = STANDARD_DUNGEON
+                difficulty = 'medium'
+            else:  # '4'
+                config = HARD_DUNGEON
+                difficulty = 'hard'
 
-        # If we have party level, use party-based scaling
-        if party_level is not None:
-            config = DungeonConfig.for_party(
-                party_level=party_level,
-                party_size=party_size,
-                difficulty=difficulty if difficulty in ['easy', 'standard', 'hard'] else 'standard',
-                num_rooms=num_rooms,
-                layout_type=layout_type,
-                dungeon_theme=dungeon_theme,
-                seed=seed,
-                combat_frequency=combat_frequency,
-                trap_frequency=trap_frequency
-            )
-        else:
-            # Fallback to old manual config
-            # Determine party level and treasure based on difficulty
-            if difficulty == 'easy':
-                party_level = 1
-                treasure_level = 'low'
-                magic_item_chance = 0.05
-            elif difficulty == 'hard':
-                party_level = 3
-                treasure_level = 'high'
-                magic_item_chance = 0.2
-            else:  # medium
-                party_level = 2
-                treasure_level = 'medium'
-                magic_item_chance = 0.1
+            # Update config with party level
+            config.party_level = party_level
 
-            # Create config with custom parameters
-            config = DungeonConfig(
-                num_rooms=num_rooms,
-                layout_type=layout_type,
-                combat_frequency=combat_frequency,
-                trap_frequency=trap_frequency,
-                party_level=party_level,
-                treasure_level=treasure_level,
-                magic_item_chance=magic_item_chance,
-                dungeon_theme=dungeon_theme,
-                seed=seed
-            )
+            # Generate single-level dungeon
+            dungeon_data = generator.generate(config)
+            dungeon = Dungeon.load_from_generator(dungeon_data)
 
-        # Generate dungeon (returns dict)
-        dungeon_data = generator.generate(config)
+        # Type 5: Custom (includes multi-level and party-aware)
+        elif dungeon_type == '5':
+            # Get custom parameters
+            num_rooms = data.get('num_rooms', 12)
+            layout_type = data.get('layout_type', 'branching')
+            num_levels = data.get('num_levels', 1)
+            dungeon_theme = data.get('dungeon_theme', 'mine')
+            seed = data.get('seed', None)
 
-        # Create Dungeon object to get metadata
-        dungeon = Dungeon.load_from_generator(dungeon_data)
+            # Party-aware interview results
+            party_aware = data.get('party_aware', {})
+            apl = party_aware.get('apl', 1)
+            party_size = party_aware.get('party_size', 4)
+            composition = party_aware.get('composition', 'balanced')
+            magic_level = party_aware.get('magic_level', 'low')
 
-        # Save scenario with the generated data
+            # Create config from interview results
+            interview_results = {
+                'apl': apl,
+                'party_size': party_size,
+                'composition': composition,
+                'magic_level': magic_level
+            }
+            config = DungeonConfig.from_interview(interview_results)
+
+            # Apply custom settings
+            config.seed = seed
+            config.num_rooms = num_rooms
+            config.layout_type = layout_type
+            config.dungeon_theme = dungeon_theme
+
+            # Generate dungeon name
+            if num_levels > 1:
+                dungeon_name = f"The {dungeon_theme.capitalize()} Depths"
+            else:
+                dungeon_name = f"The Abandoned {dungeon_theme.capitalize()}"
+
+            # Multi-level or single-level?
+            if num_levels > 1:
+                from aerthos.generator.multilevel_generator import MultiLevelGenerator
+
+                ml_generator = MultiLevelGenerator()
+                dungeon = ml_generator.generate(
+                    num_levels=num_levels,
+                    rooms_per_level=config.num_rooms,
+                    dungeon_name=dungeon_name
+                )
+                difficulty = 'multilevel_custom'
+            else:
+                dungeon_data = generator.generate(config)
+                dungeon = Dungeon.load_from_generator(dungeon_data)
+                difficulty = 'custom'
+
+        # Save scenario
         library = ScenarioLibrary()
-        scenario_id = library.save_scenario_from_data(
-            data.get('name'),
-            data.get('description', ''),
-            dungeon_data,
-            dungeon.name,
-            difficulty
-        )
+        scenario_name = data.get('name', dungeon.name)
+        description = data.get('description', '')
+
+        scenario_id = library.save_scenario(dungeon, scenario_name, description, difficulty)
 
         return jsonify({'success': True, 'scenario_id': scenario_id})
     except Exception as e:

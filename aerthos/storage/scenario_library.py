@@ -30,7 +30,7 @@ class ScenarioLibrary:
         Save a dungeon/scenario
 
         Args:
-            dungeon: Dungeon instance to save
+            dungeon: Dungeon or MultiLevelDungeon instance to save
             scenario_name: Optional name (uses dungeon.name if not provided)
             description: Optional description
             difficulty: Difficulty level (easy, medium, hard)
@@ -45,6 +45,20 @@ class ScenarioLibrary:
         if scenario_name is None:
             scenario_name = dungeon.name
 
+        # Check if this is a MultiLevelDungeon
+        from aerthos.world.multilevel_dungeon import MultiLevelDungeon
+        is_multilevel = isinstance(dungeon, MultiLevelDungeon)
+
+        if is_multilevel:
+            # Calculate total rooms across all levels
+            num_rooms = sum(len(level.dungeon.rooms) for level in dungeon.levels.values())
+            # Multi-level dungeons don't have a single start_room
+            start_room = f"level_{dungeon.current_level_number}_start"
+        else:
+            # Regular dungeon
+            num_rooms = len(dungeon.rooms)
+            start_room = dungeon.start_room_id
+
         scenario_data = {
             'id': scenario_id,
             'name': scenario_name,
@@ -52,8 +66,9 @@ class ScenarioLibrary:
             'difficulty': difficulty,
             'created': datetime.now().isoformat(),
             'dungeon_data': dungeon.to_dict(),  # Use to_dict() for full structure
-            'num_rooms': len(dungeon.rooms),
-            'start_room': dungeon.start_room_id
+            'num_rooms': num_rooms,
+            'start_room': start_room,
+            'is_multilevel': is_multilevel
         }
 
         filename = f"{scenario_name.lower().replace(' ', '_')}_{scenario_id}.json"
@@ -221,15 +236,16 @@ class ScenarioLibrary:
 
     def create_dungeon_from_scenario(self, scenario_data):
         """
-        Recreate a Dungeon instance from saved scenario data
+        Recreate a Dungeon or MultiLevelDungeon instance from saved scenario data
 
         Args:
             scenario_data: Either scenario ID (str) or scenario data dictionary (Dict)
 
         Returns:
-            Dungeon instance
+            Dungeon or MultiLevelDungeon instance
         """
         from ..world.dungeon import Dungeon
+        from ..world.multilevel_dungeon import MultiLevelDungeon
 
         # If scenario_data is a string, treat it as ID and load the scenario
         if isinstance(scenario_data, str):
@@ -239,8 +255,35 @@ class ScenarioLibrary:
                 raise ValueError(f"Scenario {scenario_id} not found")
 
         dungeon_data = scenario_data['dungeon_data']
+        is_multilevel = scenario_data.get('is_multilevel', False)
 
-        # Use load_from_generator since we saved the generator output
-        dungeon = Dungeon.load_from_generator(dungeon_data)
+        # Check if it's a multi-level dungeon
+        if is_multilevel or ('levels' in dungeon_data and 'current_level' in dungeon_data):
+            # Multi-level dungeon
+            dungeon = MultiLevelDungeon.from_dict(dungeon_data)
+        else:
+            # Regular single-level dungeon
+            dungeon = Dungeon.load_from_generator(dungeon_data)
 
         return dungeon
+
+    def restore_dungeon_from_state(self, dungeon_state: dict):
+        """
+        Restore a Dungeon or MultiLevelDungeon from saved state
+
+        Args:
+            dungeon_state: Serialized dungeon state from session
+
+        Returns:
+            Dungeon or MultiLevelDungeon instance
+        """
+        from ..world.dungeon import Dungeon
+        from ..world.multilevel_dungeon import MultiLevelDungeon
+
+        # Detect if it's a multi-level dungeon by checking for 'levels' key
+        if 'levels' in dungeon_state and 'current_level' in dungeon_state:
+            # Multi-level dungeon - use deserialize() for serialize() format
+            return MultiLevelDungeon.deserialize(dungeon_state)
+        else:
+            # Regular single-level dungeon
+            return Dungeon.load_from_generator(dungeon_state)

@@ -75,6 +75,11 @@ class MultiLevelDungeon:
 
         self.levels[level_number] = level
 
+    @property
+    def num_levels(self) -> int:
+        """Get the total number of levels in this dungeon"""
+        return len(self.levels)
+
     def get_current_level(self) -> Optional[DungeonLevel]:
         """Get the current dungeon level"""
         return self.levels.get(self.current_level_number)
@@ -274,11 +279,42 @@ class MultiLevelDungeon:
                     "level_number": level.level_number,
                     "name": level.name,
                     "difficulty_tier": level.difficulty_tier,
-                    "dungeon_state": level.dungeon.serialize()
+                    "dungeon_state": level.dungeon.to_dict()  # Use to_dict() for full structure
                 }
                 for level_number, level in self.levels.items()
             }
         }
+
+    @classmethod
+    def deserialize(cls, data: Dict) -> 'MultiLevelDungeon':
+        """
+        Deserialize from serialize() format (for game saves)
+
+        Args:
+            data: Dictionary from serialize()
+
+        Returns:
+            MultiLevelDungeon instance
+        """
+        ml_dungeon = cls(name=data["name"])
+        ml_dungeon.description = data.get("description", "")
+        ml_dungeon.current_level_number = data.get("current_level", 1)
+
+        # serialize() format uses dict with numeric keys
+        for level_number_str, level_data in data["levels"].items():
+            level_number = int(level_number_str)
+
+            # Deserialize the dungeon (use Dungeon.load_from_generator for consistency)
+            dungeon = Dungeon.load_from_generator(level_data["dungeon_state"])
+
+            ml_dungeon.add_level(
+                level_number=level_number,
+                dungeon=dungeon,
+                level_name=level_data["name"],
+                difficulty_tier=level_data.get("difficulty_tier", level_number)
+            )
+
+        return ml_dungeon
 
     def get_stats(self) -> Dict:
         """Get dungeon statistics"""

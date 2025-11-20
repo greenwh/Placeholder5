@@ -94,17 +94,88 @@ python3 -m unittest tests.test_combat -v
 - Broken tests = broken game for users
 - Passing tests = both UIs work correctly
 
-**Current Test Status:** 86/109 tests passing (79%)
-- ✅ Parser tests: 43/43 passing
-- ✅ Combat tests: 18/18 passing
-- ⚠️ Game state tests: 16/19 passing
-- ⚠️ Storage tests: Working (some failures)
-- ⚠️ Integration tests: Working (some failures)
+**Current Test Status:** 374/374 tests passing (100%)
+- ✅ All unit tests passing
+- ✅ All integration tests passing
+- ✅ Multi-level dungeon tests passing
 
 **See also:**
 - `TESTING.md` - Comprehensive testing guide
 - `TEST_SUITE_README.md` - Test suite documentation
 - `ARCHITECTURE.md` - How CLI and Web UI connect
+
+---
+
+### **⚠️ CRITICAL: CLI and Web UI Synchronization Rule**
+
+**THE GOLDEN RULE:** Both `main.py` (CLI) and `web_ui/app.py` (Web UI) must use identical calls to core engine functions.
+
+**Why This Matters:**
+- Both UIs are **thin wrappers** around the same core game engine (`aerthos/` modules)
+- When you change how a core function is called in one UI, you **MUST** update the other
+- Failure to sync = one UI works, the other breaks with cryptic errors
+
+**Common Synchronization Points:**
+1. **Dungeon Generation:**
+   - `DungeonGenerator.generate(config)`
+   - `MultiLevelGenerator.generate(num_levels, rooms_per_level, dungeon_name)`
+   - Both must pass identical parameters
+
+2. **Character Creation:**
+   - Character class creation and initialization
+   - Equipment assignment
+   - Party formation
+
+3. **Game State Management:**
+   - Save/load operations
+   - Session creation
+   - State serialization
+
+4. **Combat Resolution:**
+   - Attack resolution calls
+   - Spell casting
+   - Monster AI triggers
+
+**Workflow When Changing Core Functions:**
+
+1. **Identify which UIs use the function:**
+   ```bash
+   # Search both files for the function name
+   grep -n "function_name" main.py web_ui/app.py
+   ```
+
+2. **Update BOTH files with identical changes:**
+   - Same parameter names
+   - Same parameter order
+   - Same return value handling
+
+3. **Test BOTH interfaces:**
+   ```bash
+   # Test CLI
+   python3 main.py
+
+   # Test Web UI (if Flask installed)
+   python3 web_ui/app.py
+   # Then open browser to http://localhost:5000
+   ```
+
+4. **Run the full test suite:**
+   ```bash
+   python3 run_tests.py --no-web
+   ```
+
+**Recent Example (Fixed):**
+- `MultiLevelGenerator.generate()` was called with `base_config=config` in both UIs
+- Function signature changed to remove `base_config` parameter
+- CLI was partially fixed, Web UI was not updated
+- Result: Web UI crashed with "unexpected keyword argument 'base_config'"
+- **Fix:** Removed `base_config=config` from both `main.py:159` and `web_ui/app.py:932`
+
+**Prevention Strategy:**
+- When modifying core engine functions, use grep to find all callers
+- Update all callers in the same commit
+- Test both UIs before committing
+- Run full test suite to catch integration issues
 
 ---
 

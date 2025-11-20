@@ -63,18 +63,30 @@ def choose_dungeon_type() -> str:
     print("═" * 70)
     print()
     print("1. The Abandoned Mine (Fixed - 10 rooms, recommended for first game)")
-    print("2. Generate Random Dungeon (Easy - 8 rooms)")
-    print("3. Generate Random Dungeon (Standard - 12 rooms)")
-    print("4. Generate Random Dungeon (Hard - 15 rooms)")
-    print("5. Party-Aware Dungeon (Tailored to your character)")
-    print("6. Custom Generated Dungeon (Advanced)")
+    print("2. Generate Random Dungeon (Easy)")
+    print("3. Generate Random Dungeon (Standard)")
+    print("4. Generate Random Dungeon (Hard)")
+    print("5. Custom Generated Dungeon (Advanced - multi-level, tailored difficulty)")
     print()
 
     while True:
-        choice = input("Choose dungeon (1-6): ").strip()
-        if choice in ['1', '2', '3', '4', '5', '6']:
+        choice = input("Choose dungeon (1-5): ").strip()
+        if choice in ['1', '2', '3', '4', '5']:
             return choice
-        print("Invalid choice. Please enter 1-6.")
+        print("Invalid choice. Please enter 1-5.")
+
+
+def ask_player_level() -> int:
+    """Ask for player/party level for dungeon scaling"""
+    print()
+    while True:
+        try:
+            level = int(input("Enter player/party level (1-10, default 1): ") or "1")
+            if 1 <= level <= 10:
+                return level
+            print("Please enter a level between 1 and 10.")
+        except ValueError:
+            print("Invalid input. Please enter a number.")
 
 
 def start_new_game(game_data: GameData) -> tuple:
@@ -100,59 +112,62 @@ def start_new_game(game_data: GameData) -> tuple:
             dungeon = Dungeon.load_from_file('aerthos/data/dungeons/starter_dungeon.json')
             print(f"✓ Loaded: {dungeon.name}")
 
-        else:
-            # Generate dungeon
+        elif dungeon_choice in ['2', '3', '4']:
+            # Preset dungeons (Easy/Standard/Hard) - Ask for level first
+            player_level = ask_player_level()
+
+            # Generate dungeon with appropriate difficulty
             generator = DungeonGenerator(game_data)
 
             if dungeon_choice == '2':
                 config = EASY_DUNGEON
-                print("✓ Generating Easy Dungeon...")
+                print(f"✓ Generating Easy Dungeon (Level {player_level})...")
             elif dungeon_choice == '3':
                 config = STANDARD_DUNGEON
-                print("✓ Generating Standard Dungeon...")
-            elif dungeon_choice == '4':
+                print(f"✓ Generating Standard Dungeon (Level {player_level})...")
+            else:  # '4'
                 config = HARD_DUNGEON
-                print("✓ Generating Hard Dungeon...")
-            elif dungeon_choice == '5':
-                # Party-Aware Dungeon with Interview
-                from aerthos.ui.dungeon_interview import DungeonInterview
-                from aerthos.systems.party_analyzer import PartyAnalyzer
+                print(f"✓ Generating Hard Dungeon (Level {player_level})...")
 
-                # Conduct interview (pass player for auto-detection)
-                interview = DungeonInterview()
-                interview_results = interview.conduct_interview(party=player)
+            # Update config with player level
+            config.party_level = player_level
 
-                # Show readiness warnings
-                analyzer = PartyAnalyzer()
-                analysis = analyzer.analyze_party(None)  # No party object for solo play
-                analysis.update(interview_results)  # Use interview results instead
-
-                # Create config from interview
-                config = DungeonConfig.from_interview(interview_results)
-
-                # Check readiness (warnings)
-                warnings = analyzer.check_party_readiness(analysis, config)
-                if warnings:
-                    print()
-                    for warning in warnings:
-                        print(warning)
-                    print()
-                    proceed = input("Proceed anyway? (yes/no): ").strip().lower()
-                    if proceed not in ['yes', 'y']:
-                        print("Returning to dungeon selection...")
-                        return start_new_game(game_data)  # Restart dungeon selection
-
-                print("✓ Generating Party-Aware Dungeon...")
-            else:  # '6' - Custom
-                config = create_custom_config()
-                print("✓ Generating Custom Dungeon...")
-
+            # Generate single-level dungeon
             dungeon_data = generator.generate(config)
             dungeon = Dungeon.load_from_generator(dungeon_data)
             print(f"✓ Generated: {dungeon.name}")
 
             if config.seed:
                 print(f"  Seed: {config.seed} (use this seed to replay this exact dungeon)")
+
+        else:  # '5' - Custom (includes multi-level and party-aware)
+            # Custom configuration with party-aware interview
+            config, num_levels, dungeon_name = create_custom_config()
+
+            if num_levels > 1:
+                # Multi-level dungeon
+                from aerthos.generator.multilevel_generator import MultiLevelGenerator
+
+                print(f"✓ Generating Multi-Level Dungeon ({num_levels} levels)...")
+                ml_generator = MultiLevelGenerator()
+
+                # Generate multi-level dungeon
+                dungeon = ml_generator.generate(
+                    num_levels=num_levels,
+                    rooms_per_level=config.num_rooms,
+                    dungeon_name=dungeon_name
+                )
+                print(f"✓ Generated: {dungeon.name} ({dungeon.num_levels} levels)")
+            else:
+                # Single-level custom dungeon
+                print(f"✓ Generating Custom Dungeon...")
+                generator = DungeonGenerator(game_data)
+                dungeon_data = generator.generate(config)
+                dungeon = Dungeon.load_from_generator(dungeon_data)
+                print(f"✓ Generated: {dungeon.name}")
+
+                if config.seed:
+                    print(f"  Seed: {config.seed} (use this seed to replay this exact dungeon)")
 
     except Exception as e:
         print(f"✗ Error loading/generating dungeon: {e}")
@@ -165,18 +180,24 @@ def start_new_game(game_data: GameData) -> tuple:
     return player, dungeon
 
 
-def create_custom_config() -> DungeonConfig:
-    """Create a custom dungeon configuration"""
+def create_custom_config() -> tuple:
+    """
+    Create a custom dungeon configuration with party-aware interview
+
+    Returns:
+        Tuple of (DungeonConfig, num_levels, dungeon_name)
+    """
+    from aerthos.ui.dungeon_interview import DungeonInterview
 
     print("\n" + "═" * 70)
     print("CUSTOM DUNGEON GENERATOR")
     print("═" * 70)
     print()
 
-    # Number of rooms
+    # Number of rooms (per level)
     while True:
         try:
-            num_rooms = int(input("Number of rooms (5-30, default 12): ") or "12")
+            num_rooms = int(input("Number of rooms per level (5-30, default 12): ") or "12")
             if 5 <= num_rooms <= 30:
                 break
             print("Please enter a number between 5 and 30.")
@@ -192,6 +213,17 @@ def create_custom_config() -> DungeonConfig:
     layout_map = {'1': 'linear', '2': 'branching', '3': 'network'}
     layout_type = layout_map.get(layout_choice, 'branching')
 
+    # Number of levels
+    print("\nNumber of dungeon levels:")
+    while True:
+        try:
+            num_levels = int(input("Enter number of levels (1-5, default 1): ") or "1")
+            if 1 <= num_levels <= 5:
+                break
+            print("Please enter a number between 1 and 5.")
+        except ValueError:
+            print("Invalid input. Please enter a number.")
+
     # Theme
     print("\nDungeon theme:")
     print("1. Mine")
@@ -203,31 +235,30 @@ def create_custom_config() -> DungeonConfig:
     theme_map = {'1': 'mine', '2': 'crypt', '3': 'cave', '4': 'ruins', '5': 'sewer'}
     theme = theme_map.get(theme_choice, 'mine')
 
-    # Seed (optional)
+    # Seed (optional, last since it's technical)
     seed_input = input("\nEnter seed for fixed dungeon (leave blank for random): ").strip()
     seed = int(seed_input) if seed_input else None
 
-    # Difficulty
-    print("\nDifficulty:")
-    print("1. Easy (lethality 0.8)")
-    print("2. Normal (lethality 1.0)")
-    print("3. Hard (lethality 1.3)")
-    diff_choice = input("Choose difficulty (1-3, default 2): ").strip() or "2"
-    diff_map = {'1': 0.8, '2': 1.0, '3': 1.3}
-    lethality = diff_map.get(diff_choice, 1.0)
+    # Party-Aware Interview (replaces simple difficulty)
+    interview = DungeonInterview()
+    interview_results = interview.conduct_interview(party=None)
 
-    return DungeonConfig(
-        seed=seed,
-        num_rooms=num_rooms,
-        layout_type=layout_type,
-        dungeon_theme=theme,
-        party_level=1,
-        lethality_factor=lethality,
-        combat_frequency=0.6,
-        trap_frequency=0.2,
-        treasure_frequency=0.4,
-        magic_item_chance=0.1
-    )
+    # Create config from interview results
+    config = DungeonConfig.from_interview(interview_results)
+
+    # Apply custom settings that weren't in interview
+    config.seed = seed
+    config.num_rooms = num_rooms
+    config.layout_type = layout_type
+    config.dungeon_theme = theme
+
+    # Generate dungeon name based on theme and levels
+    if num_levels > 1:
+        dungeon_name = f"The {theme.capitalize()} Depths"
+    else:
+        dungeon_name = f"The Abandoned {theme.capitalize()}"
+
+    return config, num_levels, dungeon_name
 
 
 def load_saved_game(game_data: GameData) -> tuple:
@@ -849,36 +880,77 @@ def manage_scenarios(game_data: GameData):
             dungeon_choice = choose_dungeon_type()
 
             generator = DungeonGenerator(game_data)
+            config = None
+            dungeon = None
+            difficulty = 'medium'
 
             if dungeon_choice == '1':
                 print("\nCannot save fixed starter dungeon. Use options 2-5 for procedural dungeons.")
                 continue
-            elif dungeon_choice == '2':
-                config = EASY_DUNGEON
-            elif dungeon_choice == '3':
-                config = STANDARD_DUNGEON
-            elif dungeon_choice == '4':
-                config = HARD_DUNGEON
-            else:  # '5'
-                config = create_custom_config()
 
-            print("\nGenerating dungeon...")
-            dungeon_data = generator.generate(config)
-            dungeon = Dungeon.load_from_generator(dungeon_data)
+            elif dungeon_choice in ['2', '3', '4']:
+                # Preset dungeons (Easy/Standard/Hard) - Ask for level first
+                player_level = ask_player_level()
 
-            print(f"✓ Generated: {dungeon.name}")
-            print(f"  Rooms: {len(dungeon.rooms)}")
-            if config.seed:
-                print(f"  Seed: {config.seed}")
+                if dungeon_choice == '2':
+                    config = EASY_DUNGEON
+                    difficulty = 'easy'
+                    print(f"\nGenerating Easy Dungeon (Level {player_level})...")
+                elif dungeon_choice == '3':
+                    config = STANDARD_DUNGEON
+                    difficulty = 'medium'
+                    print(f"\nGenerating Standard Dungeon (Level {player_level})...")
+                else:  # '4'
+                    config = HARD_DUNGEON
+                    difficulty = 'hard'
+                    print(f"\nGenerating Hard Dungeon (Level {player_level})...")
+
+                # Update config with player level
+                config.party_level = player_level
+
+                # Generate single-level dungeon
+                dungeon_data = generator.generate(config)
+                dungeon = Dungeon.load_from_generator(dungeon_data)
+                print(f"✓ Generated: {dungeon.name}")
+                print(f"  Rooms: {len(dungeon.rooms)}")
+                if config.seed:
+                    print(f"  Seed: {config.seed}")
+
+            else:  # '5' - Custom (includes multi-level and party-aware)
+                # Custom configuration with party-aware interview
+                config, num_levels, dungeon_name = create_custom_config()
+
+                if num_levels > 1:
+                    # Multi-level dungeon
+                    from aerthos.generator.multilevel_generator import MultiLevelGenerator
+
+                    print(f"\nGenerating Multi-Level Dungeon ({num_levels} levels)...")
+                    ml_generator = MultiLevelGenerator()
+
+                    # Generate multi-level dungeon
+                    dungeon = ml_generator.generate(
+                        num_levels=num_levels,
+                        rooms_per_level=config.num_rooms,
+                        dungeon_name=dungeon_name
+                    )
+                    print(f"✓ Generated: {dungeon.name} ({dungeon.num_levels} levels)")
+                    difficulty = 'multilevel_custom'
+                else:
+                    # Single-level custom dungeon
+                    print(f"\nGenerating Custom Dungeon...")
+                    dungeon_data = generator.generate(config)
+                    dungeon = Dungeon.load_from_generator(dungeon_data)
+                    print(f"✓ Generated: {dungeon.name}")
+                    print(f"  Rooms: {len(dungeon.rooms)}")
+                    if config.seed:
+                        print(f"  Seed: {config.seed}")
+                    difficulty = 'custom'
 
             scenario_name = input("\nEnter scenario name (or press Enter to use default): ").strip()
             if not scenario_name:
                 scenario_name = dungeon.name
 
             description = input("Enter description (optional): ").strip()
-
-            difficulty_map = {2: 'easy', 3: 'medium', 4: 'hard', 5: 'custom'}
-            difficulty = difficulty_map.get(int(dungeon_choice), 'medium')
 
             scenario_id = library.save_scenario(dungeon, scenario_name, description, difficulty)
             print(f"\n✓ Scenario saved! ID: {scenario_id}")
@@ -1137,8 +1209,13 @@ def manage_sessions(game_data: GameData):
                 print("Error: Scenario not found!")
                 continue
 
-            # Create dungeon from scenario
-            dungeon = session_mgr.scenario_library.create_dungeon_from_scenario(scenario_data)
+            # Restore dungeon from saved state (preserves exploration, defeated monsters, etc.)
+            # If no dungeon_state, fall back to creating fresh from scenario
+            if 'dungeon_state' in session_data:
+                dungeon = session_mgr.scenario_library.restore_dungeon_from_state(session_data['dungeon_state'])
+            else:
+                # Legacy support: create fresh from scenario
+                dungeon = session_mgr.scenario_library.create_dungeon_from_scenario(scenario_data)
 
             print(f"\n✓ Loaded session: {session_data['name']}")
             print(f"  Party: {party_data['name']}")

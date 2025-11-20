@@ -180,7 +180,8 @@ def main():
             ('Treasure Generation Tests', 'test_treasure_generation.py'),
             ('Magic Functionality Tests', 'test_magic_functionality.py'),
             ('Phase 3 Integration Tests', 'test_phase3_integration.py'),
-            ('Village System Tests', 'test_village_system.py')
+            ('Village System Tests', 'test_village_system.py'),
+            ('Multi-Level Dungeon Tests', 'test_multilevel_dungeons.py')
         ]
 
         for suite_name, pattern in unit_tests:

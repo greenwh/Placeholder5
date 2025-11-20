@@ -9,6 +9,7 @@ import random
 from typing import List, Dict, Set, Tuple, Optional
 from .config import DungeonConfig
 from ..systems.narrator import DMNarrator, NarrativeContext
+from ..systems.environment_filter import EnvironmentMonsterFilter, EnvironmentContext
 
 
 class DungeonGenerator:
@@ -32,6 +33,7 @@ class DungeonGenerator:
         self.rng = random.Random()
         self.use_narrator = use_narrator
         self.narrator = DMNarrator() if use_narrator else None
+        self.environment_filter = EnvironmentMonsterFilter()
 
         # Theme-based description templates
         self.themes = {
@@ -458,8 +460,25 @@ class DungeonGenerator:
         elif config.lethality_factor < 0.8:
             num_monsters = max(1, num_monsters - 1)
 
-        # Select monsters from pool
-        monsters = [self.rng.choice(config.monster_pool) for _ in range(num_monsters)]
+        # Filter monster pool by dungeon environment (DMG Appendix C)
+        # This prevents inappropriate encounters like sprites or dolphins in dungeons
+        context = EnvironmentContext(
+            location_type='dungeon',
+            dungeon_level=config.party_level  # Use party level as dungeon depth approximation
+        )
+
+        # Get environment-appropriate monsters
+        filtered_pool = self.environment_filter.get_appropriate_monsters(
+            context,
+            monster_pool=config.monster_pool
+        )
+
+        # Fall back to full pool if filtering removed everything
+        if not filtered_pool:
+            filtered_pool = config.monster_pool
+
+        # Select monsters from filtered pool
+        monsters = [self.rng.choice(filtered_pool) for _ in range(num_monsters)]
 
         return {
             'type': 'combat',

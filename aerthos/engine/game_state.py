@@ -4,12 +4,13 @@ Central game state manager - coordinates all game systems
 
 import json
 import random
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 from pathlib import Path
 
 from ..entities.player import PlayerCharacter, Item, Weapon, Armor, LightSource, Spell
 from ..entities.monster import Monster
 from ..world.dungeon import Dungeon
+from ..world.multilevel_dungeon import MultiLevelDungeon
 from ..world.room import Room
 from ..world.encounter import EncounterManager, CombatEncounter, TrapEncounter, PuzzleEncounter
 from ..engine.combat import CombatResolver, DiceRoller
@@ -60,10 +61,21 @@ class GameData:
 class GameState:
     """Central game state manager"""
 
-    def __init__(self, player: PlayerCharacter, dungeon: Dungeon):
+    def __init__(self, player: PlayerCharacter, dungeon: Union[Dungeon, MultiLevelDungeon]):
         self.player = player
         self.dungeon = dungeon
-        self.current_room = dungeon.get_start_room()
+
+        # Multi-level support
+        self.is_multilevel = isinstance(dungeon, MultiLevelDungeon)
+        self.current_level = 1 if self.is_multilevel else 0  # 0 for single-level
+
+        # Get starting room
+        if self.is_multilevel:
+            current_dungeon = dungeon.get_current_dungeon()
+            self.current_room = current_dungeon.get_start_room() if current_dungeon else None
+        else:
+            self.current_room = dungeon.get_start_room()
+
         self.is_active = True
 
         # Game systems
@@ -120,6 +132,8 @@ class GameState:
             'map': self._handle_map,
             'directions': self._handle_directions,
             'formation': self._handle_formation,
+            'stairs_up': self._handle_stairs_up,
+            'stairs_down': self._handle_stairs_down,
             'help': self._handle_help,
             'save': self._handle_save,
             'load': self._handle_load,
@@ -133,7 +147,7 @@ class GameState:
             return {'success': False, 'message': "I don't understand that command. Type 'help' for options."}
 
     def _handle_move(self, command: Command) -> Dict:
-        """Handle movement"""
+        """Handle movement (both horizontal and stairs)"""
 
         if self.in_combat:
             return {'success': False, 'message': "You can't flee while in combat!"}
@@ -142,13 +156,37 @@ class GameState:
         if not direction:
             return {'success': False, 'message': "Move where? (north, south, east, west, up, down)"}
 
-        new_room = self.dungeon.move(self.current_room.id, direction)
+        # Handle multi-level vs single-level dungeons
+        if self.is_multilevel:
+            # MultiLevelDungeon.move() returns (room, level, error_msg)
+            result = self.dungeon.move(self.current_room.id, direction)
+            new_room, new_level, error_msg = result
 
-        if not new_room:
-            return {'success': False, 'message': f"You can't go {direction} from here."}
+            if not new_room:
+                msg = error_msg if error_msg else f"You can't go {direction} from here."
+                return {'success': False, 'message': msg}
 
-        # Move successful
-        self.current_room = new_room
+            # Update room and level
+            self.current_room = new_room
+            self.current_level = new_level
+
+            # Check if we changed levels (for stair movement)
+            level_change_msg = None
+            if direction in ['up', 'u', 'stairs_up']:
+                level_change_msg = f"You ascend the stairs to Level {new_level}.\n"
+            elif direction in ['down', 'd', 'stairs_down']:
+                level_change_msg = f"You descend the stairs to Level {new_level}.\n"
+
+        else:
+            # Regular Dungeon.move() returns Optional[Room]
+            new_room = self.dungeon.move(self.current_room.id, direction)
+
+            if not new_room:
+                return {'success': False, 'message': f"You can't go {direction} from here."}
+
+            # Move successful
+            self.current_room = new_room
+            level_change_msg = None
 
         # Advance time
         time_messages = self.time_tracker.advance_turn(self.player)
@@ -159,7 +197,10 @@ class GameState:
         # Check for encounters
         encounter_msg = self._check_encounters('on_enter')
 
-        messages = [room_desc]
+        messages = []
+        if level_change_msg:
+            messages.append(level_change_msg)
+        messages.append(room_desc)
         if encounter_msg:
             messages.append(encounter_msg)
         messages.extend(time_messages)
@@ -958,6 +999,80 @@ class GameState:
             'success': True,
             'message': f"{member_name} moved to {position} line."
         }
+
+    def _handle_stairs_up(self, command: Command) -> Dict:
+        """Handle ascending stairs to previous dungeon level"""
+
+        if self.in_combat:
+            return {'success': False, 'message': "You can't use stairs while in combat!"}
+
+        if not self.is_multilevel:
+            return {'success': False, 'message': "There are no stairs here. This dungeon has only one level."}
+
+        # MultiLevelDungeon.move() handles stairs and returns (new_room, new_level_number, message)
+        new_room, new_level, error_msg = self.dungeon.move(self.current_room.id, "stairs_up")
+
+        if not new_room:
+            # Move failed - either no stairs or at top level
+            msg = error_msg if error_msg else "You can't go up from here."
+            return {'success': False, 'message': msg}
+
+        # Move successful - update room and level
+        self.current_room = new_room
+        self.current_level = new_level
+
+        # Advance time
+        time_messages = self.time_tracker.advance_turn(self.player)
+
+        # Get room description
+        room_desc = self.current_room.on_enter(self.player.has_light(), self.player)
+
+        # Check for encounters
+        encounter_msg = self._check_encounters('on_enter')
+
+        messages = [f"You ascend the stairs to Level {new_level}.\n", room_desc]
+        if encounter_msg:
+            messages.append(encounter_msg)
+        messages.extend(time_messages)
+
+        return {'success': True, 'message': '\n\n'.join(messages)}
+
+    def _handle_stairs_down(self, command: Command) -> Dict:
+        """Handle descending stairs to next dungeon level"""
+
+        if self.in_combat:
+            return {'success': False, 'message': "You can't use stairs while in combat!"}
+
+        if not self.is_multilevel:
+            return {'success': False, 'message': "There are no stairs here. This dungeon has only one level."}
+
+        # MultiLevelDungeon.move() handles stairs and returns (new_room, new_level_number, message)
+        new_room, new_level, error_msg = self.dungeon.move(self.current_room.id, "stairs_down")
+
+        if not new_room:
+            # Move failed - either no stairs or at bottom level
+            msg = error_msg if error_msg else "You can't go down from here."
+            return {'success': False, 'message': msg}
+
+        # Move successful - update room and level
+        self.current_room = new_room
+        self.current_level = new_level
+
+        # Advance time
+        time_messages = self.time_tracker.advance_turn(self.player)
+
+        # Get room description
+        room_desc = self.current_room.on_enter(self.player.has_light(), self.player)
+
+        # Check for encounters
+        encounter_msg = self._check_encounters('on_enter')
+
+        messages = [f"You descend the stairs to Level {new_level}.\n", room_desc]
+        if encounter_msg:
+            messages.append(encounter_msg)
+        messages.extend(time_messages)
+
+        return {'success': True, 'message': '\n\n'.join(messages)}
 
     def _handle_help(self, command: Command) -> Dict:
         """Show help"""
