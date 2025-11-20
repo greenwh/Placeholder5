@@ -1293,6 +1293,7 @@ def run_game_with_party(party: Party, dungeon: Dungeon, game_data: GameData,
     for i, member in enumerate(party.members):
         formation = party.formation[i] if i < len(party.formation) else 'front'
         print(f"  {i+1}. {member.name} ({member.race} {member.char_class}) [{formation.upper()}]")
+    print("\nTip: Press 1-6 to switch active character during gameplay.")
     print()
 
     # Enter starting room
@@ -1318,6 +1319,21 @@ def run_game_with_party(party: Party, dungeon: Dungeon, game_data: GameData,
             user_input = display.prompt_input("> ")
 
             if not user_input:
+                continue
+
+            # Check for party member switching (1-6)
+            if user_input.strip() in ['1', '2', '3', '4', '5', '6']:
+                member_num = int(user_input.strip())
+                if member_num <= len(party.members):
+                    new_player = party.members[member_num - 1]
+                    if new_player.is_alive:
+                        player = new_player
+                        game_state.player = player  # Update game state reference
+                        print(f"✓ Switched to {player.name}")
+                    else:
+                        print(f"✗ {party.members[member_num - 1].name} is dead and cannot be controlled.")
+                else:
+                    print(f"✗ Party only has {len(party.members)} members.")
                 continue
 
             # Parse command

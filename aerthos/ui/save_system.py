@@ -115,7 +115,7 @@ class SaveSystem:
             'xp': player.xp,
             'xp_to_next_level': player.xp_to_next_level,
             'gold': player.gold,
-            'conditions': player.conditions,
+            'conditions': list(player.conditions),  # Convert set to list for JSON
             'inventory': [item.name for item in player.inventory.items],
             'thief_skills': player.thief_skills,
             # Equipment
