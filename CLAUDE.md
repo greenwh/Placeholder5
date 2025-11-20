@@ -738,6 +738,39 @@ aerthos_claude_code_prompt.md  # Implementation guide
 CLAUDE.md                    # This file - development guide
 ```
 
+### Documentation Archival Policy
+
+**Rule:** Once a planned feature is complete, archive its planning/summary documents to keep the project organized.
+
+**When to Archive:**
+- Feature implementation plans (FEATURE_PLAN_*.md) after feature is complete and merged
+- Fix summaries (*_FIX_COMPLETE.md, *_COMPLETE.md) after testing confirms completion
+- Sprint/phase completion reports (PHASE_*_COMPLETE.md, SPRINT*_COMPLETE.md)
+- Implementation summaries (*_SUMMARY.md, *_REPORT.md) after work is verified
+- Old/superseded versions of documents (old_*.md, old2_*.md)
+- Analysis documents (*_ANALYSIS.md) after decisions are implemented
+
+**Archive Location:** `docs/archive/`
+
+**Keep Active:**
+- Current feature plans (in progress)
+- Living documentation (README.md, SETUP.md, CLAUDE.md)
+- Reference documents (ITEMS_REFERENCE.md, API_REFERENCE.md, ARCHITECTURE.md)
+- Test documentation (TEST_SUITE_README.md, TESTING.md)
+- Active planning documents (CAMPAIGN_IMPLEMENTATION_PLAN.md if in progress)
+
+**How to Archive:**
+```bash
+# Create archive directory if needed
+mkdir -p docs/archive
+
+# Move completed documents
+mv FEATURE_PLAN_COMPLETED.md docs/archive/
+mv IMPLEMENTATION_SUMMARY.md docs/archive/
+
+# Keep repo root clean
+```
+
 ### Main Entry Points
 
 ```
