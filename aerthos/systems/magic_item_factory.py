@@ -10,7 +10,7 @@ import re
 from pathlib import Path
 from typing import Dict, Optional, Union
 
-from ..entities.player import Item, Weapon, Armor
+from ..entities.player import Item, Weapon, Armor, Shield
 from ..entities.magic_items import Potion, Scroll, Ring, Wand, Staff, MiscMagic
 
 
@@ -238,50 +238,77 @@ class MagicItemFactory:
         weapon.gp_value = gp_value
         return weapon
 
-    def _create_magic_armor(self, name: str, xp_value: int, gp_value: int) -> Armor:
-        """Create magic armor from name"""
+    def _create_magic_armor(self, name: str, xp_value: int, gp_value: int) -> Union[Armor, Shield]:
+        """Create magic armor or shield from name"""
         # Parse bonus and type
         # Examples: "Chain Mail +1", "Plate Mail +2", "Shield +1"
 
         bonus_match = re.search(r'\+(\d+)', name)
         magic_bonus = int(bonus_match.group(1)) if bonus_match else 1
 
-        # Determine armor type and base AC
-        # In new system: ac is the actual AC value (lower is better)
-        # Old system had ac_bonus which improved AC by that amount
-        # Conversion: ac = 10 - ac_bonus
-        base_ac = 10
-        is_shield = False
-
-        if "Leather" in name:
-            base_ac = 8  # AC 8 (was ac_bonus=2)
-        elif "Chain" in name:
-            base_ac = 5  # AC 5 (was ac_bonus=5)
-        elif "Plate" in name or "Plate Mail" in name:
-            base_ac = 3  # AC 3 (was ac_bonus=7, but some sources say 8)
-        elif "Shield" in name:
-            base_ac = 9  # Shield gives AC 9 (was ac_bonus=1)
-            is_shield = True
-
         # Check for cursed
         is_cursed = "Cursed" in name or "cursed" in name
         if is_cursed:
-            magic_bonus = -1  # Cursed armor makes AC worse (adds to AC, making it higher/worse)
+            magic_bonus = -1  # Cursed items are worse
 
+        # Shields are separate from armor!
+        if "Shield" in name:
+            # Create Shield object (not Armor!)
+            # Shields have ac_bonus (how much they improve AC)
+            # Standard shield: ac_bonus=1 (improves AC by -1)
+            # Shield +1: ac_bonus=1, magic_bonus=1 (total -2 to AC)
+            shield = Shield(
+                name=name,
+                ac_bonus=1,  # Standard shield bonus
+                magic_bonus=magic_bonus,
+                weight=10,
+                properties={
+                    "xp_value": xp_value,
+                    "gp_value": gp_value,
+                    "is_cursed": is_cursed
+                },
+                description=f"Magical shield (AC bonus: {1 + magic_bonus})"
+            )
+            shield.xp_value = xp_value
+            shield.gp_value = gp_value
+            return shield
+
+        # Armor has base AC value (lower is better)
+        # AD&D 1e AC values:
+        base_ac = 10
+
+        if "Leather" in name:
+            base_ac = 8  # Leather armor
+        elif "Studded Leather" in name or "Studded" in name:
+            base_ac = 7  # Studded leather
+        elif "Ring Mail" in name or "Ring" in name:
+            base_ac = 7  # Ring mail
+        elif "Scale Mail" in name or "Scale" in name:
+            base_ac = 6  # Scale mail
+        elif "Chain Mail" in name or "Chain" in name:
+            base_ac = 5  # Chain mail
+        elif "Splint Mail" in name or "Splint" in name:
+            base_ac = 4  # Splint mail
+        elif "Banded Mail" in name or "Banded" in name:
+            base_ac = 4  # Banded mail
+        elif "Plate Mail" in name:
+            base_ac = 3  # Plate mail
+        elif "Plate" in name:
+            base_ac = 2  # Full plate
+
+        # Create Armor object
         armor = Armor(
             name=name,
             ac=base_ac,
             magic_bonus=magic_bonus,
-            weight=25 if not is_shield else 5,
+            weight=25,  # Average armor weight
             properties={
                 "xp_value": xp_value,
                 "gp_value": gp_value,
-                "is_cursed": is_cursed,
-                "is_shield": is_shield
+                "is_cursed": is_cursed
             },
-            description=f"Magical armor with base AC {base_ac} (effective AC {base_ac - magic_bonus} with +{magic_bonus} bonus)"
+            description=f"Magical armor (base AC {base_ac}, effective AC {base_ac - magic_bonus})"
         )
-        # Add xp and gp values as attributes for easy access
         armor.xp_value = xp_value
         armor.gp_value = gp_value
         return armor
