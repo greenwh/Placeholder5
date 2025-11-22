@@ -30,12 +30,15 @@ class CommandParser:
     # Verb synonyms mapped to normalized actions
     VERBS = {
         'attack': ['attack', 'hit', 'strike', 'fight', 'kill', 'slay'],
+        'defend': ['defend', 'parry', 'block', 'guard'],
+        'wait': ['wait', 'pass', 'skip'],
         'move': ['go', 'move', 'walk', 'travel', 'head', 'n', 'north', 's', 'south',
                  'e', 'east', 'w', 'west', 'u', 'up', 'd', 'down'],
         'take': ['take', 'get', 'grab', 'pick', 'pickup', 'loot'],
         'drop': ['drop', 'discard'],
         'use': ['use', 'drink', 'eat', 'read', 'apply', 'consume'],
         'equip': ['equip', 'wear', 'wield', 'don'],
+        'unequip': ['unequip', 'remove', 'doff', 'unwear', 'unwield'],
         'cast': ['cast'],
         'search': ['search'],
         'look': ['look', 'examine', 'inspect', 'check'],

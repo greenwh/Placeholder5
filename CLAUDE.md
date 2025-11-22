@@ -110,9 +110,26 @@ python3 -m unittest tests.test_combat -v
 
 **THE GOLDEN RULE:** Both `main.py` (CLI) and `web_ui/app.py` (Web UI) must use identical calls to core engine functions.
 
+**🔴 MANDATORY RULE FOR ALL CODE CHANGES:**
+> **ANY change to code in CLI (`main.py`) OR core engine (`aerthos/`) that affects gameplay MUST be checked and synced with Web UI (`web_ui/app.py`) and vice versa.**
+>
+> **This includes:**
+> - Command handlers in `aerthos/engine/game_state.py`
+> - Parser changes in `aerthos/engine/parser.py`
+> - Item/equipment handling
+> - Combat mechanics
+> - Character management
+> - Dungeon generation
+>
+> **Before committing ANY change, ask:** *"Does this affect the other UI?"*
+>
+> If yes → Update both UIs
+> If unsure → Test both UIs
+
 **Why This Matters:**
 - Both UIs are **thin wrappers** around the same core game engine (`aerthos/` modules)
-- When you change how a core function is called in one UI, you **MUST** update the other
+- Core engine changes automatically affect BOTH UIs (e.g., adding 'unequip' command)
+- UI-specific code changes must be mirrored (e.g., how items are created)
 - Failure to sync = one UI works, the other breaks with cryptic errors
 
 **Common Synchronization Points:**

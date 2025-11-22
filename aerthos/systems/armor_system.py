@@ -44,7 +44,7 @@ class ArmorSystem:
         return Armor(
             name=data['name'] + (f" +{magic_bonus}" if magic_bonus > 0 else ""),
             item_type='armor',
-            weight=data['weight_gp'],
+            weight=data['weight_gp'] / 10,  # Convert GP weight to pounds (10 GP = 1 lb)
             properties={'armor_id': armor_id},
             description=data.get('description', ''),
             ac=data['ac'],
@@ -73,7 +73,7 @@ class ArmorSystem:
         return Shield(
             name=data['name'] + (f" +{magic_bonus}" if magic_bonus > 0 else ""),
             item_type='shield',
-            weight=data['weight_gp'],
+            weight=data['weight_gp'] / 10,  # Convert GP weight to pounds (10 GP = 1 lb)
             properties={'shield_id': shield_id},
             description=data.get('description', ''),
             ac_bonus=data['ac_bonus'],
@@ -163,7 +163,7 @@ class ArmorSystem:
                     'name': data['name'],
                     'ac': data['ac'],
                     'cost': data['cost_gp'],
-                    'weight': data['weight_gp'],
+                    'weight': data['weight_gp'] / 10,  # Convert to pounds
                     'type': data['armor_type'],
                     'movement': data['movement_rate']
                 })
@@ -189,7 +189,7 @@ class ArmorSystem:
                     'name': data['name'],
                     'ac_bonus': data['ac_bonus'],
                     'cost': data['cost_gp'],
-                    'weight': data['weight_gp'],
+                    'weight': data['weight_gp'] / 10,  # Convert to pounds
                     'blocks': data['max_attacks_blocked']
                 })
 

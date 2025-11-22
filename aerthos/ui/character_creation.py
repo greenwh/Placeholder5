@@ -394,10 +394,10 @@ class CharacterCreator:
         """Add starting equipment based on class"""
 
         # Everyone gets basic supplies (use proper item types!)
-        torch1 = LightSource(name="Torch", weight=1, burn_time_turns=6, light_radius=30)
-        torch2 = LightSource(name="Torch", weight=1, burn_time_turns=6, light_radius=30)
-        ration1 = Item(name="Rations (1 day)", item_type="consumable", weight=1, properties={'healing': '0'})
-        ration2 = Item(name="Rations (1 day)", item_type="consumable", weight=1, properties={'healing': '0'})
+        torch1 = LightSource(name="Torch", weight=0.1, burn_time_turns=6, light_radius=30)  # 1 GP = 0.1 lbs
+        torch2 = LightSource(name="Torch", weight=0.1, burn_time_turns=6, light_radius=30)
+        ration1 = Item(name="Rations (1 day)", item_type="consumable", weight=0.1, properties={'healing': '0'})
+        ration2 = Item(name="Rations (1 day)", item_type="consumable", weight=0.1, properties={'healing': '0'})
 
         player.inventory.add_item(torch1)
         player.inventory.add_item(torch2)
@@ -407,7 +407,7 @@ class CharacterCreator:
 
         # Class-specific equipment
         if char_class in ['Fighter', 'Ranger', 'Paladin']:
-            longsword = Weapon(name="Longsword", weight=4, damage_sm="1d8", damage_l="1d12", speed_factor=5)
+            longsword = Weapon(name="Longsword", weight=0.4, damage_sm="1d8", damage_l="1d12", speed_factor=5)  # 4 GP = 0.4 lbs
             chain = self.armor_system.create_armor('chain_mail')
             shield = self.armor_system.create_shield('shield_small')
 
@@ -416,11 +416,13 @@ class CharacterCreator:
             player.inventory.add_item(shield)
 
             player.equip_weapon(longsword)
-            player.equip_armor(chain)
+            player.equipment.armor = chain
             player.equipment.shield = shield
+            # Calculate AC: armor base AC - shield bonus
+            player.ac = chain.ac - shield.ac_bonus
 
         elif char_class in ['Cleric', 'Druid']:
-            mace = Weapon(name="Mace", weight=8, damage_sm="1d6", damage_l="1d6", speed_factor=7)
+            mace = Weapon(name="Mace", weight=0.8, damage_sm="1d6", damage_l="1d6", speed_factor=7)  # 8 GP = 0.8 lbs
             chain = self.armor_system.create_armor('chain_mail')
             shield = self.armor_system.create_shield('shield_small')
 
@@ -429,12 +431,14 @@ class CharacterCreator:
             player.inventory.add_item(shield)
 
             player.equip_weapon(mace)
-            player.equip_armor(chain)
+            player.equipment.armor = chain
             player.equipment.shield = shield
+            # Calculate AC: armor base AC - shield bonus
+            player.ac = chain.ac - shield.ac_bonus
 
         elif char_class in ['Magic-User', 'Illusionist']:
-            staff = Weapon(name="Staff", weight=4, damage_sm="1d6", damage_l="1d6", speed_factor=4)
-            dagger = Weapon(name="Dagger", weight=1, damage_sm="1d4", damage_l="1d3", speed_factor=2)
+            staff = Weapon(name="Staff", weight=0.4, damage_sm="1d6", damage_l="1d6", speed_factor=4)  # 4 GP = 0.4 lbs
+            dagger = Weapon(name="Dagger", weight=0.1, damage_sm="1d4", damage_l="1d3", speed_factor=2)  # 1 GP = 0.1 lbs
 
             player.inventory.add_item(staff)
             player.inventory.add_item(dagger)
@@ -442,23 +446,25 @@ class CharacterCreator:
             player.equip_weapon(dagger)
 
         elif char_class in ['Thief', 'Assassin', 'Bard']:
-            shortsword = Weapon(name="Shortsword", weight=3, damage_sm="1d6", damage_l="1d8", speed_factor=3)
+            shortsword = Weapon(name="Shortsword", weight=0.3, damage_sm="1d6", damage_l="1d8", speed_factor=3)  # 3 GP = 0.3 lbs
             leather = self.armor_system.create_armor('leather')
 
             player.inventory.add_item(shortsword)
             player.inventory.add_item(leather)
 
             player.equip_weapon(shortsword)
-            player.equip_armor(leather)
+            player.equipment.armor = leather
+            # Calculate AC: armor base AC (no shield)
+            player.ac = leather.ac
 
         elif char_class == 'Monk':
             # Monks use their fists and wear no armor
-            staff = Weapon(name="Staff", weight=4, damage_sm="1d6", damage_l="1d6", speed_factor=4)
+            staff = Weapon(name="Staff", weight=0.4, damage_sm="1d6", damage_l="1d6", speed_factor=4)  # 4 GP = 0.4 lbs
             player.inventory.add_item(staff)
             player.equip_weapon(staff)
 
         # Equip a torch
-        torch = LightSource(name="Torch", weight=1, burn_time_turns=6)
+        torch = LightSource(name="Torch", weight=0.1, burn_time_turns=6)  # 1 GP = 0.1 lbs
         player.equip_light(torch)
 
     def _add_starting_spells(self, player: PlayerCharacter, char_class: str):

@@ -62,8 +62,12 @@ class SaveSystem:
         if not filepath.exists():
             return None
 
-        with open(filepath, 'r') as f:
-            return json.load(f)
+        try:
+            with open(filepath, 'r') as f:
+                return json.load(f)
+        except (json.JSONDecodeError, IOError) as e:
+            print(f"Error: Save file in slot {slot} is corrupted: {e}")
+            return None
 
     def list_saves(self) -> list:
         """
@@ -79,17 +83,22 @@ class SaveSystem:
             filepath = self.save_dir / f'save_{slot}.json'
 
             if filepath.exists():
-                with open(filepath, 'r') as f:
-                    data = json.load(f)
+                try:
+                    with open(filepath, 'r') as f:
+                        data = json.load(f)
 
-                saves.append({
-                    'slot': slot,
-                    'character_name': data['player']['name'],
-                    'level': data['player']['level'],
-                    'class': data['player']['char_class'],
-                    'timestamp': data['timestamp'],
-                    'description': data.get('description', '')
-                })
+                    saves.append({
+                        'slot': slot,
+                        'character_name': data['player']['name'],
+                        'level': data['player']['level'],
+                        'class': data['player']['char_class'],
+                        'timestamp': data['timestamp'],
+                        'description': data.get('description', '')
+                    })
+                except (json.JSONDecodeError, KeyError, IOError) as e:
+                    # Skip corrupted or incomplete save files
+                    print(f"Warning: Save slot {slot} is corrupted and will be skipped: {e}")
+                    continue
 
         return saves
 

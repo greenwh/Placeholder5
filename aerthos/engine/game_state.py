@@ -7,7 +7,7 @@ import random
 from typing import Dict, List, Optional, Union
 from pathlib import Path
 
-from ..entities.player import PlayerCharacter, Item, Weapon, Armor, LightSource, Spell
+from ..entities.player import PlayerCharacter, Item, Weapon, Armor, Shield, LightSource, Spell
 from ..entities.monster import Monster
 from ..world.dungeon import Dungeon
 from ..world.multilevel_dungeon import MultiLevelDungeon
@@ -30,7 +30,10 @@ class GameData:
         self.classes = {}
         self.races = {}
         self.monsters = {}
-        self.items = {}
+        # Note: items.json is deprecated - use specialized systems:
+        # - ArmorSystem for armor.json
+        # - Weapon system for weapons.json
+        # - Equipment system for equipment.json
         self.spells = {}
 
     @classmethod
@@ -49,8 +52,10 @@ class GameData:
         with open(f"{data_dir}/monsters.json") as f:
             data.monsters = json.load(f)
 
-        with open(f"{data_dir}/items.json") as f:
-            data.items = json.load(f)
+        # Note: items.json is deprecated - use specific databases:
+        # - armor.json (via ArmorSystem)
+        # - weapons.json (via weapon system)
+        # - equipment.json (for general equipment)
 
         with open(f"{data_dir}/spells.json") as f:
             data.spells = json.load(f)
@@ -116,10 +121,13 @@ class GameState:
         handlers = {
             'move': self._handle_move,
             'attack': self._handle_attack,
+            'defend': self._handle_defend,
+            'wait': self._handle_wait,
             'take': self._handle_take,
             'drop': self._handle_drop,
             'use': self._handle_use,
             'equip': self._handle_equip,
+            'unequip': self._handle_unequip,
             'cast': self._handle_cast,
             'look': self._handle_look,
             'search': self._handle_search,
@@ -358,6 +366,80 @@ class GameState:
 
         return {'success': True, 'message': '\n'.join(messages)}
 
+    def _handle_defend(self, command: Command) -> Dict:
+        """Handle defensive stance in combat - applies to active character only"""
+
+        if not self.in_combat:
+            return {'success': False, 'message': "You're not in combat."}
+
+        messages = [f"{self.player.name} takes a defensive stance, focusing on blocking incoming attacks."]
+
+        # Apply defensive bonus (improve AC temporarily for this round)
+        # In AD&D 1e, defending gives -2 AC bonus (better AC)
+        original_ac = self.player.ac
+        improved_ac = self.player.ac - 2  # Temporary AC improvement
+        self.player.ac = improved_ac
+        messages.append(f"{self.player.name}'s AC improves from {original_ac} to {improved_ac} for this round.")
+
+        # Monsters attack
+        for monster in self.active_monsters:
+            if monster.is_alive:
+                monster_result = self.combat_resolver.attack_roll(monster, self.player)
+                messages.append(monster_result['narrative'])
+
+                if monster_result['defender_died']:
+                    messages.append("\n═══ YOU HAVE DIED ═══")
+                    self.is_active = False
+                    self.player.ac = original_ac  # Restore AC
+                    return {'success': False, 'message': '\n'.join(messages)}
+
+        # Restore original AC after the round
+        self.player.ac = original_ac
+
+        # Show monster status
+        if self.in_combat and self.active_monsters:
+            messages.append(self._format_monster_status())
+
+        # Advance time
+        time_messages = self.time_tracker.advance_turn(self.player)
+        messages.extend(time_messages)
+
+        return {'success': True, 'message': '\n'.join(messages)}
+
+    def _handle_wait(self, command: Command) -> Dict:
+        """Handle passing turn / waiting"""
+
+        if not self.in_combat:
+            # Out of combat, just pass time
+            messages = ["You wait and observe your surroundings."]
+            time_messages = self.time_tracker.advance_turn(self.player)
+            messages.extend(time_messages)
+            return {'success': True, 'message': '\n'.join(messages)}
+
+        # In combat, skip turn but monsters still attack
+        messages = ["You hold your action and wait."]
+
+        # Monsters attack
+        for monster in self.active_monsters:
+            if monster.is_alive:
+                monster_result = self.combat_resolver.attack_roll(monster, self.player)
+                messages.append(monster_result['narrative'])
+
+                if monster_result['defender_died']:
+                    messages.append("\n═══ YOU HAVE DIED ═══")
+                    self.is_active = False
+                    return {'success': False, 'message': '\n'.join(messages)}
+
+        # Show monster status
+        if self.in_combat and self.active_monsters:
+            messages.append(self._format_monster_status())
+
+        # Advance time
+        time_messages = self.time_tracker.advance_turn(self.player)
+        messages.extend(time_messages)
+
+        return {'success': True, 'message': '\n'.join(messages)}
+
     def _handle_take(self, command: Command) -> Dict:
         """Handle taking items"""
 
@@ -483,7 +565,19 @@ class GameState:
             self.player.equip_weapon(item)
             return {'success': True, 'message': f"You equip the {item.name}."}
         elif isinstance(item, Armor):
-            self.player.equip_armor(item)
+            self.player.equipment.armor = item
+            # Recalculate AC based on armor and shield
+            self.player.ac = item.ac
+            if self.player.equipment.shield:
+                self.player.ac -= self.player.equipment.shield.ac_bonus
+            return {'success': True, 'message': f"You equip the {item.name}."}
+        elif isinstance(item, Shield):
+            self.player.equipment.shield = item
+            # Recalculate AC
+            if self.player.equipment.armor:
+                self.player.ac = self.player.equipment.armor.ac - item.ac_bonus
+            else:
+                self.player.ac = 10 - item.ac_bonus
             return {'success': True, 'message': f"You equip the {item.name}."}
         elif isinstance(item, LightSource):
             self.player.equip_light(item)
@@ -498,6 +592,52 @@ class GameState:
             return {'success': True, 'message': f"You light the {item.name}."}
         else:
             return {'success': False, 'message': f"You can't equip the {item.name}."}
+
+    def _handle_unequip(self, command: Command) -> Dict:
+        """Handle unequipping items - removes from equipment and adds back to inventory"""
+
+        if not command.target:
+            return {'success': False, 'message': "Unequip what?"}
+
+        # Check what's equipped and try to match
+        target_lower = command.target.lower()
+
+        # Check weapon
+        if self.player.equipment.weapon and target_lower in self.player.equipment.weapon.name.lower():
+            weapon = self.player.equipment.weapon
+            self.player.equipment.weapon = None
+            # Add back to inventory (it's already there, just not equipped)
+            # Note: Equipped items stay in inventory in AD&D 1e
+            return {'success': True, 'message': f"You unequip the {weapon.name}."}
+
+        # Check armor
+        if self.player.equipment.armor and target_lower in self.player.equipment.armor.name.lower():
+            armor = self.player.equipment.armor
+            self.player.equipment.armor = None
+            # Recalculate AC
+            self.player.ac = 10  # Base AC
+            if self.player.equipment.shield:
+                self.player.ac -= self.player.equipment.shield.ac_bonus
+            return {'success': True, 'message': f"You remove the {armor.name}."}
+
+        # Check shield
+        if self.player.equipment.shield and target_lower in self.player.equipment.shield.name.lower():
+            shield = self.player.equipment.shield
+            self.player.equipment.shield = None
+            # Recalculate AC
+            if self.player.equipment.armor:
+                self.player.ac = self.player.equipment.armor.ac
+            else:
+                self.player.ac = 10
+            return {'success': True, 'message': f"You unequip the {shield.name}."}
+
+        # Check light source
+        if self.player.equipment.light_source and target_lower in self.player.equipment.light_source.name.lower():
+            light = self.player.equipment.light_source
+            self.player.equipment.light_source = None
+            return {'success': True, 'message': f"You extinguish the {light.name}."}
+
+        return {'success': False, 'message': f"You don't have {command.target} equipped."}
 
     def _handle_cast(self, command: Command) -> Dict:
         """Handle casting spells"""
@@ -1293,87 +1433,92 @@ class GameState:
         return monster
 
     def _create_item_from_name(self, item_name: str) -> Optional[Item]:
-        """Create an item instance from name"""
+        """
+        Create an item instance from name
 
-        if not self.game_data:
-            print("ERROR: GameData not loaded! Call load_game_data() first.")
-            return None
+        Note: Simple item factory for common dungeon loot.
+        For complex items, use specialized systems (ArmorSystem, etc.)
+        """
 
-        # Find item in database
-        item_data = None
-        item_key = None
-
+        # Normalize name for matching
         search_lower = item_name.lower().replace('_', ' ')
 
-        # Try exact match on key first
-        if item_name in self.game_data.items:
-            item_data = self.game_data.items[item_name]
-            item_key = item_name
-        else:
-            # Try matching on display name or key with flexible matching
-            for key, data in self.game_data.items.items():
-                key_normalized = key.lower().replace('_', ' ')
-                name_normalized = data['name'].lower()
+        # Common item templates (name patterns -> item creation)
+        # Weights are in pounds (10 GP = 1 lb)
 
-                if (key_normalized == search_lower or
-                    name_normalized == search_lower or
-                    search_lower in key_normalized or
-                    search_lower in name_normalized):
-                    item_data = data
-                    item_key = key
-                    break
-
-        if not item_data:
-            return None
-
-        # Create appropriate item type
-        if item_data['type'] == 'weapon':
-            return Weapon(
-                name=item_data['name'],
-                weight=item_data['weight'],
-                damage_sm=item_data['damage_sm'],
-                damage_l=item_data['damage_l'],
-                speed_factor=item_data['speed_factor'],
-                magic_bonus=item_data.get('magic_bonus', 0),
-                properties={'cost_gp': item_data.get('cost_gp', 0)},
-                description=item_data.get('description', '')
-            )
-        elif item_data['type'] == 'armor':
-            return Armor(
-                name=item_data['name'],
-                weight=item_data['weight'],
-                ac=item_data['ac'],
-                magic_bonus=item_data.get('magic_bonus', 0),
-                properties={'cost_gp': item_data.get('cost_gp', 0)},
-                description=item_data.get('description', '')
-            )
-        elif item_data['type'] == 'shield':
-            # Shields modify AC rather than setting it
-            return Item(
-                name=item_data['name'],
-                item_type='shield',
-                weight=item_data['weight'],
-                properties={
-                    'ac_bonus': item_data.get('ac_bonus', 1),
-                    'magic_bonus': item_data.get('magic_bonus', 0),
-                    'cost_gp': item_data.get('cost_gp', 0)
-                },
-                description=item_data.get('description', '')
-            )
-        elif item_data['type'] == 'light_source':
+        # Torches
+        if 'torch' in search_lower:
             return LightSource(
-                name=item_data['name'],
-                weight=item_data['weight'],
-                burn_time_turns=item_data['burn_time_turns'],
-                light_radius=item_data['light_radius'],
-                properties={'cost_gp': item_data.get('cost_gp', 0)},
-                description=item_data.get('description', '')
+                name="Torch",
+                weight=0.1,  # 1 GP
+                burn_time_turns=6,
+                light_radius=30,
+                description="A wooden stick wrapped in oil-soaked cloth."
             )
-        else:
+
+        # Rations
+        if 'ration' in search_lower or 'food' in search_lower:
             return Item(
-                name=item_data['name'],
-                item_type=item_data['type'],
-                weight=item_data['weight'],
-                properties=item_data,
-                description=item_data.get('description', '')
+                name="Rations (1 day)",
+                item_type="consumable",
+                weight=0.1,  # 1 GP
+                properties={'healing': '0'},
+                description="Preserved food for one day."
             )
+
+        # Healing potions
+        if 'potion' in search_lower and 'heal' in search_lower:
+            return Item(
+                name="Potion of Healing",
+                item_type="consumable",
+                weight=0.05,  # 0.5 GP
+                properties={'healing': '2d4+2'},
+                description="A red liquid that heals 2d4+2 hit points."
+            )
+
+        # Gold/coins
+        if 'gold' in search_lower or 'coin' in search_lower or 'gp' in search_lower:
+            return Item(
+                name="Gold Coins",
+                item_type="treasure",
+                weight=0.1,  # 10 coins = 1 lb
+                properties={'value_gp': 10},
+                description="A handful of gold coins."
+            )
+
+        # Generic treasure
+        if 'gem' in search_lower or 'jewel' in search_lower:
+            return Item(
+                name="Gem",
+                item_type="treasure",
+                weight=0.01,
+                properties={'value_gp': 50},
+                description="A precious gemstone."
+            )
+
+        # Rope
+        if 'rope' in search_lower:
+            return Item(
+                name="Rope (50 ft)",
+                item_type="equipment",
+                weight=0.5,  # 5 GP
+                description="50 feet of sturdy hemp rope."
+            )
+
+        # Backpack
+        if 'backpack' in search_lower or 'pack' in search_lower:
+            return Item(
+                name="Backpack",
+                item_type="container",
+                weight=2.0,  # 20 GP
+                properties={'capacity_gp': 400},
+                description="A leather backpack with straps."
+            )
+
+        # Default: create generic item
+        return Item(
+            name=item_name,
+            item_type="treasure",
+            weight=0.1,
+            description=f"A {item_name}."
+        )

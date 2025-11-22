@@ -31,13 +31,13 @@ class TestGameData(unittest.TestCase):
         self.assertIsNotNone(data.classes)
         self.assertIsNotNone(data.races)
         self.assertIsNotNone(data.monsters)
-        self.assertIsNotNone(data.items)
+        # Note: items.json is deprecated - use armor.json, weapons.json, equipment.json instead
         self.assertIsNotNone(data.spells)
 
         self.assertGreater(len(data.classes), 0)
         self.assertGreater(len(data.races), 0)
         self.assertGreater(len(data.monsters), 0)
-        self.assertGreater(len(data.items), 0)
+        # items.json no longer loaded
         self.assertGreater(len(data.spells), 0)
 
     def test_classes_data_structure(self):

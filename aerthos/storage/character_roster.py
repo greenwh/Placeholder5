@@ -9,7 +9,7 @@ import uuid
 from datetime import datetime
 from pathlib import Path
 from typing import List, Optional, Dict
-from ..entities.player import PlayerCharacter, Weapon, Armor, LightSource, Item, Spell
+from ..entities.player import PlayerCharacter, Weapon, Armor, Shield, LightSource, Item, Spell
 
 
 class CharacterRoster:
@@ -250,7 +250,9 @@ class CharacterRoster:
                 })
             elif isinstance(item, Armor):
                 item_data.update({
-                    'ac_bonus': item.ac_bonus,
+                    'ac': item.ac,
+                    'armor_type': item.armor_type,
+                    'movement_rate': item.movement_rate,
                     'magic_bonus': getattr(item, 'magic_bonus', 0)
                 })
             elif isinstance(item, LightSource):
@@ -281,7 +283,9 @@ class CharacterRoster:
         if equipment.armor:
             equipped['armor'] = {
                 'name': equipment.armor.name,
-                'ac_bonus': equipment.armor.ac_bonus,
+                'ac': equipment.armor.ac,
+                'armor_type': equipment.armor.armor_type,
+                'movement_rate': equipment.armor.movement_rate,
                 'magic_bonus': getattr(equipment.armor, 'magic_bonus', 0),
                 'weight': equipment.armor.weight
             }
@@ -390,13 +394,15 @@ class CharacterRoster:
                 character.equipment.armor = Armor(
                     name=armor_data['name'],
                     weight=armor_data['weight'],
-                    ac_bonus=armor_data['ac_bonus'],
+                    ac=armor_data['ac'],
+                    armor_type=armor_data.get('armor_type', 'light'),
+                    movement_rate=armor_data.get('movement_rate', 12),
                     magic_bonus=armor_data.get('magic_bonus', 0)
                 )
 
             if 'shield' in data['equipped']:
                 shield_data = data['equipped']['shield']
-                character.equipment.shield = Armor(
+                character.equipment.shield = Shield(
                     name=shield_data['name'],
                     weight=shield_data['weight'],
                     ac_bonus=shield_data['ac_bonus'],
@@ -450,7 +456,9 @@ class CharacterRoster:
             return Armor(
                 name=item_data['name'],
                 weight=item_data['weight'],
-                ac_bonus=item_data['ac_bonus'],
+                ac=item_data['ac'],
+                armor_type=item_data.get('armor_type', 'light'),
+                movement_rate=item_data.get('movement_rate', 12),
                 magic_bonus=item_data.get('magic_bonus', 0)
             )
         elif item_type == 'light_source':

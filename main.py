@@ -392,13 +392,14 @@ def restore_game_from_save(save_data: dict, game_data: GameData) -> tuple:
                 player.spells_memorized.append(slot)
 
         # Restore inventory
+        # Note: Old save format with item names is no longer supported
+        # Items must be recreated through CharacterRoster system
         from aerthos.entities.player import Weapon, Armor, LightSource, Item
 
-        inventory_names = player_data.get('inventory', [])
-        for item_name in inventory_names:
-            item = create_item_from_data(item_name, game_data)
-            if item:
-                player.inventory.add_item(item)
+        # Skip inventory restoration from old saves - not supported
+        # inventory_names = player_data.get('inventory', [])
+        print("\n⚠ Warning: Old save format detected. Inventory not restored.")
+        print("Please use Character Roster for persistent character storage.")
 
         # Restore equipped items
         equipped_weapon_name = player_data.get('equipped_weapon')
@@ -481,67 +482,9 @@ def restore_game_from_save(save_data: dict, game_data: GameData) -> tuple:
         return None, None
 
 
-def create_item_from_data(item_name: str, game_data: GameData):
-    """Helper function to create an item from name using game data"""
-
-    from aerthos.entities.player import Weapon, Armor, LightSource, Item
-
-    if not game_data or not item_name:
-        return None
-
-    # Find item in database
-    item_data = None
-    search_lower = item_name.lower().replace('_', ' ')
-
-    # Try exact match on key or name
-    for key, data in game_data.items.items():
-        key_normalized = key.lower().replace('_', ' ')
-        name_normalized = data['name'].lower()
-
-        if (key_normalized == search_lower or
-            name_normalized == search_lower or
-            data['name'] == item_name):
-            item_data = data
-            break
-
-    if not item_data:
-        return None
-
-    # Create appropriate item type
-    if item_data['type'] == 'weapon':
-        return Weapon(
-            name=item_data['name'],
-            weight=item_data['weight'],
-            damage_sm=item_data['damage_sm'],
-            damage_l=item_data['damage_l'],
-            speed_factor=item_data['speed_factor'],
-            properties={'cost_gp': item_data.get('cost_gp', 0)},
-            description=item_data.get('description', '')
-        )
-    elif item_data['type'] == 'armor':
-        return Armor(
-            name=item_data['name'],
-            weight=item_data['weight'],
-            ac_bonus=item_data['ac_bonus'],
-            properties={'cost_gp': item_data.get('cost_gp', 0)},
-            description=item_data.get('description', '')
-        )
-    elif item_data['type'] == 'light_source':
-        return LightSource(
-            name=item_data['name'],
-            weight=item_data['weight'],
-            burn_time_turns=item_data['burn_time_turns'],
-            light_radius=item_data.get('light_radius', 30)
-        )
-    else:
-        # Generic item (consumables, etc.)
-        return Item(
-            name=item_data['name'],
-            item_type=item_data['type'],
-            weight=item_data['weight'],
-            properties=item_data.get('properties', {}),
-            description=item_data.get('description', '')
-        )
+# Note: create_item_from_data() removed - items.json is deprecated
+# Old saves using items.json are no longer supported
+# Use CharacterRoster system for persistent character storage instead
 
 
 def run_game(player: PlayerCharacter, dungeon: Dungeon, game_data: GameData,
