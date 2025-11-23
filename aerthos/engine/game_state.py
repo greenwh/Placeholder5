@@ -1422,12 +1422,13 @@ class GameState:
             hit_dice=data['hit_dice'],
             damage=data['damage'],
             treasure_type=data.get('treasure_type', 'None'),
-            xp_value=data['xp_value'],
+            xp_value=data['xp_value'],  # Will be recalculated dynamically
             movement=data['movement'],
             morale=data['morale'],
             special_abilities=data.get('special_abilities', []),
             ai_behavior=data.get('ai_behavior', 'aggressive'),
-            description=data['description']
+            description=data['description'],
+            xp_formula=data.get('xp_formula')  # AD&D 1e XP formula data
         )
 
         return monster
