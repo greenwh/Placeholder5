@@ -176,3 +176,12 @@ All bugs fixed! The game now:
 - ✅ AC properly restored when unequipping armor or shield (already worked)
 - ✅ Save system handles corrupted files gracefully
 - ✅ All 374 tests passing
+
+#****************************************************************************************************************
+
+HP undefined in web_ui Character Roster.  Looks ok in CLI.
+
+Error loading sessions in web_ui "Error loading sessions"
+
+Create New Session in web_ui, unable to create Solo
+

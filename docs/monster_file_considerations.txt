@@ -1,0 +1,7 @@
+check CLAUDE.md ## Recent Development section, think it needs updating.  Also add Monster alignment behaviors for potential expansion
+
+monsters_enhanced.json will need changes:
+1 - Name field id actually the description, not the name, may need to bring the name in from monsters.json
+2 - No ai_behavior.  This will break the current game play?  Need to be brought from monsters.json?
+3 - missing some added creatures that monstars.json has (giant_rat, hellhound, hill_giant, frost_giant, fire_giant, red_dragon_young, black_dragon_adult, green_dragon_adult)
+4 - Has Treasure dict, do we resolve treasure correctly now with monsters.json?

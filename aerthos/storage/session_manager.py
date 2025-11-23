@@ -188,6 +188,7 @@ class SessionManager:
                         'created': data['created'],
                         'last_played': data['last_played'],
                         'turns_elapsed': data.get('turns_elapsed', 0),
+                        'total_hours': data.get('total_hours', 0),
                         'is_active': data.get('is_active', True)
                     })
             except Exception as e:

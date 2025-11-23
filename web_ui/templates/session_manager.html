@@ -334,7 +334,8 @@
         </div>
 
         <div class="toolbar">
-            <button class="create-btn" onclick="showCreateModal()">⚔ Create New Session</button>
+            <button class="create-btn" onclick="showCreateModal()">⚔ Create Party Session</button>
+            <button class="create-btn" onclick="showSoloModal()" style="margin-left: 10px;">🗡️ Create Solo Session</button>
         </div>
 
         <div id="sessionList" class="session-list">
@@ -342,10 +343,10 @@
         </div>
     </div>
 
-    <!-- Create Session Modal -->
+    <!-- Create Party Session Modal -->
     <div id="createModal" class="modal">
         <div class="modal-content">
-            <div class="modal-title">Create New Session</div>
+            <div class="modal-title">Create Party Session</div>
             <form id="createForm">
                 <div class="form-group">
                     <label class="form-label">Session Name:</label>
@@ -377,6 +378,46 @@
                 <div class="modal-actions">
                     <button type="button" class="modal-btn" onclick="closeCreateModal()">Cancel</button>
                     <button type="submit" class="modal-btn primary" id="createSessionBtn">Create & Play</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Create Solo Session Modal -->
+    <div id="soloModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">Create Solo Session</div>
+            <form id="soloForm">
+                <div class="form-group">
+                    <label class="form-label">Session Name (optional):</label>
+                    <input type="text" id="soloSessionName" class="form-input" placeholder="Auto-generated if left blank">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Select Character:</label>
+                    <select id="characterSelect" class="form-select" required onchange="updateCharacterPreview()">
+                        <option value="">Loading characters...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Select Scenario:</label>
+                    <select id="soloScenarioSelect" class="form-select" required onchange="updateSoloScenarioPreview()">
+                        <option value="">Loading scenarios...</option>
+                    </select>
+                </div>
+
+                <div id="characterPreview" class="preview-section" style="display: none;">
+                    <div class="preview-title">Character Preview</div>
+                    <div id="characterPreviewContent" class="preview-info"></div>
+                </div>
+
+                <div id="soloScenarioPreview" class="preview-section" style="display: none;">
+                    <div class="preview-title">Scenario Preview</div>
+                    <div id="soloScenarioPreviewContent" class="preview-info"></div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="modal-btn" onclick="closeSoloModal()">Cancel</button>
+                    <button type="submit" class="modal-btn primary" id="createSoloBtn">Create & Play</button>
                 </div>
             </form>
         </div>
@@ -617,6 +658,144 @@
         function goBack() {
             window.location.href = '/';
         }
+
+        // ============================================================================
+        // Solo Session Functions
+        // ============================================================================
+
+        let characters = [];
+
+        function showSoloModal() {
+            document.getElementById('soloModal').style.display = 'flex';
+            loadCharactersAndScenarios();
+        }
+
+        function closeSoloModal() {
+            document.getElementById('soloModal').style.display = 'none';
+            document.getElementById('soloForm').reset();
+            document.getElementById('characterPreview').style.display = 'none';
+            document.getElementById('soloScenarioPreview').style.display = 'none';
+        }
+
+        function loadCharactersAndScenarios() {
+            // Load characters
+            fetch('/api/characters')
+                .then(response => response.json())
+                .then(data => {
+                    characters = data.characters || [];
+                    const select = document.getElementById('characterSelect');
+                    if (characters.length === 0) {
+                        select.innerHTML = '<option value="">No characters available - create one first!</option>';
+                    } else {
+                        select.innerHTML = '<option value="">Select a character...</option>' +
+                            characters.map(c => `<option value="${c.id}">${c.name} (${c.char_class} ${c.level})</option>`).join('');
+                    }
+                })
+                .catch(error => console.error('Error loading characters:', error));
+
+            // Load scenarios
+            fetch('/api/scenarios')
+                .then(response => response.json())
+                .then(data => {
+                    scenarios = data.scenarios || [];
+                    const select = document.getElementById('soloScenarioSelect');
+                    if (scenarios.length === 0) {
+                        select.innerHTML = '<option value="">No scenarios available - create one first!</option>';
+                    } else {
+                        select.innerHTML = '<option value="">Select a scenario...</option>' +
+                            scenarios.map(s => `<option value="${s.id}">${s.name} (${s.difficulty})</option>`).join('');
+                    }
+                })
+                .catch(error => console.error('Error loading scenarios:', error));
+        }
+
+        function updateCharacterPreview() {
+            const charId = document.getElementById('characterSelect').value;
+            const previewDiv = document.getElementById('characterPreview');
+            const contentDiv = document.getElementById('characterPreviewContent');
+
+            if (!charId) {
+                previewDiv.style.display = 'none';
+                return;
+            }
+
+            const char = characters.find(c => c.id === charId);
+            if (char) {
+                contentDiv.innerHTML = `
+                    <strong>${char.name}</strong><br>
+                    ${char.race} ${char.char_class} (Level ${char.level})<br>
+                    HP: ${char.hp_current}/${char.hp_max} | AC: ${char.ac} | THAC0: ${char.thac0}<br>
+                    XP: ${char.xp} | Gold: ${char.gold} gp
+                `;
+                previewDiv.style.display = 'block';
+            }
+        }
+
+        function updateSoloScenarioPreview() {
+            const scenarioId = document.getElementById('soloScenarioSelect').value;
+            const previewDiv = document.getElementById('soloScenarioPreview');
+            const contentDiv = document.getElementById('soloScenarioPreviewContent');
+
+            if (!scenarioId) {
+                previewDiv.style.display = 'none';
+                return;
+            }
+
+            const scenario = scenarios.find(s => s.id === scenarioId);
+            if (scenario) {
+                contentDiv.innerHTML = `
+                    <strong>${scenario.name}</strong><br>
+                    Difficulty: ${scenario.difficulty.toUpperCase()}<br>
+                    Rooms: ${scenario.num_rooms}<br>
+                    ${scenario.description ? scenario.description : ''}
+                `;
+                previewDiv.style.display = 'block';
+            }
+        }
+
+        document.getElementById('soloForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const data = {
+                name: document.getElementById('soloSessionName').value || undefined,
+                character_id: document.getElementById('characterSelect').value,
+                scenario_id: document.getElementById('soloScenarioSelect').value
+            };
+
+            if (!data.character_id || !data.scenario_id) {
+                alert('Please select both a character and a scenario.');
+                return;
+            }
+
+            fetch('/api/sessions/solo', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    // Now load the session and start playing
+                    return fetch('/api/sessions/' + result.session_id + '/load', {
+                        method: 'POST'
+                    });
+                } else {
+                    throw new Error(result.error);
+                }
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    // Redirect to game with the web session ID
+                    window.location.href = '/game?session_id=' + result.web_session_id;
+                } else {
+                    alert('Error loading session: ' + result.error);
+                }
+            })
+            .catch(error => {
+                alert('Error creating solo session: ' + error);
+            });
+        });
 
         // Load sessions on page load
         loadSessions();
