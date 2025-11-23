@@ -779,6 +779,9 @@ def create_character_full():
                     for _ in range(num_slots):
                         player.add_spell_slot(1)
 
+                    # Give starting spells (CRITICAL: must match CLI character_creation.py)
+                    creator._add_starting_spells(player, char_class)
+
         # Save character
         roster = CharacterRoster()
         char_id = roster.save_character(player)

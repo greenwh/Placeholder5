@@ -164,6 +164,7 @@ def main():
         print("="*70)
 
         unit_tests = [
+            ('UI Parity Tests', 'test_ui_parity.py'),  # CRITICAL: Run first to catch UI divergence!
             ('Parser Tests', 'test_parser.py'),
             ('Combat System Tests', 'test_combat.py'),
             ('Game State Tests', 'test_game_state.py'),
