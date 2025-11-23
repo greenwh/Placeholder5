@@ -472,10 +472,12 @@ def get_character(char_id):
             'id': char_id,
             'name': character.name,
             'race': character.race,
-            'class': character.char_class,
+            'char_class': character.char_class,
+            'alignment': character.alignment,
             'level': character.level,
             'xp': character.xp,
-            'hp': f"{character.hp_current}/{character.hp_max}",
+            'hp_current': character.hp_current,
+            'hp_max': character.hp_max,
             'ac': character.get_effective_ac(),
             'thac0': character.thac0,
             'gold': character.gold,
@@ -616,6 +618,38 @@ def get_available_classes():
         return jsonify({'success': False, 'error': str(e)})
 
 
+@app.route('/api/character/get_alignments', methods=['POST'])
+def get_available_alignments():
+    """Get available alignments for a class"""
+    try:
+        data = request.json
+        char_class = data.get('char_class')
+
+        if not char_class:
+            return jsonify({'success': False, 'error': 'Class required'})
+
+        # Load class data
+        game_data = load_game_data()
+        class_data = game_data.classes.get(char_class)
+
+        if not class_data:
+            return jsonify({'success': False, 'error': 'Invalid class'})
+
+        # Get allowed alignments
+        from aerthos.systems.alignment import get_allowed_alignments_for_class
+        allowed_alignments = get_allowed_alignments_for_class(char_class, class_data)
+
+        return jsonify({
+            'success': True,
+            'allowed_alignments': allowed_alignments
+        })
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'success': False, 'error': str(e)})
+
+
 @app.route('/api/character/create', methods=['POST'])
 def create_character_full():
     """Create a character with full stat rolling"""
@@ -624,6 +658,7 @@ def create_character_full():
         name = data.get('name', 'Adventurer')
         race = data.get('race', 'Human')
         char_class = data.get('char_class', 'Fighter')
+        alignment = data.get('alignment', 'True Neutral')
         base_stats = data.get('stats', {})
 
         game_data = GameData.load_all()
@@ -676,8 +711,16 @@ def create_character_full():
             import random
             strength_percentile = random.randint(1, 100)
 
-        # Roll HP
+        # Validate alignment for class
         class_data = game_data.classes[char_class]
+        from aerthos.systems.alignment import validate_class_alignment
+        if not validate_class_alignment(char_class, alignment, class_data):
+            return jsonify({
+                'success': False,
+                'error': f'{alignment} is not a valid alignment for {char_class}'
+            })
+
+        # Roll HP
         hit_die = class_data['hit_die']
         hp = max(1, DiceRoller.roll(hit_die))
 
@@ -698,6 +741,7 @@ def create_character_full():
             name=name,
             race=race,
             char_class=char_class,
+            alignment=alignment,
             level=1,
             strength=strength,
             dexterity=dexterity,
@@ -995,6 +1039,56 @@ def create_session():
             party_id=data.get('party_id'),
             scenario_id=data.get('scenario_id'),
             session_name=data.get('name')
+        )
+
+        return jsonify({'success': True, 'session_id': session_id})
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'success': False, 'error': str(e)})
+
+
+@app.route('/api/sessions/solo', methods=['POST'])
+def create_solo_session():
+    """Create a solo character session (auto-creates party)"""
+    try:
+        data = request.json
+        session_mgr = SessionManager()
+        roster = CharacterRoster()
+
+        character_id = data.get('character_id')
+        scenario_id = data.get('scenario_id')
+        session_name = data.get('name')
+
+        if not character_id:
+            return jsonify({'success': False, 'error': 'Character ID required'})
+        if not scenario_id:
+            return jsonify({'success': False, 'error': 'Scenario ID required'})
+
+        # Load character to get name
+        character = roster.load_character(character_id=character_id)
+        if not character:
+            return jsonify({'success': False, 'error': 'Character not found'})
+
+        # Create a solo party automatically
+        solo_party_name = f"Solo: {character.name}"
+        party_id = session_mgr.party_manager.save_party(
+            solo_party_name,
+            [character_id],
+            ['front']
+        )
+
+        # Generate session name if not provided
+        if not session_name:
+            scenario_data = session_mgr.scenario_library.load_scenario(scenario_id)
+            scenario_name = scenario_data['name'] if scenario_data else 'Unknown'
+            session_name = f"{character.name} - {scenario_name}"
+
+        # Create session
+        session_id = session_mgr.create_session(
+            party_id=party_id,
+            scenario_id=scenario_id,
+            session_name=session_name
         )
 
         return jsonify({'success': True, 'session_id': session_id})

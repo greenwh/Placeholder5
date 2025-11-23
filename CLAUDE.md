@@ -654,8 +654,18 @@ cat ~/.aerthos/sessions/*.json
 
 ## Recent Development
 
-### Latest Changes (from git log)
+### Latest Changes
 
+**Alignment System (November 2025):**
+- ✅ Implemented AD&D 1e nine-point alignment system
+- ✅ Added class-specific alignment restrictions (Paladin=LG, Druid=TN, Ranger=any Good, etc.)
+- ✅ Updated CLI and Web UI character creation with alignment selection
+- ✅ Grayed-out unavailable alignments based on class restrictions
+- ✅ Backward-compatible character save/load (defaults to True Neutral for old saves)
+- ✅ All 374 tests passing - no regressions
+- ⏳ Monster alignment data pending merge from monsters_enhanced.json
+
+**Previous Work (from git log):**
 ```
 42b2e8d - Fix save_party parameter order in solo session creation
 07dc4c3 - Improve solo session error messages and input validation
@@ -665,16 +675,18 @@ c0729ea - Fix solo session creation - show actual errors
 ```
 
 **Focus Areas:**
+- Character alignment system
 - Session management system refinement
 - Party system integration
 - Error handling and validation improvements
-- CLI gameplay consistency
+- CLI and Web UI parity
 
 ### Active Features
 
 **Implemented:**
 - ✅ Complete core systems (combat, magic, saves, skills)
 - ✅ Character creation (4 classes, 4 races)
+- ✅ Nine-point alignment system with class restrictions
 - ✅ 10-room hand-crafted starter dungeon
 - ✅ Procedural dungeon generator with presets
 - ✅ Auto-mapping
@@ -686,6 +698,12 @@ c0729ea - Fix solo session creation - show actual errors
 - ✅ Village system (shops, inns, guilds)
 
 **Potential Expansions:**
+- **Monster alignment behaviors:**
+  - Detect Evil/Good spells revealing alignment auras
+  - Protection from Evil affecting evil creatures in combat
+  - Evil clerics commanding undead instead of turning them
+  - Alignment-based creature reactions (good creatures less hostile to good parties)
+  - Holy weapons dealing extra damage to evil creatures
 - Additional dungeons
 - More spells and monsters
 - Higher character levels (currently level 1-3)

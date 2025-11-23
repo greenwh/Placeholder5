@@ -257,7 +257,8 @@
             <div class="step" id="step-2">2. NAME</div>
             <div class="step" id="step-3">3. RACE</div>
             <div class="step" id="step-4">4. CLASS</div>
-            <div class="step" id="step-5">5. FINISH</div>
+            <div class="step" id="step-5">5. ALIGNMENT</div>
+            <div class="step" id="step-6">6. FINISH</div>
         </div>
 
         <!-- STEP 1: Roll Stats -->
@@ -347,7 +348,22 @@
             </div>
         </div>
 
-        <!-- STEP 5: Review & Create -->
+        <!-- STEP 5: Choose Alignment -->
+        <div class="creation-panel" id="panel-alignment">
+            <h2>Choose Your Alignment</h2>
+            <p>Select an alignment. Some classes have alignment restrictions.</p>
+
+            <div class="option-list" id="alignment-options">
+                <!-- Alignment options will be populated by JavaScript -->
+            </div>
+
+            <div style="margin-top: 20px;">
+                <button class="btn" onclick="prevStep()">← Back</button>
+                <button class="btn" id="btn-alignment-next" onclick="nextStep()" disabled>Continue</button>
+            </div>
+        </div>
+
+        <!-- STEP 6: Review & Create -->
         <div class="creation-panel" id="panel-finish">
             <h2>Review Your Character</h2>
 
@@ -363,6 +379,31 @@
     </div>
 
     <script>
+        // AD&D Alignments
+        const ALIGNMENTS = [
+            "Lawful Good", "Neutral Good", "Chaotic Good",
+            "Lawful Neutral", "True Neutral", "Chaotic Neutral",
+            "Lawful Evil", "Neutral Evil", "Chaotic Evil"
+        ];
+
+        const ALIGNMENT_ABBREV = {
+            "Lawful Good": "LG", "Neutral Good": "NG", "Chaotic Good": "CG",
+            "Lawful Neutral": "LN", "True Neutral": "TN", "Chaotic Neutral": "CN",
+            "Lawful Evil": "LE", "Neutral Evil": "NE", "Chaotic Evil": "CE"
+        };
+
+        const ALIGNMENT_DESC = {
+            "Lawful Good": "Believes in order and law, values life and helping others",
+            "Neutral Good": "Values life and welfare, balances law and freedom",
+            "Chaotic Good": "Values freedom and individualism, seeks to spread good",
+            "Lawful Neutral": "Order and regulation above all, neutral on good vs evil",
+            "True Neutral": "Balance in all things, nature and status quo",
+            "Chaotic Neutral": "Randomness and freedom above all, unconcerned with morality",
+            "Lawful Evil": "Uses law and order to impose dominance and control",
+            "Neutral Evil": "Pure evil unconcerned with law or chaos",
+            "Chaotic Evil": "Freedom to spread chaos, woe, and destruction"
+        };
+
         // Character creation state
         let charState = {
             step: 1,
@@ -370,7 +411,8 @@
             statsAfterRace: {},
             name: '',
             race: '',
-            charClass: ''
+            charClass: '',
+            alignment: ''
         };
 
         // Roll 3d6
@@ -399,7 +441,7 @@
 
         // Update step indicator
         function updateStepIndicator() {
-            for (let i = 1; i <= 5; i++) {
+            for (let i = 1; i <= 6; i++) {
                 const stepEl = document.getElementById(`step-${i}`);
                 stepEl.classList.remove('active', 'completed');
                 if (i < charState.step) {
@@ -441,12 +483,22 @@
                 updateStepIndicator();
                 loadClasses();
             } else if (charState.step === 4) {
-                // Moving from class to finish
+                // Moving from class to alignment
                 if (!charState.charClass) {
                     alert('Please select a class');
                     return;
                 }
                 charState.step = 5;
+                showPanel('panel-alignment');
+                updateStepIndicator();
+                loadAlignments();
+            } else if (charState.step === 5) {
+                // Moving from alignment to finish
+                if (!charState.alignment) {
+                    alert('Please select an alignment');
+                    return;
+                }
+                charState.step = 6;
                 showPanel('panel-finish');
                 updateStepIndicator();
                 showSummary();
@@ -457,7 +509,7 @@
         function prevStep() {
             if (charState.step > 1) {
                 charState.step--;
-                const panels = ['', 'panel-stats', 'panel-name', 'panel-race', 'panel-class', 'panel-finish'];
+                const panels = ['', 'panel-stats', 'panel-name', 'panel-race', 'panel-class', 'panel-alignment', 'panel-finish'];
                 showPanel(panels[charState.step]);
                 updateStepIndicator();
             }
@@ -551,6 +603,64 @@
             document.getElementById('btn-class-next').disabled = false;
         }
 
+        // Load available alignments (based on class restrictions)
+        async function loadAlignments() {
+            const response = await fetch('/api/character/get_alignments', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    char_class: charState.charClass
+                })
+            });
+
+            const data = await response.json();
+            const allowedAlignments = data.allowed_alignments || ALIGNMENTS;
+
+            const alignmentList = document.getElementById('alignment-options');
+            alignmentList.innerHTML = '';
+
+            ALIGNMENTS.forEach(alignment => {
+                const div = document.createElement('div');
+                const abbrev = ALIGNMENT_ABBREV[alignment];
+                const desc = ALIGNMENT_DESC[alignment];
+                const isAllowed = allowedAlignments.includes(alignment);
+
+                div.className = 'option-item' + (isAllowed ? '' : ' unavailable');
+                div.innerHTML = `
+                    <div class="option-name">${alignment} (${abbrev})</div>
+                    <div class="option-desc">${desc}</div>
+                    ${!isAllowed ? `<div class="option-reason">UNAVAILABLE for ${charState.charClass}</div>` : ''}
+                `;
+
+                if (isAllowed) {
+                    div.onclick = () => selectAlignment(alignment, div);
+                }
+
+                alignmentList.appendChild(div);
+            });
+
+            // Auto-select if only one choice
+            if (allowedAlignments.length === 1) {
+                const onlyAlignment = allowedAlignments[0];
+                charState.alignment = onlyAlignment;
+                document.getElementById('btn-alignment-next').disabled = false;
+                setTimeout(() => {
+                    const elements = document.querySelectorAll('#alignment-options .option-item:not(.unavailable)');
+                    if (elements.length > 0) {
+                        elements[0].classList.add('selected');
+                    }
+                }, 100);
+            }
+        }
+
+        // Select alignment
+        function selectAlignment(alignment, element) {
+            charState.alignment = alignment;
+            document.querySelectorAll('#alignment-options .option-item').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            document.getElementById('btn-alignment-next').disabled = false;
+        }
+
         // Show character summary
         function showSummary() {
             const summary = document.getElementById('char-summary');
@@ -561,6 +671,7 @@
                 <div class="char-summary-line"><strong>Name:</strong> ${charState.name}</div>
                 <div class="char-summary-line"><strong>Race:</strong> ${charState.race}</div>
                 <div class="char-summary-line"><strong>Class:</strong> ${charState.charClass}</div>
+                <div class="char-summary-line"><strong>Alignment:</strong> ${charState.alignment}</div>
                 <div class="char-summary-line"><strong>STR:</strong> ${stats.str || charState.stats.str} <strong>DEX:</strong> ${stats.dex || charState.stats.dex} <strong>CON:</strong> ${stats.con || charState.stats.con}</div>
                 <div class="char-summary-line"><strong>INT:</strong> ${stats.int || charState.stats.int} <strong>WIS:</strong> ${stats.wis || charState.stats.wis} <strong>CHA:</strong> ${stats.cha || charState.stats.cha}</div>
             `;
@@ -575,6 +686,7 @@
                     name: charState.name,
                     race: charState.race,
                     char_class: charState.charClass,
+                    alignment: charState.alignment,
                     stats: charState.stats
                 })
             });

@@ -216,6 +216,50 @@ class CharacterCreator:
             strength_percentile = random.randint(1, 100)
             print(f"\nExceptional Strength! You rolled 18/{strength_percentile:02d}!")
 
+        # Choose Alignment (based on class restrictions)
+        from ..systems.alignment import get_allowed_alignments_for_class, get_alignment_description
+        from ..entities.character import ALIGNMENTS, ALIGNMENT_ABBREV
+
+        class_data = self.game_data.classes[char_class]
+        allowed_alignments = get_allowed_alignments_for_class(char_class, class_data)
+
+        print(f"\nChoose Alignment for {char_class}:")
+        print("─" * 70)
+
+        alignment_index = 1
+        alignment_choices = []
+
+        for alignment in ALIGNMENTS:
+            abbrev = ALIGNMENT_ABBREV[alignment]
+            desc = get_alignment_description(alignment)
+
+            if alignment in allowed_alignments:
+                print(f"{alignment_index}. {alignment:16s} ({abbrev}) - {desc}")
+                alignment_choices.append(alignment)
+                alignment_index += 1
+            else:
+                # Grayed out / unavailable
+                print(f"   {alignment:16s} ({abbrev}) - UNAVAILABLE for {char_class}")
+
+        if len(alignment_choices) == 1:
+            # Only one choice, auto-select
+            alignment = alignment_choices[0]
+            print(f"\n✓ {char_class} must be {alignment}")
+        else:
+            # Player chooses
+            alignment_choice = input(f"\nChoose alignment (1-{len(alignment_choices)}): ").strip()
+
+            try:
+                align_idx = int(alignment_choice) - 1
+                if 0 <= align_idx < len(alignment_choices):
+                    alignment = alignment_choices[align_idx]
+                else:
+                    alignment = alignment_choices[0]
+            except ValueError:
+                alignment = alignment_choices[0]
+
+            print(f"✓ Selected: {alignment}")
+
         # Roll HP
         class_data = self.game_data.classes[char_class]
         hit_die = class_data['hit_die']
@@ -240,6 +284,7 @@ class CharacterCreator:
             name=name,
             race=race,
             char_class=char_class,
+            alignment=alignment,
             level=1,
             strength=strength,
             dexterity=dexterity,

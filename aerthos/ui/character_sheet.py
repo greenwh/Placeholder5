@@ -26,6 +26,7 @@ class CharacterSheet:
         lines.append("═" * 60)
         lines.append(f"Race: {player.race}")
         lines.append(f"Class: {player.char_class}")
+        lines.append(f"Alignment: {player.alignment}")
         lines.append(f"Level: {player.level}")
         lines.append(f"XP: {player.xp} / {player.xp_to_next_level}")
         lines.append("")

@@ -46,6 +46,7 @@ class CharacterRoster:
             'class': character.char_class,
             'level': character.level,
             'xp': character.xp,
+            'alignment': character.alignment,
             'hp_max': character.hp_max,
             'hp_current': character.hp_current,
             'ac': character.ac,
@@ -150,6 +151,7 @@ class CharacterRoster:
                         'char_class': data['class'],  # Use char_class for consistency
                         'level': data['level'],
                         'xp': data['xp'],
+                        'alignment': data.get('alignment', 'True Neutral'),  # Backward compatible
                         'hp_current': data['hp_current'],  # Separate current/max
                         'hp_max': data['hp_max'],
                         'ac': data.get('ac', 10),
@@ -354,6 +356,7 @@ class CharacterRoster:
             name=data['name'],
             race=data['race'],
             char_class=data['class'],
+            alignment=data.get('alignment', 'True Neutral'),  # Backward compatible with old saves
             strength=data['strength'],
             strength_percentile=data.get('strength_percentile', 0),
             dexterity=data['dexterity'],

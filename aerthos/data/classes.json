@@ -36,6 +36,8 @@
       "constitution": 14
     },
     "prime_requisite": "STR",
+    "alignment_requirement": "Good",
+    "alignment_restriction": "any_axis",
     "spell_slots_level_1": [0, 0, 0, 0, 0, 0, 0, 1, 2, 2],
     "weapons": "all",
     "armor": "all",
@@ -60,6 +62,8 @@
       "charisma": 17
     },
     "prime_requisite": "STR",
+    "alignment_requirement": "Lawful Good",
+    "alignment_restriction": "exact",
     "spell_slots_level_1": [0, 0, 0, 0, 0, 0, 0, 0, 1, 2],
     "weapons": "all",
     "armor": "all",
@@ -102,6 +106,8 @@
       "charisma": 15
     },
     "prime_requisite": "WIS",
+    "alignment_requirement": "True Neutral",
+    "alignment_restriction": "exact",
     "spell_slots_level_1": [2, 2, 3, 4, 4, 4, 4, 4, 4, 4],
     "weapons": "druid_only",
     "armor": "leather_only",
@@ -164,6 +170,7 @@
       "dexterity": 9
     },
     "prime_requisite": "DEX",
+    "alignment_restriction": "not_lawful_good_or_chaotic_good",
     "skills": {
       "pick_pockets": 30,
       "open_locks": 25,
@@ -205,6 +212,8 @@
       "dexterity": 12
     },
     "prime_requisite": "DEX",
+    "alignment_requirement": "Evil",
+    "alignment_restriction": "any_axis",
     "skills": {
       "pick_pockets": 25,
       "open_locks": 20,

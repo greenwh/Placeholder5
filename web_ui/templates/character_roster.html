@@ -356,10 +356,10 @@
             listEl.innerHTML = characters.map(char => `
                 <div class="character-card">
                     <div class="char-name">${char.name}</div>
-                    <div class="char-info">${char.race} ${char.class}</div>
+                    <div class="char-info">${char.race} ${char.char_class}</div>
                     <div class="char-info">Level ${char.level} | XP: ${char.xp}</div>
                     <div class="char-stats">
-                        <div class="stat">HP: ${char.hp}</div>
+                        <div class="stat">HP: ${char.hp_current}/${char.hp_max}</div>
                         <div class="stat">AC: ${char.ac}</div>
                         <div class="stat">Gold: ${char.gold}</div>
                     </div>
@@ -428,10 +428,11 @@
                         document.getElementById('viewCharDetails').innerHTML = `
                             <div style="line-height: 1.6;">
                                 <p><strong>Race:</strong> ${char.race}</p>
-                                <p><strong>Class:</strong> ${char.class}</p>
+                                <p><strong>Class:</strong> ${char.char_class}</p>
+                                <p><strong>Alignment:</strong> ${char.alignment}</p>
                                 <p><strong>Level:</strong> ${char.level}</p>
                                 <p><strong>XP:</strong> ${char.xp}</p>
-                                <p><strong>HP:</strong> ${char.hp}</p>
+                                <p><strong>HP:</strong> ${char.hp_current}/${char.hp_max}</p>
                                 <p><strong>AC:</strong> ${char.ac}</p>
                                 <p><strong>THAC0:</strong> ${char.thac0}</p>
                                 <p><strong>Gold:</strong> ${char.gold}</p>

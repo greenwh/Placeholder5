@@ -7,6 +7,33 @@ from typing import List, Optional
 from dataclasses import dataclass, field
 
 
+# AD&D 1e Nine-Point Alignment System
+ALIGNMENTS = [
+    "Lawful Good",
+    "Neutral Good",
+    "Chaotic Good",
+    "Lawful Neutral",
+    "True Neutral",
+    "Chaotic Neutral",
+    "Lawful Evil",
+    "Neutral Evil",
+    "Chaotic Evil"
+]
+
+# Alignment abbreviations for display
+ALIGNMENT_ABBREV = {
+    "Lawful Good": "LG",
+    "Neutral Good": "NG",
+    "Chaotic Good": "CG",
+    "Lawful Neutral": "LN",
+    "True Neutral": "TN",
+    "Chaotic Neutral": "CN",
+    "Lawful Evil": "LE",
+    "Neutral Evil": "NE",
+    "Chaotic Evil": "CE"
+}
+
+
 # Lazy-loaded ability modifier system to avoid circular imports
 _ability_modifier_system = None
 
@@ -30,6 +57,7 @@ class Character:
     char_class: str
     level: int = 1
     title: str = "Adventurer"  # Level title (e.g., "Veteran", "Hero")
+    alignment: str = "True Neutral"  # AD&D 1e nine-point alignment
 
     # Core Attributes (3-18 range, 3d6 each)
     strength: int = 10
