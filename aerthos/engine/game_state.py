@@ -117,6 +117,20 @@ class GameState:
             Dict with results and narrative
         """
 
+        # Commands that are blocked when character is dead
+        action_commands = {
+            'move', 'attack', 'defend', 'wait', 'take', 'drop', 'use',
+            'equip', 'unequip', 'cast', 'search', 'open', 'rest',
+            'memorize', 'formation', 'stairs_up', 'stairs_down'
+        }
+
+        # Block action commands if player is dead
+        if not self.player.is_alive and command.action in action_commands:
+            return {
+                'success': False,
+                'message': f"{self.player.name} is dead and cannot perform actions. (Load a save to continue)"
+            }
+
         # Route to appropriate handler
         handlers = {
             'move': self._handle_move,

@@ -475,5 +475,114 @@ class TestGameStateIntegration(unittest.TestCase):
         self.assertEqual(game_state.current_room.id, "test_001")
 
 
+class TestDeadCharacterCommandBlocking(unittest.TestCase):
+    """Test that dead characters cannot perform action commands"""
+
+    def setUp(self):
+        """Create a basic game state for testing"""
+        # Create a simple dungeon
+        room = Room(
+            id="test_001",
+            title="Test Room",
+            description="A test room",
+            exits={},
+            light_level="bright"
+        )
+        dungeon = Dungeon(name="Test Dungeon", start_room_id="test_001", rooms={"test_001": room})
+
+        # Create a character
+        self.char = PlayerCharacter(
+            name="Test Hero",
+            race="Human",
+            char_class="Fighter",
+            strength=15,
+            dexterity=12,
+            constitution=14,
+            intelligence=10,
+            wisdom=10,
+            charisma=10
+        )
+        self.char.hp_current = 10
+        self.char.hp_max = 10
+        self.char.ac = 10
+        self.char.thac0 = 20
+        self.char.level = 1
+
+        self.game_state = GameState(player=self.char, dungeon=dungeon)
+
+    def test_dead_character_cannot_attack(self):
+        """Dead characters should not be able to attack"""
+        # Kill the character
+        self.char.is_alive = False
+
+        # Try to attack
+        cmd = Command(action="attack", target="orc")
+        result = self.game_state.execute_command(cmd)
+
+        self.assertFalse(result['success'])
+        self.assertIn("dead", result['message'].lower())
+
+    def test_dead_character_cannot_move(self):
+        """Dead characters should not be able to move"""
+        # Kill the character
+        self.char.is_alive = False
+
+        # Try to move
+        cmd = Command(action="move", target="north")
+        result = self.game_state.execute_command(cmd)
+
+        self.assertFalse(result['success'])
+        self.assertIn("dead", result['message'].lower())
+
+    def test_dead_character_cannot_cast(self):
+        """Dead characters should not be able to cast spells"""
+        # Kill the character
+        self.char.is_alive = False
+
+        # Try to cast
+        cmd = Command(action="cast", target="magic missile")
+        result = self.game_state.execute_command(cmd)
+
+        self.assertFalse(result['success'])
+        self.assertIn("dead", result['message'].lower())
+
+    def test_dead_character_can_view_status(self):
+        """Dead characters should still be able to view status (informational commands)"""
+        # Kill the character
+        self.char.is_alive = False
+
+        # Try to view status - this should work
+        cmd = Command(action="status", target=None)
+        result = self.game_state.execute_command(cmd)
+
+        # Status command should still work (we just want to know it doesn't error)
+        self.assertIsNotNone(result)
+
+    def test_dead_character_can_view_inventory(self):
+        """Dead characters should still be able to view inventory (informational commands)"""
+        # Kill the character
+        self.char.is_alive = False
+
+        # Try to view inventory - this should work
+        cmd = Command(action="inventory", target=None)
+        result = self.game_state.execute_command(cmd)
+
+        # Inventory command should still work
+        self.assertIsNotNone(result)
+
+    def test_living_character_can_attack(self):
+        """Living characters should be able to attack normally (control test)"""
+        # Character is alive
+        self.assertTrue(self.char.is_alive)
+
+        # Try to attack (will fail because no monsters, but shouldn't be blocked by death check)
+        cmd = Command(action="attack", target="orc")
+        result = self.game_state.execute_command(cmd)
+
+        # Should fail for different reason (no monster), not because character is dead
+        if not result['success']:
+            self.assertNotIn("dead", result['message'].lower())
+
+
 if __name__ == '__main__':
     unittest.main()
