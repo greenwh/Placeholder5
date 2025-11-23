@@ -96,6 +96,29 @@ def new_game():
         player3 = creator.quick_create("Cedric", "Human", "Cleric")
         player4 = creator.quick_create("Shadow", "Halfling", "Thief")
 
+        # Add Level 2 spells to Elara to demo nested menus
+        from aerthos.entities.player import Spell
+        # Add several Level 2 spells to test vertical expansion
+        level_2_spells = ['web', 'invisibility', 'mirror_image', 'levitate', 'knock', 'detect_invisibility']
+        for spell_id in level_2_spells:
+            if spell_id in game_data.spells:
+                spell_data = game_data.spells[spell_id]
+                if 'Magic-User' in spell_data.get('class_availability', []):
+                    spell = Spell(
+                        name=spell_data['name'],
+                        level=spell_data['level'],
+                        school=spell_data['school'],
+                        casting_time=spell_data['casting_time'],
+                        range=spell_data['range'],
+                        duration=spell_data['duration'],
+                        area_of_effect=spell_data['area'],
+                        saving_throw=spell_data['saving_throw'],
+                        components=spell_data['components'],
+                        description=spell_data['description'],
+                        class_availability=spell_data['class_availability']
+                    )
+                    player2.spells_known.append(spell)
+
         party = Party(members=[player1, player2, player3, player4])
 
         # Generate dungeon
@@ -240,6 +263,16 @@ def get_game_state_json(game_state):
                         }
                     spell_slots.append(spell_slot_data)
 
+            # Get spells_known for this character (spells available to memorize)
+            spells_known = []
+            if hasattr(member, 'spells_known'):
+                for spell in member.spells_known:
+                    spells_known.append({
+                        'name': spell.name,
+                        'level': spell.level,
+                        'school': spell.school
+                    })
+
             party_data.append({
                 'name': member.name,
                 'class': member.char_class,
@@ -257,7 +290,8 @@ def get_game_state_json(game_state):
                 'formation': game_state.party.formation[i] if i < len(game_state.party.formation) else 'front',
                 'inventory': inventory_items,
                 'equipped': equipped,
-                'spell_slots': spell_slots  # NEW: For spell quick-cast bar
+                'spell_slots': spell_slots,  # Memorized spells (for casting)
+                'spells_known': spells_known  # Known spells (for memorizing)
             })
 
     # Get map data
@@ -287,7 +321,7 @@ def get_game_state_json(game_state):
         # Use first living member as "active" for spell suggestions
         # (In real gameplay, frontend tracks which character is active)
         for member in game_state.party.members:
-            if member.is_alive and hasattr(member, 'spells_memorized'):
+            if member.is_alive and hasattr(member, 'spells_memorized') and len(member.spells_memorized) > 0:
                 for slot in member.spells_memorized:
                     if slot.spell and not slot.is_used:
                         available_spells.append({
@@ -295,14 +329,14 @@ def get_game_state_json(game_state):
                             'level': slot.spell.level,
                             'caster': member.name
                         })
-                break  # Only get spells from first living caster
+                break  # Only get spells from first living caster with memorized spells
 
     # Get spells available to memorize (from spells_known but not yet memorized)
     available_spells_to_memorize = []
     if hasattr(game_state, 'party') and len(game_state.party.members) > 0:
         # Get spells for all spellcaster party members
         for member in game_state.party.members:
-            if member.is_alive and hasattr(member, 'spells_known'):
+            if member.is_alive and hasattr(member, 'spells_known') and len(member.spells_known) > 0:
                 for spell in member.spells_known:
                     available_spells_to_memorize.append({
                         'name': spell.name,
@@ -310,7 +344,7 @@ def get_game_state_json(game_state):
                         'school': spell.school,
                         'caster': member.name
                     })
-                break  # Only get spells from first living caster
+                break  # Only get spells from first living caster with spells
 
     return {
         'room': {

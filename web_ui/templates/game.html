@@ -803,12 +803,13 @@
             border-radius: 4px;
             box-shadow: 0 -4px 12px rgba(0, 255, 0, 0.3);
             z-index: 2000;
-            min-width: 200px;
-            max-width: 350px;
+            min-width: 250px;
+            max-width: none;
+            width: max-content;
             margin-bottom: 5px;
             display: none;
-            max-height: 400px;
-            overflow-y: auto;
+            max-height: 500px;
+            overflow: visible;
         }
 
         .button-menu.active {
@@ -866,6 +867,16 @@
             transition: all 0.15s;
             font-size: 12px;
             color: #0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            white-space: nowrap;
+        }
+
+        .menu-item > div:first-child {
+            flex: 1;
+            min-width: max-content;
         }
 
         .menu-item:last-child {
@@ -905,20 +916,24 @@
         .submenu-container {
             position: absolute;
             left: 100%;
-            top: -2px;
+            bottom: 0;
             background-color: #002200;
             border: 2px solid #0f0;
             border-radius: 4px;
             box-shadow: 4px 0 12px rgba(0, 255, 0, 0.3);
-            min-width: 180px;
-            max-width: 300px;
+            min-width: 250px;
+            max-width: none;
+            width: max-content;
             margin-left: 5px;
+            padding: 4px;
             display: none;
-            max-height: 350px;
+            max-height: 400px;
             overflow-y: auto;
+            overflow-x: visible;
+            z-index: 1003;
         }
 
-        .menu-item:hover .submenu-container {
+        .submenu-container.active {
             display: block;
             animation: menuSlideRight 0.2s ease-out;
         }
@@ -1117,7 +1132,6 @@
                 <button class="button" onclick="quickCommand('west')">West</button>
                 <button class="button" onclick="quickCommand('status')">Status</button>
                 <button class="button" onclick="quickCommand('spells')">Spells</button>
-                <button class="button" onclick="promptEquip()">Equip</button>
             </div>
             <div class="input-row">
                 <input type="text" id="command-box" class="command-box" list="command-suggestions" placeholder="Type command here or use buttons above..." onkeypress="handleKeyPress(event)" oninput="updateAutocomplete()">
@@ -1513,10 +1527,7 @@
                         </div>
                         <div class="member-stats">
                             ${member.race} ${member.class} (Lvl ${member.level})<br>
-                            HP: ${member.hp}/${member.hp_max}<br>
-                            AC: ${member.ac} | THAC0: ${member.thac0}<br>
-                            Gold: ${member.gold} gp<br>
-                            <span class="${weightClass}">Weight: ${member.weight}/${member.weight_max} lbs</span>
+                            HP: ${member.hp}/${member.hp_max}
                         </div>
                         <div class="hp-bar"><div class="hp-fill ${hpClass}" style="width: ${hpPercent}%"></div></div>
                     </div>
@@ -1945,6 +1956,9 @@
         function closeAllMenus() {
             const menus = document.querySelectorAll('.button-menu');
             menus.forEach(menu => menu.classList.remove('active'));
+            // Also close all submenus
+            const submenus = document.querySelectorAll('.submenu-container');
+            submenus.forEach(sm => sm.classList.remove('active'));
         }
 
         function populateMenu(menuId) {
@@ -2039,18 +2053,11 @@
                 return;
             }
 
-            // Build menu with submenus for each level
-            let html = '';
-            Object.keys(spellsByLevel).sort().forEach(level => {
-                html += `
-                    <div class="menu-item submenu">
-                        <div>Level ${level} Spells</div>
-                        <div class="item-detail">${spellsByLevel[level].length} available</div>
-                        <div class="submenu-container">
-                            <div class="menu-items">
-                `;
-
-                spellsByLevel[level].forEach(spell => {
+            // If only one level, show spells directly; otherwise group by level
+            if (Object.keys(spellsByLevel).length === 1) {
+                // Single level - show spells directly
+                let html = '';
+                Object.values(spellsByLevel)[0].forEach(spell => {
                     html += `
                         <div class="menu-item" onclick="executeMenuCommand('cast ${spell.name}')">
                             <div>✨ ${spell.name}</div>
@@ -2058,15 +2065,34 @@
                         </div>
                     `;
                 });
-
-                html += `
+                container.innerHTML = html;
+            } else {
+                // Multiple levels - group by level with submenus
+                let html = '';
+                Object.keys(spellsByLevel).sort().forEach(level => {
+                    html += `
+                        <div class="menu-item submenu" onclick="toggleSubmenu(event)">
+                            <div>Level ${level} Spells</div>
+                            <div class="item-detail">${spellsByLevel[level].length} available</div>
+                            <div class="submenu-container">
+                                <div class="menu-items">
+                    `;
+                    spellsByLevel[level].forEach(spell => {
+                        html += `
+                            <div class="menu-item" onclick="executeMenuCommand('cast ${spell.name}')">
+                                <div>✨ ${spell.name}</div>
+                                <div class="item-detail">${spell.school || 'magic'}</div>
+                            </div>
+                        `;
+                    });
+                    html += `
+                                </div>
                             </div>
                         </div>
-                    </div>
-                `;
-            });
-
-            container.innerHTML = html;
+                    `;
+                });
+                container.innerHTML = html;
+            }
         }
 
         function populateMemorizeMenu() {
@@ -2079,33 +2105,26 @@
 
             const activeChar = currentParty[activeCharacterIndex];
 
-            // Check if character has available_spells_to_memorize (from backend)
-            if (!currentGameState.available_spells_to_memorize || currentGameState.available_spells_to_memorize.length === 0) {
+            // Check if active character has spells_known
+            if (!activeChar.spells_known || activeChar.spells_known.length === 0) {
                 container.innerHTML = '<div class="menu-empty">No spells available to memorize</div>';
                 return;
             }
 
             // Group spells by level
             const spellsByLevel = {};
-            currentGameState.available_spells_to_memorize.forEach(spell => {
+            activeChar.spells_known.forEach(spell => {
                 if (!spellsByLevel[spell.level]) {
                     spellsByLevel[spell.level] = [];
                 }
                 spellsByLevel[spell.level].push(spell);
             });
 
-            // Build menu with submenus for each level
-            let html = '';
-            Object.keys(spellsByLevel).sort().forEach(level => {
-                html += `
-                    <div class="menu-item submenu">
-                        <div>Level ${level} Spells</div>
-                        <div class="item-detail">${spellsByLevel[level].length} available</div>
-                        <div class="submenu-container">
-                            <div class="menu-items">
-                `;
-
-                spellsByLevel[level].forEach(spell => {
+            // If only one level, show spells directly; otherwise group by level
+            if (Object.keys(spellsByLevel).length === 1) {
+                // Single level - show spells directly
+                let html = '';
+                activeChar.spells_known.forEach(spell => {
                     html += `
                         <div class="menu-item" onclick="executeMenuCommand('memorize ${spell.name}')">
                             <div>📖 ${spell.name}</div>
@@ -2113,15 +2132,51 @@
                         </div>
                     `;
                 });
-
-                html += `
+                container.innerHTML = html;
+            } else {
+                // Multiple levels - group by level with submenus
+                let html = '';
+                Object.keys(spellsByLevel).sort().forEach(level => {
+                    html += `
+                        <div class="menu-item submenu" onclick="toggleSubmenu(event)">
+                            <div>Level ${level} Spells</div>
+                            <div class="item-detail">${spellsByLevel[level].length} available</div>
+                            <div class="submenu-container">
+                                <div class="menu-items">
+                    `;
+                    spellsByLevel[level].forEach(spell => {
+                        html += `
+                            <div class="menu-item" onclick="executeMenuCommand('memorize ${spell.name}')">
+                                <div>📖 ${spell.name}</div>
+                                <div class="item-detail">${spell.school || 'magic'}</div>
+                            </div>
+                        `;
+                    });
+                    html += `
+                                </div>
                             </div>
                         </div>
-                    </div>
-                `;
+                    `;
+                });
+                container.innerHTML = html;
+            }
+        }
+
+        function toggleSubmenu(event) {
+            event.stopPropagation();
+            const submenuItem = event.currentTarget;
+            const submenuContainer = submenuItem.querySelector('.submenu-container');
+
+            // Close all other submenus in this menu
+            const allSubmenus = submenuItem.parentElement.querySelectorAll('.submenu-container');
+            allSubmenus.forEach(sm => {
+                if (sm !== submenuContainer) {
+                    sm.classList.remove('active');
+                }
             });
 
-            container.innerHTML = html;
+            // Toggle this submenu
+            submenuContainer.classList.toggle('active');
         }
 
         function executeMenuCommand(command) {
