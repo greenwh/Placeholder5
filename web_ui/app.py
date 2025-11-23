@@ -297,6 +297,21 @@ def get_game_state_json(game_state):
                         })
                 break  # Only get spells from first living caster
 
+    # Get spells available to memorize (from spells_known but not yet memorized)
+    available_spells_to_memorize = []
+    if hasattr(game_state, 'party') and len(game_state.party.members) > 0:
+        # Get spells for all spellcaster party members
+        for member in game_state.party.members:
+            if member.is_alive and hasattr(member, 'spells_known'):
+                for spell in member.spells_known:
+                    available_spells_to_memorize.append({
+                        'name': spell.name,
+                        'level': spell.level,
+                        'school': spell.school,
+                        'caster': member.name
+                    })
+                break  # Only get spells from first living caster
+
     return {
         'room': {
             'id': game_state.current_room.id,
@@ -310,6 +325,7 @@ def get_game_state_json(game_state):
         'in_combat': game_state.in_combat,
         'active_monsters': active_monsters,  # NEW: Monsters for context-aware actions
         'available_spells': available_spells,  # NEW: Spells for context-aware actions
+        'available_spells_to_memorize': available_spells_to_memorize,  # NEW: Spells for memorize menu
         'time': {
             'turns': game_state.time_tracker.turns_elapsed,
             'hours': game_state.time_tracker.total_hours

@@ -788,6 +788,152 @@
             font-size: 14px;
         }
 
+        /* Button Menu System */
+        .menu-button-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .button-menu {
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            background-color: #002200;
+            border: 2px solid #0f0;
+            border-radius: 4px;
+            box-shadow: 0 -4px 12px rgba(0, 255, 0, 0.3);
+            z-index: 2000;
+            min-width: 200px;
+            max-width: 350px;
+            margin-bottom: 5px;
+            display: none;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .button-menu.active {
+            display: block;
+            animation: menuSlideUp 0.2s ease-out;
+        }
+
+        @keyframes menuSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .menu-header {
+            background-color: #003300;
+            color: #ff0;
+            padding: 8px 12px;
+            font-weight: bold;
+            font-size: 12px;
+            border-bottom: 1px solid #0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-close {
+            background: none;
+            border: none;
+            color: #f88;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 0;
+            width: 16px;
+            height: 16px;
+            line-height: 16px;
+        }
+
+        .menu-close:hover {
+            color: #fff;
+        }
+
+        .menu-items {
+            padding: 4px;
+        }
+
+        .menu-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #0a0;
+            transition: all 0.15s;
+            font-size: 12px;
+            color: #0f0;
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .menu-item:hover {
+            background-color: #004400;
+            padding-left: 16px;
+        }
+
+        .menu-item.submenu {
+            position: relative;
+        }
+
+        .menu-item.submenu::after {
+            content: '▶';
+            position: absolute;
+            right: 10px;
+            color: #0a0;
+        }
+
+        .menu-item .item-detail {
+            font-size: 10px;
+            color: #888;
+            margin-top: 2px;
+        }
+
+        .menu-empty {
+            padding: 12px;
+            text-align: center;
+            color: #888;
+            font-size: 11px;
+            font-style: italic;
+        }
+
+        .submenu-container {
+            position: absolute;
+            left: 100%;
+            top: -2px;
+            background-color: #002200;
+            border: 2px solid #0f0;
+            border-radius: 4px;
+            box-shadow: 4px 0 12px rgba(0, 255, 0, 0.3);
+            min-width: 180px;
+            max-width: 300px;
+            margin-left: 5px;
+            display: none;
+            max-height: 350px;
+            overflow-y: auto;
+        }
+
+        .menu-item:hover .submenu-container {
+            display: block;
+            animation: menuSlideRight 0.2s ease-out;
+        }
+
+        @keyframes menuSlideRight {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
         /* Scrollbar styling */
         ::-webkit-scrollbar {
             width: 10px;
@@ -898,19 +1044,71 @@
 
         <!-- Command Input -->
         <div class="command-input">
-            <!-- Dynamic Context-Aware Actions -->
-            <div id="dynamic-actions" class="dynamic-actions" style="display: none;">
-                <!-- Populated dynamically based on game state -->
-            </div>
+            <!-- Dynamic Context-Aware Actions - REPLACED BY BUTTON MENUS -->
+            <!-- Keeping this code but hiding it - menus provide the same functionality -->
+            <!-- <div id="dynamic-actions" class="dynamic-actions" style="display: none;"></div> -->
 
             <!-- Static Command Buttons -->
             <div class="button-row">
-                <button class="button" onclick="quickCommand('attack')">Attack</button>
-                <button class="button" onclick="promptCast()">Cast</button>
-                <button class="button" onclick="promptMemorize()">Memorize</button>
+                <!-- Attack button with menu -->
+                <div class="menu-button-container">
+                    <button class="button" onclick="toggleMenu('attack-menu')">Attack</button>
+                    <div id="attack-menu" class="button-menu">
+                        <div class="menu-header">
+                            <span>⚔️ Attack</span>
+                            <button class="menu-close" onclick="closeAllMenus()">✕</button>
+                        </div>
+                        <div class="menu-items" id="attack-menu-items">
+                            <div class="menu-empty">No enemies present</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cast button with menu -->
+                <div class="menu-button-container">
+                    <button class="button" onclick="toggleMenu('cast-menu')">Cast</button>
+                    <div id="cast-menu" class="button-menu">
+                        <div class="menu-header">
+                            <span>✨ Cast Spell</span>
+                            <button class="menu-close" onclick="closeAllMenus()">✕</button>
+                        </div>
+                        <div class="menu-items" id="cast-menu-items">
+                            <div class="menu-empty">No spells available</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Memorize button with menu -->
+                <div class="menu-button-container">
+                    <button class="button" onclick="toggleMenu('memorize-menu')">Memorize</button>
+                    <div id="memorize-menu" class="button-menu">
+                        <div class="menu-header">
+                            <span>📖 Memorize Spell</span>
+                            <button class="menu-close" onclick="closeAllMenus()">✕</button>
+                        </div>
+                        <div class="menu-items" id="memorize-menu-items">
+                            <div class="menu-empty">No spells to memorize</div>
+                        </div>
+                    </div>
+                </div>
+
                 <button class="button" onclick="quickCommand('look')">Look</button>
                 <button class="button" onclick="quickCommand('search')">Search</button>
-                <button class="button" onclick="promptTake()">Take</button>
+
+                <!-- Take button with menu -->
+                <div class="menu-button-container">
+                    <button class="button" onclick="toggleMenu('take-menu')">Take</button>
+                    <div id="take-menu" class="button-menu">
+                        <div class="menu-header">
+                            <span>👜 Take Item</span>
+                            <button class="menu-close" onclick="closeAllMenus()">✕</button>
+                        </div>
+                        <div class="menu-items" id="take-menu-items">
+                            <div class="menu-empty">No items here</div>
+                        </div>
+                    </div>
+                </div>
+
                 <button class="button" onclick="quickCommand('open')">Open</button>
                 <button class="button" onclick="quickCommand('rest')">Rest</button>
                 <button class="button" onclick="quickCommand('north')">North</button>
@@ -1080,6 +1278,7 @@
 
         function updateDisplay(state, message) {
             currentParty = state.party;
+            currentGameState = state;  // Store state for menu population
 
             // Update room info
             document.getElementById('text-output').innerHTML = `
@@ -1119,8 +1318,8 @@
             // Update 2D map
             render2DMap(state.map);
 
-            // PRIORITY 1: Update context-aware dynamic actions
-            updateDynamicActions(state);
+            // PRIORITY 1: Update context-aware dynamic actions - REPLACED BY BUTTON MENUS
+            // updateDynamicActions(state);
 
             // PRIORITY 4: Update combat quick actions panel
             updateCombatPanel(state);
@@ -1720,6 +1919,218 @@
             }
         }
 
+        // ========== BUTTON MENU SYSTEM ==========
+
+        let currentGameState = null;  // Store latest game state for menu population
+
+        function toggleMenu(menuId) {
+            if (!gameActive) {
+                appendMessage("Start a new game first!");
+                return;
+            }
+
+            const menu = document.getElementById(menuId);
+            const isCurrentlyActive = menu.classList.contains('active');
+
+            // Close all menus first
+            closeAllMenus();
+
+            // If this menu wasn't active, open it and populate it
+            if (!isCurrentlyActive) {
+                populateMenu(menuId);
+                menu.classList.add('active');
+            }
+        }
+
+        function closeAllMenus() {
+            const menus = document.querySelectorAll('.button-menu');
+            menus.forEach(menu => menu.classList.remove('active'));
+        }
+
+        function populateMenu(menuId) {
+            if (!currentGameState) return;
+
+            switch(menuId) {
+                case 'attack-menu':
+                    populateAttackMenu();
+                    break;
+                case 'cast-menu':
+                    populateCastMenu();
+                    break;
+                case 'memorize-menu':
+                    populateMemorizeMenu();
+                    break;
+                case 'take-menu':
+                    populateTakeMenu();
+                    break;
+            }
+        }
+
+        function populateAttackMenu() {
+            const container = document.getElementById('attack-menu-items');
+
+            if (!currentGameState.active_monsters || currentGameState.active_monsters.length === 0) {
+                container.innerHTML = '<div class="menu-empty">No enemies present</div>';
+                return;
+            }
+
+            let html = '';
+            currentGameState.active_monsters.forEach(monster => {
+                const statusColor = monster.status === 'healthy' ? '#0f0' : '#ff0';
+                html += `
+                    <div class="menu-item" onclick="executeMenuCommand('attack ${monster.name}')">
+                        <div>👹 ${monster.name}</div>
+                        <div class="item-detail" style="color: ${statusColor};">${monster.status}</div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function populateTakeMenu() {
+            const container = document.getElementById('take-menu-items');
+
+            if (!currentGameState.room || !currentGameState.room.items || currentGameState.room.items.length === 0) {
+                container.innerHTML = '<div class="menu-empty">No items here</div>';
+                return;
+            }
+
+            let html = '';
+            currentGameState.room.items.forEach(item => {
+                html += `
+                    <div class="menu-item" onclick="executeMenuCommand('take ${item}')">
+                        <div>👜 ${item}</div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function populateCastMenu() {
+            const container = document.getElementById('cast-menu-items');
+
+            if (!currentParty || currentParty.length === 0) {
+                container.innerHTML = '<div class="menu-empty">No party members</div>';
+                return;
+            }
+
+            const activeChar = currentParty[activeCharacterIndex];
+
+            if (!activeChar.spell_slots || activeChar.spell_slots.length === 0) {
+                container.innerHTML = '<div class="menu-empty">Not a spellcaster</div>';
+                return;
+            }
+
+            // Group spells by level
+            const spellsByLevel = {};
+            activeChar.spell_slots.forEach(slot => {
+                if (slot.spell && !slot.is_used) {
+                    if (!spellsByLevel[slot.spell.level]) {
+                        spellsByLevel[slot.spell.level] = [];
+                    }
+                    spellsByLevel[slot.spell.level].push(slot.spell);
+                }
+            });
+
+            if (Object.keys(spellsByLevel).length === 0) {
+                container.innerHTML = '<div class="menu-empty">No spells memorized</div>';
+                return;
+            }
+
+            // Build menu with submenus for each level
+            let html = '';
+            Object.keys(spellsByLevel).sort().forEach(level => {
+                html += `
+                    <div class="menu-item submenu">
+                        <div>Level ${level} Spells</div>
+                        <div class="item-detail">${spellsByLevel[level].length} available</div>
+                        <div class="submenu-container">
+                            <div class="menu-items">
+                `;
+
+                spellsByLevel[level].forEach(spell => {
+                    html += `
+                        <div class="menu-item" onclick="executeMenuCommand('cast ${spell.name}')">
+                            <div>✨ ${spell.name}</div>
+                            <div class="item-detail">${spell.school || 'magic'}</div>
+                        </div>
+                    `;
+                });
+
+                html += `
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function populateMemorizeMenu() {
+            const container = document.getElementById('memorize-menu-items');
+
+            if (!currentParty || currentParty.length === 0) {
+                container.innerHTML = '<div class="menu-empty">No party members</div>';
+                return;
+            }
+
+            const activeChar = currentParty[activeCharacterIndex];
+
+            // Check if character has available_spells_to_memorize (from backend)
+            if (!currentGameState.available_spells_to_memorize || currentGameState.available_spells_to_memorize.length === 0) {
+                container.innerHTML = '<div class="menu-empty">No spells available to memorize</div>';
+                return;
+            }
+
+            // Group spells by level
+            const spellsByLevel = {};
+            currentGameState.available_spells_to_memorize.forEach(spell => {
+                if (!spellsByLevel[spell.level]) {
+                    spellsByLevel[spell.level] = [];
+                }
+                spellsByLevel[spell.level].push(spell);
+            });
+
+            // Build menu with submenus for each level
+            let html = '';
+            Object.keys(spellsByLevel).sort().forEach(level => {
+                html += `
+                    <div class="menu-item submenu">
+                        <div>Level ${level} Spells</div>
+                        <div class="item-detail">${spellsByLevel[level].length} available</div>
+                        <div class="submenu-container">
+                            <div class="menu-items">
+                `;
+
+                spellsByLevel[level].forEach(spell => {
+                    html += `
+                        <div class="menu-item" onclick="executeMenuCommand('memorize ${spell.name}')">
+                            <div>📖 ${spell.name}</div>
+                            <div class="item-detail">${spell.school || 'magic'}</div>
+                        </div>
+                    `;
+                });
+
+                html += `
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function executeMenuCommand(command) {
+            closeAllMenus();
+            sendCommand(command);
+        }
+
+        // ========== END BUTTON MENU SYSTEM ==========
+
         // PRIORITY 7: Keyboard Shortcuts
         // Global keyboard shortcut handler for gameplay
         function handleGlobalKeyPress(event) {
@@ -1734,8 +2145,9 @@
                 return;
             }
 
-            // ESC key - Close combat panel (works even if game not active)
+            // ESC key - Close menus and combat panel (works even if game not active)
             if (event.key === 'Escape') {
+                closeAllMenus();
                 closeCombatPanel();
                 return;
             }
@@ -1877,6 +2289,23 @@
 
             // Add global keyboard shortcut handler
             document.addEventListener('keydown', handleGlobalKeyPress);
+
+            // Add click-outside handler to close menus
+            document.addEventListener('click', function(event) {
+                // Check if click is outside all menu containers
+                const menuContainers = document.querySelectorAll('.menu-button-container');
+                let clickedInside = false;
+
+                menuContainers.forEach(container => {
+                    if (container.contains(event.target)) {
+                        clickedInside = true;
+                    }
+                });
+
+                if (!clickedInside) {
+                    closeAllMenus();
+                }
+            });
 
             // Check if we have a session_id in the URL
             const urlSessionId = getUrlParameter('session_id');
